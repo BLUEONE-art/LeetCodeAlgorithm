@@ -35,4 +35,23 @@ public class BinarySearchTree {
         return isInBST(root.right, target);
     }
 
+    // 定义方法在 BST 中插入一个数
+    private TreeNode insertIntoBST(TreeNode root, int val) {
+        // 找到空的位置插入新节点
+        if (root == null) return new TreeNode(val);
+        // 如果已经存在，则无需重复插入，直接返回
+        if (root.val == val)
+            return root;
+        // 分两种情况进行递归调用
+        // ① root 的 val 小，则新的 val 应插入到右子树中
+        if (root.val < val)
+            root.right = insertIntoBST(root.right, val);
+        // ② root 的 val da，则新的 val 应插入到左子树中
+        if (root.val > val)
+            root.left =  insertIntoBST(root.left, val);
+        return root;
+    }
+
+    // 定义方法在 BST 中删除一个数
+    
 }
