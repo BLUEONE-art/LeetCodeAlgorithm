@@ -73,9 +73,17 @@ public class BinarySearchTree {
         return root;
     }
 
+    // 找到右子树中最小的节点
     private TreeNode getMin(TreeNode node) {
         // BST 最左边的就是最小的
         while (node.left != null) node = node.left;
+        return node;
+    }
+
+    // 找到左子树中最大的节点
+    private TreeNode getMax(TreeNode node) {
+        // BST 最左边的就是最小的
+        while (node.right != null) node = node.right;
         return node;
     }
 }
