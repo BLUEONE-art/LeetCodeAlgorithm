@@ -53,5 +53,29 @@ public class BinarySearchTree {
     }
 
     // 定义方法在 BST 中删除一个数
+    private TreeNode deleteNode(TreeNode root, int key) {
+        if (null == root) return null;
+        if (root.val == key) {
+            // 假设找到目标节点 A，删除这个节点的第一种情况：①A 恰好事末端节点，即两个子节点都为空，那么它可以当即退场
+            if (root.left == null && null == root.right) return null;
+            // ②A 只有一个非空子节点，那么要让它的孩子接替自己的位置
+            if (root.left == null) return root.right;
+            if (root.right == null) return root.left;
+            // ③A 有两个子节点，为了不破坏 BST 的结构，A 必须找到左子树中最大的那个节点，或者右子树中最小的那个节点来替代自己
+            TreeNode minNode = getMin(root.right);
+            root.val = minNode.val;
+            root.right = deleteNode(root.right, key);
+        } else if (root.val > key) {
+            root.left = deleteNode(root.left, key);
+        } else if (root.val < key) {
+            root.right = deleteNode(root.right, key);
+        }
+        return root;
+    }
 
+    private TreeNode getMin(TreeNode node) {
+        // BST 最左边的就是最小的
+        while (node.left != null) node = node.left;
+        return node;
+    }
 }
