@@ -23,5 +23,4 @@ public class BinaryTree {
         return isSameTree(root1.left, root2.left)
                 && isSameTree(root1.right, root2.right);
     }
-
 }
