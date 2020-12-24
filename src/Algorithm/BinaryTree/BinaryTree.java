@@ -10,6 +10,7 @@ public class BinaryTree {
         plusOne(root.right);
     }
 
+    // 定义函数，判断两个二叉树是否相等
     private boolean isSameTree(TreeNode root1, TreeNode root2) {
         // 两个都为空的话，显然相同
         if (root1 == null && root2 == null) return true;
@@ -22,4 +23,5 @@ public class BinaryTree {
         return isSameTree(root1.left, root2.left)
                 && isSameTree(root1.right, root2.right);
     }
+
 }
