@@ -44,4 +44,7 @@ public class NodesOfBinaryTree {
         //　否则按照普通二叉树来进行计算
         return 1 + countCompleteTree(root.left) + countCompleteTree(root.right);
     }
+
+
+
 }
