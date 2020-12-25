@@ -286,22 +286,88 @@ if (root.val == target) {
 
 ## 二叉树的节点计算
 
-完全二叉树的时间复杂度应该是 O(logNlogN)
+首先计算普通二叉树的节点，其框架为：
 
-### 完全二叉树(Complete Binary Tree)
-
-一棵深度为k的有n个结点的[二叉树](https://baike.baidu.com/item/二叉树/1602879)，对树中的结点按从上至下、从左到右的顺序进行编号，如果编号为i（1≤i≤n）的结点与[满二叉树](https://baike.baidu.com/item/满二叉树/7773283)中编号为i的结点在二叉树中的位置相同，则这棵二叉树称为完全二叉树。
-
-![](LeetCode刷题记录.assets/完全二叉树.png)
-
-每一层都是紧凑靠左进行排列的
+```java
+public class NodesOfBinaryTree {
+    // ①输入普通二叉树的情况
+    public int countNormalBinaryTree(TreeNode root) {
+        // 如果根节点为null，返回0
+        if (null == root) return 0;
+        // 剩下的交给递归完成
+        return 1 + countNormalBinaryTree(root.left) + countNormalBinaryTree(root.right);
+    }
+```
 
 ### 满二叉树(Perfect Binary Tree)
 
 ![](LeetCode刷题记录.assets/满二叉树.png)
 
-是一种特殊的完全二叉树，每层都是满的，像是一个稳定的三角形。
+是一种特殊的完全二叉树，每层都是满的，像是一个稳定的三角形。节点计算框架为：
+
+```java
+// ②如果是一颗满二叉树，节点的总数就和树的高度呈指数关系
+public int countPerfectTree(TreeNode root) {
+    // 初始化高度为 0
+    int h = 0;
+    // 计算树的高度
+    while(root != null) {
+        root = root.left;
+        h++;
+    }
+    // 满二叉树的总的节点数就是 2^h -1
+    return (int)Math.pow(2, h) - 1; // 求2的h次方，然后强制转换成int类型 - 1
+}
+```
+
+完全二叉树的时间复杂度应该是 ==O(logNlogN)==
+
+### 完全二叉树(Complete Binary Tree)
+
+如果对满二叉树的结点进行编号, 约定编号从根结点起, 自上而下, 自左而右。则深度为k的, 有n个结点的二叉树, 当且仅当其每一个结点都与深度为k的满二叉树中编号从1至n的结点一一对应时, 称之为完全二叉树。
+
+![](LeetCode刷题记录.assets/完全二叉树.png)
+
+每一层都是紧凑靠左进行排列的，并且==完全二叉树的深度 = 满二叉树的深度！==其节点个数框架为：
+
+```java
+// ③如果是完全二叉树，它比普通二叉树特殊，但没有满二叉树那么特殊，所以计算它的节点是普通二叉树和完全二叉树的结合版
+public int countCompleteTree(TreeNode root) {
+    TreeNode l = root, r = root;
+    // 记录左、右子树的高度
+    int hl = 0, hr = 0;
+    while (l != null) {
+        l = l.left;
+        hl++;
+    }
+    while (r != null) {
+        r = r.right;
+        hr++;
+    }
+    // 如果左右子树的高度相同，说明是一棵满二叉树
+    if (hl == hr) {
+        return (int)Math.pow(2, hl) - 1;
+    }
+    //　否则按照普通二叉树来进行计算
+    return 1 + countCompleteTree(root.left) + countCompleteTree(root.right);
+}
+```
 
 ### Full Binary Tree
 
 ![]()![FullBinaryTree](LeetCode刷题记录.assets/FullBinaryTree.png)
+
+### 复杂度分析
+
+```java
+return 1 + countCompleteTree(root.left) + countCompleteTree(root.right);
+```
+
+参考完全二叉树求节点个数的代码可以发现，虽然最后是按照普通二叉树的节点个数进行计算的，但是由于完全二叉树的性质：
+
++ 完全二叉树的深度 = 满二叉树的深度
++ 一颗完全二叉树，其两颗子树中至少有一颗是满二叉树
+
+所以这两个递归，只有一个会真的递归下去，另一个一定会触发 **hl == hr** 而立即返回，不会再从最底部往上回归。
+
+综上：算法的递归深度是树的深度 O(logN)，每次递归所花费的时间就是 while 循环，需要 O(logN)，所以总体的时间复杂度为 O(logNlogN)。所以说，“完全二叉树”还是有它存在的道理的，不仅适用于数组实现二叉堆，而且连计算节点总数这种看起来简单的操作都有高效的算法实现。
