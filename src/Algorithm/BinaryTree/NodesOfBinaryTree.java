@@ -35,11 +35,13 @@ public class NodesOfBinaryTree {
         }
         while (r != null) {
             r = r.right;
-            hl++;
+            hr++;
         }
+        // 如果左右子树的高度相同，说明是一棵满二叉树
         if (hl == hr) {
             return (int)Math.pow(2, hl) - 1;
         }
-        return 1 + countCompleteTree(l.left) + countCompleteTree(l.right);
+        //　否则按照普通二叉树来进行计算
+        return 1 + countCompleteTree(root.left) + countCompleteTree(root.right);
     }
 }
