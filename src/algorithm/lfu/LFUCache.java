@@ -1,4 +1,4 @@
-package Algorithm.LFUAlgorithm;
+package algorithm.lfu;
 
 import java.util.HashMap;
 import java.util.LinkedHashSet;

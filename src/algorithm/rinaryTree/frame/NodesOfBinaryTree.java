@@ -1,6 +1,4 @@
-package Algorithm.BinaryTree;
-
-import sun.reflect.generics.tree.Tree;
+package algorithm.rinaryTree.frame;
 
 public class NodesOfBinaryTree {
     // ①输入普通二叉树的情况

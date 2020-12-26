@@ -1,6 +1,4 @@
-package Algorithm.BinaryTree.BinarySearchTree;
-
-import Algorithm.BinaryTree.TreeNode;
+package algorithm.rinaryTree.frame;
 
 public class BinarySearchTree {
 

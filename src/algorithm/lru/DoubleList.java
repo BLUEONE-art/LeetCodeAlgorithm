@@ -1,4 +1,4 @@
-package Algorithm.LRUAlgorithm;
+package algorithm.lru;
 
 public class DoubleList {
     // 头尾虚节点

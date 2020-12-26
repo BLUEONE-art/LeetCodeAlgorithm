@@ -1,4 +1,4 @@
-package Algorithm.BinaryTree;
+package algorithm.rinaryTree.frame;
 
 public class TreeNode {
     public int val;

@@ -1,4 +1,4 @@
-package Algorithm.LRUAlgorithm;
+package algorithm.lru;
 
 public class Node {
     public int key, val;
