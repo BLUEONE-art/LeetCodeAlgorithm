@@ -374,7 +374,7 @@ return 1 + countCompleteTree(root.left) + countCompleteTree(root.right);
 
 ---
 
-# 2020.12.25记录
+# 2020.12.25 & 26记录
 
 ## 序列化和反序列化二叉树
 
@@ -383,3 +383,71 @@ return 1 + countCompleteTree(root.left) + countCompleteTree(root.right);
 JSON 的运用非常广泛，比如我们经常将编程语言中的结构体序列化成 JSON 字符串，然后存入缓存或者通过网络发送给远端服务，消费者接收 JSON 字符串然后进行反序列化，就可以得到原始数据了。所以其目的是：
 
 ==以某种固定格式组织字符串，使得数据可以独立于编程语言。==
+
+二叉树的序列化方法：serialize()，可以把一颗二叉树序列化为字符串
+
+二叉树的反序列化方法：deserialize()，可以把字符串反序列化为二叉树
+
+至于以什么格式序列化和反序列化，这个由自己决定。
+
+==所谓序列化其实就是把结构化的数据”打平“，就是在考察二叉树的遍历方式==
+
+### 前序遍历
+
+**Example：**现有一颗二叉树，如下
+
+![](LeetCode刷题记录.assets/二叉树前序遍历过程.png)
+
+相应的，代码框架为：
+
+```java
+private String serialize(TreeNode root) {
+    if (root == null) {
+        // 填充分隔符
+        return;
+    }
+    
+    // 前序遍历代码
+    
+    serialize(root.left, sb);
+    serialize(root.right, sb);
+}
+```
+
+对应完整程序为：
+
+```java
+// 二叉树前序遍历
+// 代表分隔符的字符
+String SEP = ",";
+// 代表 null 指针的字符
+String NULL = "#";
+
+/*主函数：将二叉树序列化为字符串*/
+private String serialize(TreeNode root) {
+    StringBuilder sb = new StringBuilder();
+    serialize(root, sb);
+    return sb.toString();
+}
+
+/*辅助函数：将二叉树存入StringBuilder*/
+private void serialize(TreeNode root, StringBuilder sb) {
+    if (root == null) {
+        sb.append(NULL).append(SEP);
+        return;
+    }
+
+    // 进行前序遍历
+    sb.append(root.val).append(SEP);
+
+    serialize(root.left, sb);
+    serialize(root.right, sb);
+}
+```
+
+### 反序列化(前序遍历)
+
+单单前序遍历的结果是不能还原二叉树的，因为缺少空指针的信息。所以至少需要前、中、后序遍历的两种才能还原二叉树。但是这里的 node 列表包含空指针的信息，所以只使用 node 列表就可以还原二叉树。之前分析，这里的 node 列表就是一棵”打平“的二叉树。
+
+那么，反序列化的过程也是一样的：==先确定根节点 Root，然后遵循前序遍历的规则，递归生成左右子树==
+
