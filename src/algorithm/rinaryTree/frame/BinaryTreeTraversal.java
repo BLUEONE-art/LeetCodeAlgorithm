@@ -35,6 +35,7 @@ public class BinaryTreeTraversal {
     String[] nodes = data.split(",");
     */
 
+    /* 二叉树前序遍历的反序列化 */
     /* 主函数：将字符串反序列化为二叉树结构 */
     private TreeNode deFreSerialize(String data) {
         // 将字符串转换成列表
@@ -86,5 +87,7 @@ public class BinaryTreeTraversal {
 
         sb.append(root.val).append(SEP);
     }
+
+    /* 二叉树后序遍历的反序列化 */
 
 }
