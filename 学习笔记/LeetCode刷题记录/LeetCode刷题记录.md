@@ -445,9 +445,51 @@ private void serialize(TreeNode root, StringBuilder sb) {
 }
 ```
 
+# 2020.12.27记录
+
 ### 反序列化(前序遍历)
 
 单单前序遍历的结果是不能还原二叉树的，因为缺少空指针的信息。所以至少需要前、中、后序遍历的两种才能还原二叉树。但是这里的 node 列表包含空指针的信息，所以只使用 node 列表就可以还原二叉树。之前分析，这里的 node 列表就是一棵”打平“的二叉树。
 
 那么，反序列化的过程也是一样的：==先确定根节点 Root，然后遵循前序遍历的规则，递归生成左右子树==
+
+1. 先将字符串类型的节点转化为一个 List 数组，数组中只有相应的节点信息，供反序列化使用：
+
+```java
+/* 主函数：将字符串反序列化为二叉树结构 */
+private TreeNode deserialize(String data) {
+    // 将字符串转换成列表
+    LinkedList<String> nodes = new LinkedList<>();
+    for (String s : data.split(SEP)) {
+        nodes.addLast(s); // 用于将对象链接到List的末尾
+    }
+    return deserialize(nodes); // 这里是真正实现反序列化生成二叉树的代码
+}
+```
+
+2. 将列表中的节点信息反序列化为二叉树
+
+```java
+/* 辅助函数：通过 nodes 列表来构造二叉树*/
+private TreeNode deserialize(LinkedList<String> nodes) {
+    if (nodes.isEmpty()) return null;
+
+    /* 前序遍历 */
+    // nodes列表的最左侧就是根节点
+    String first = nodes.removeFirst();
+    if (first.equals(null)) return null;
+
+    // Integer.parseInt(String)的作用就是将String字符类型数据转换为Integer整型数据。
+    TreeNode root = new TreeNode(Integer.parseInt(first));
+    /* 分隔线 */
+
+    // 其余节点交给递归
+    root.left = deserialize(nodes);
+    root.right = deserialize(nodes);
+
+    return root;
+}
+```
+
+### 后序遍历
 
