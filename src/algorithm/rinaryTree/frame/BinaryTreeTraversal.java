@@ -65,7 +65,7 @@ public class BinaryTreeTraversal {
         return root;
     }
 
-    /* 后续遍历 */
+    /* 二叉树后续遍历 */
     /*主函数：将二叉树序列化为字符串*/
     private String postorderSerialize(TreeNode root) {
         StringBuilder sb = new StringBuilder();
