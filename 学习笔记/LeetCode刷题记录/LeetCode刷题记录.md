@@ -560,3 +560,9 @@ private void inorderSerialize(TreeNode root, StringBuilder sb) {
 }
 ```
 
+使用中序遍历==不能==实现反序列化的过程。因为要实现反序列方法，首先要构造 root 节点的位置，前序和后续遍历 root 节点分别在列表的首位和末位，而中序遍历的结果 root 节点在列表的中间，不知道其索引位置，所以我i发找到 root 节点。
+
+### 层次遍历解法
+
+![](LeetCode刷题记录.assets/二叉树层次遍历过程.png)
+
