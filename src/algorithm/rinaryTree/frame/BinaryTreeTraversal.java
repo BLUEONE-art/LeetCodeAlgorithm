@@ -9,7 +9,7 @@ public class BinaryTreeTraversal {
     // 代表 null 指针的字符
     String NULL = "#";
 
-    /*主函数：将二叉树序列化为字符串*/
+    /*主函数：将二叉树序列化为字符串 */
     private String freSerialize(TreeNode root) {
         StringBuilder sb = new StringBuilder();
         freSerialize(root, sb);
@@ -113,5 +113,28 @@ public class BinaryTreeTraversal {
         root.left = postorderDeserialize(nodes);
 
         return root;
+    }
+
+    /* 二叉树的中序遍历 */
+    /* 主函数:将二叉树转换成字符串 */
+    private String inorderSerialize(TreeNode root) {
+        StringBuilder sb = new StringBuilder();
+        inorderSerialize(root, sb);
+        return sb.toString();
+    }
+
+    /* 副函数：将二叉树序列化为字符串 */
+    private void inorderSerialize(TreeNode root, StringBuilder sb) {
+        if (root == null) {
+            sb.append(NULL).append(SEP);
+            return;
+        }
+
+        inorderSerialize(root.left, sb);
+
+        /* 中序遍历的位置 */
+        sb.append(root.val).append(SEP);
+
+        inorderSerialize(root.right, sb);
     }
 }
