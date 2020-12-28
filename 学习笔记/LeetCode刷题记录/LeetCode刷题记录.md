@@ -491,5 +491,43 @@ private TreeNode deserialize(LinkedList<String> nodes) {
 }
 ```
 
+# 2020.12.28记录
+
 ### 后序遍历
+
+![二叉树后序遍历过程 (1)](LeetCode刷题记录.assets/二叉树后序遍历过程.png)
+
+后序遍历的框架为：
+
+```java
+/* 二叉树后续遍历 */
+/*主函数：将二叉树序列化为字符串*/
+private String postorderSerialize(TreeNode root) {
+    StringBuilder sb = new StringBuilder();
+    postorderSerialize(root, sb);
+    return sb.toString();
+}
+
+/* 副函数：将二叉树序列化为字符串 */
+private void postorderSerialize(TreeNode root, StringBuilder sb) {
+    if (root == null) {
+        sb.append(NULL).append(SEP);
+        return;
+    }
+
+    // 后序遍历是先递归再进行转化为字符串
+    postorderSerialize(root.left, sb);
+    postorderSerialize(root.right, sb);
+
+    sb.append(root.val).append(SEP);
+}
+```
+
+### 反序列化(后序遍历)
+
+**思路：**deserialize() 方法首先寻找 root 节点的值，然后递归计算左右子节点。
+
+由上图可见，root 的值时列表最后一个元素。我们应该从后往前取出列表元素，先用最后一个元素构造 root，然后递归调用生成 root 的左右子树。
+
+注意：根据上图，从后往前在 nodes 列表中取元素，==一定要先构造 root.right 子树，后构造 root.left 子树。==
 
