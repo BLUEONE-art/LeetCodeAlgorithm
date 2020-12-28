@@ -531,3 +531,32 @@ private void postorderSerialize(TreeNode root, StringBuilder sb) {
 
 注意：根据上图，从后往前在 nodes 列表中取元素，==一定要先构造 root.right 子树，后构造 root.left 子树。==
 
+### 中序遍历
+
+中序遍历只要把字符串的拼接操作放在中序遍历的位置就可以了：
+
+```java
+/* 二叉树的中序遍历 */
+/* 主函数:将二叉树转换成字符串 */
+private String inorderSerialize(TreeNode root) {
+    StringBuilder sb = new StringBuilder();
+    inorderSerialize(root, sb);
+    return sb.toString();
+}
+
+/* 副函数：将二叉树序列化为字符串 */
+private void inorderSerialize(TreeNode root, StringBuilder sb) {
+    if (root == null) {
+        sb.append(NULL).append(SEP);
+        return;
+    }
+
+    inorderSerialize(root.left, sb);
+
+    /* 中序遍历的位置 */
+    sb.append(root.val).append(SEP);
+
+    inorderSerialize(root.right, sb);
+}
+```
+
