@@ -1,6 +1,7 @@
 package algorithm.rinaryTree.frame;
 
 import java.util.LinkedList;
+import java.util.Queue;
 
 public class BinaryTreeTraversal {
     /* 二叉树前序遍历 */
@@ -136,5 +137,67 @@ public class BinaryTreeTraversal {
         sb.append(root.val).append(SEP);
 
         inorderSerialize(root.right, sb);
+    }
+
+    /* 二叉树的层序遍历 */
+    /* 将二叉树序列化为字符串 */
+    private String levelSerialize(TreeNode root) {
+        if (root == null) return "";
+        StringBuilder sb = new StringBuilder();
+        // 初始化队列，将 root 加入队列
+        Queue<TreeNode> q = new LinkedList<>();
+        q.offer(root);
+
+        while (!q.isEmpty()) {
+            TreeNode cur = q.poll(); // 取出并返回队列中的第一个元素
+
+            /* 层级遍历的代码位置 */
+            if (cur == null) {
+                sb.append(NULL).append(SEP);
+                continue;
+            }
+            sb.append(cur.val).append(SEP);
+            /* 层级遍历的代码位置 */
+
+            q.offer(cur.left);
+            q.offer(cur.right);
+        }
+
+        return sb.toString();
+    }
+
+    /* 反序列化(层序遍历) */
+    /* 主函数：将字符串反序列化为二叉树 */
+    private TreeNode deLevelSerialize(String data) {
+        if (data.isEmpty()) return null;
+        String[] nodes = data.split(SEP);
+        // 第一个元素就是 root 的值
+        TreeNode root = new TreeNode(Integer.parseInt(nodes[0]));
+
+        // 队列 q 记录父节点，将 root 加入队列
+        Queue<TreeNode> q = new LinkedList<>();
+        q.offer(root);
+
+        for (int i = 0; i < nodes.length; ) {
+            // 队列存的都是父节点
+            TreeNode parent = q.poll();
+            // 父节点对应左侧节点的值
+            String left = nodes[i++];
+            if (!left.equals(NULL)) {
+                parent.left = new TreeNode(Integer.parseInt(left));
+                q.offer(parent.left);
+            } else {
+                parent.left = null;
+            }
+            // 父节点对应右侧子节点的值
+            String right = nodes[i++];
+            if (!right.equals(NULL)) {
+                parent.right = new TreeNode(Integer.parseInt(right));
+                q.offer(parent.right);
+            } else {
+                parent.right = null;
+            }
+        }
+        return root;
     }
 }
