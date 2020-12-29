@@ -1,4 +1,4 @@
-package algorithm.rinaryTree.frame;
+package algorithm.rinaryTree.lcaFrame;
 
 public class TreeNode {
     public int val;        //节点的值
