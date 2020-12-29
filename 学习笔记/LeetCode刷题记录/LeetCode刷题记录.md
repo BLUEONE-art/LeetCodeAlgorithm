@@ -163,7 +163,7 @@ void traverse(TreeNode root) {
 
 ### 二叉搜索树(Binary Search Tree, BST)
 
-**定义：**一个二叉树中，任意节点的值要大于等于左子树所有节点的值，且要小于等于右子树的所有节点的值。
+**定义：**一个二叉树中，任意根节点的值要大于等于左子树所有节点的值，且要小于等于右子树的所有节点的值。
 
 <img src="LeetCode刷题记录.assets/二叉搜索树.png" style="zoom:75%;" />
 
@@ -565,4 +565,6 @@ private void inorderSerialize(TreeNode root, StringBuilder sb) {
 ### 层次遍历解法
 
 ![](LeetCode刷题记录.assets/二叉树层次遍历过程.png)
+
+# 2020.12.29记录
 
