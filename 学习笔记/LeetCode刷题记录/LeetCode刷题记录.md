@@ -656,3 +656,23 @@ private TreeNode deLevelSerialize(String data) {
 
 ## Git原理之二叉树最近公共祖先
 
+使用 Git 的时候，比如
+
+```java
+git pull
+```
+
+它默认使用的是 `merge` 方式将远端别人的修改拉到本地；如果带上参数：
+
+```java
+git pull -r
+```
+
+就会使用 `rebase` 的方式将远端修改拉到本地。
+
+`merge` 和 `rebase` 的区别：
+
++ `merge` 方式合并的分支会有很多“分叉”。
++ `rebase` 方式合并的就是一条直线。
+
+对于多人合作的，`merge` 的方式并不好，一般来说，实际工作中更推荐使用 `rebase` 方式合并代码。
