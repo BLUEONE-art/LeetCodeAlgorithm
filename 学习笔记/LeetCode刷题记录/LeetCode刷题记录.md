@@ -568,3 +568,89 @@ private void inorderSerialize(TreeNode root, StringBuilder sb) {
 
 # 2020.12.29记录
 
+### 二叉树的层序遍历
+
+其框架如下：
+
+```java
+/* 二叉树的层序遍历 */
+/* 将二叉树序列化为字符串 */
+private String levelSerialize(TreeNode root) {
+    if (root == null) return "";
+    StringBuilder sb = new StringBuilder();
+    // 初始化队列，将 root 加入队列
+    Queue<TreeNode> q = new LinkedList<>();
+    q.offer(root);
+
+    while (!q.isEmpty()) {
+        TreeNode cur = q.poll(); // 取出并返回队列中的第一个元素
+
+        /* 层级遍历的代码位置 */
+        if (cur == null) {
+            sb.append(NULL).append(SEP);
+            continue;
+        }
+        sb.append(cur.val).append(SEP);
+        /* 层级遍历的代码位置 */
+
+        q.offer(cur.left);
+        q.offer(cur.right);
+    }
+
+    return sb.toString();
+}
+```
+
+其中：
+
+offer
+
+添加一个元素并返回true
+如果队列已满，则返回false。
+
+poll
+
+将首个元素从队列中弹出（ 移除并返回队列头部的元素 ）（从队列中删除第一个元素）
+如果队列是空的，就返回null。
+
+### 反序列化(层序遍历)
+
+由上图可以看到，每一个非空节点都会对应两个子节点，==那么反序列化的思路就是用队列进行层级遍历，同时用索引 **i ** 记录对应子节点的位置。==
+
+```java
+/* 反序列化(层序遍历) */
+/* 主函数：将字符串反序列化为二叉树 */
+private TreeNode deLevelSerialize(String data) {
+    if (data.isEmpty()) return null;
+    String[] nodes = data.split(SEP);
+    // 第一个元素就是 root 的值
+    TreeNode root = new TreeNode(Integer.parseInt(nodes[0]));
+
+    // 队列 q 记录父节点，将 root 加入队列
+    Queue<TreeNode> q = new LinkedList<>();
+    q.offer(root);
+
+    for (int i = 0; i < nodes.length; ) {
+        // 队列存的都是父节点
+        TreeNode parent = q.poll();
+        // 父节点对应左侧节点的值
+        String left = nodes[i++];
+        if (!left.equals(NULL)) {
+            parent.left = new TreeNode(Integer.parseInt(left));
+            q.offer(parent.left);
+        } else {
+            parent.left = null;
+        }
+        // 父节点对应右侧子节点的值
+        String right = nodes[i++];
+        if (!right.equals(NULL)) {
+            parent.right = new TreeNode(Integer.parseInt(right));
+            q.offer(parent.right);
+        } else {
+            parent.right = null;
+        }
+    }
+    return root;
+}
+```
+
