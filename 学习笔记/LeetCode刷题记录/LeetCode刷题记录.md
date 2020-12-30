@@ -676,3 +676,102 @@ git pull -r
 + `rebase` 方式合并的就是一条直线。
 
 对于多人合作的，`merge` 的方式并不好，一般来说，实际工作中更推荐使用 `rebase` 方式合并代码。
+
+# 2020.12.30记录
+
+### Git 寻找最近公共祖先的思路
+
+首先，找到这两条的最近公共祖先 LCA，然后从 master 节点开始，重演 LCA 到 dev 几个 commit 的修改，如果这些修改和 LCA 到 master 的 commit 有冲突，就会提示你手动解决冲突，最后的结果就是把 dev 的分支完全接到 master 上。
+
+涉及到二叉树肯定涉及到递归的问题，先列出所有二叉树问题的框架：
+
+```java
+void traverse(TreeNode root, variable, ...) {
+    /* 前序遍历的位置 */
+    ...
+    /* 前序遍历的位置 */
+    
+    traverse(root.left, variable, ...);
+    
+    /* 中序遍历的位置 */
+    ...
+    /* 中序遍历的位置 */
+        
+    traverse(root.right, variable, ...)
+        
+    /* 后序遍历的位置 */
+    ...
+    /* 后序遍历的位置 */
+}
+```
+
+所以，只要看到二叉树求其公共祖先的的问题，分析框架中要填的内容，先确定变量。
+
+```java
+TreeNode lowestCommonAcestor(TreeNode root, TreeNode p, TreeNode q) {
+    TreeNode left = lowestCommonAcestor(root.left, p, q);
+    TreeNode right = lowestCommonAcestor(root.right, p, q);
+}
+```
+
+**面对递归问题的灵魂三问：**
+
++ **这个函数是干什么的？**
+
+也就是说 `lowestCommonAcestor()` 函数的定义：在函数中输入三个参数 root、p、q，它会返回一个节点。
+
+**情况①：**
+
+如果 p 和 q 都在以 root 为根的数中，函数的返沪即是 p 和 q 的公共祖先节点。
+
+**情况②：**
+
+如果 p 和 q 都不在以 root 为根的数中，那肯定没有它们的公共节点，返回 null。
+
+**情况③：**
+
+如果 p 和 q 只有一个存在于以 root 为根的树中，函数会返回那个节点。
+
+题目说了输入的 p 和 q 一定存在于以 root 为根的树中，但是递归过程中，以上三种情况都有可能发生。这是 `lowestCommonAcestor()`函数的定义，无论发生什么，都不要怀疑这个定义的正确性。
+
++ **在这个函数的参数中，变量是什么？**
+
+函数参数中的变量是 `root`，因为根据框架， `lowestCommonAcestor(root)`会递归调用 `root.left` 和`root.right`；至于 p 和 q，我们要求他们的公共祖先，他俩肯定是不会变化的。
+
+以`root`为根会逐步转化为以`root.子节点`为根，即逐步缩小问题规模。
+
++ **得到函数递归的结果，你该干什么，即做什么选择？**
+
+==如果 `left` 和 `right` 不为 null， 说明他们分别是 p 和 q。==
+
+最后得到补充框架后的结果为：
+
+```java
+public class LowestCommonAncestor {
+
+    private TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        // 基本情况
+        if (root == null) return null;
+        if (root == p || root == q) return root;
+
+        TreeNode left = lowestCommonAncestor(root.left, p, q);
+        TreeNode right = lowestCommonAncestor(root.right, p, q);
+
+        // 相当于二叉树的后序遍历
+        // 情况1
+        if (left != null && right != null) {
+            return root;
+        }
+        // 情况2
+        if (left == null && right == null) {
+            return null;
+        }
+        // 情况3
+        return left == null ? right : left;
+    }
+}
+```
+
+对于情况①，为什么 `left` 和 `right` 非空，就可以说明 `root` 是他们的最近公共祖先？
+
+因为这里是二叉树后序遍历的过程！！！后序遍历是从下往上，好比从 p 和 q 出发往上走，第一次相交的节点就是这个 `root` 。
