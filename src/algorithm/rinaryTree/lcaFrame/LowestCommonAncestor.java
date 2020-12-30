@@ -22,5 +22,4 @@ public class LowestCommonAncestor {
         // 情况3
         return left == null ? right : left;
     }
-
 }
