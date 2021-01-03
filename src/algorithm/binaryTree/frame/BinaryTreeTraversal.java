@@ -1,4 +1,4 @@
-package algorithm.rinaryTree.frame;
+package algorithm.binaryTree.frame;
 
 import java.util.LinkedList;
 import java.util.Queue;

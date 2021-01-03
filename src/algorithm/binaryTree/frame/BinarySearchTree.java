@@ -1,4 +1,4 @@
-package algorithm.rinaryTree.frame;
+package algorithm.binaryTree.frame;
 
 public class BinarySearchTree {
 

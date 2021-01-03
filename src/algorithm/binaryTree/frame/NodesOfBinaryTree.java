@@ -1,4 +1,4 @@
-package algorithm.rinaryTree.frame;
+package algorithm.binaryTree.frame;
 
 public class NodesOfBinaryTree {
     // ①输入普通二叉树的情况

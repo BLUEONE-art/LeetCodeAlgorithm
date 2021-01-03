@@ -1,4 +1,4 @@
-package algorithm.rinaryTree.lcaFrame;
+package algorithm.binaryTree.lcaFrame;
 
 public class TreeNode {
     public int val;        //节点的值

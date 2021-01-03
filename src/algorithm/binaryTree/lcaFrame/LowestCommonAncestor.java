@@ -1,4 +1,4 @@
-package algorithm.rinaryTree.lcaFrame;
+package algorithm.binaryTree.lcaFrame;
 
 public class LowestCommonAncestor {
 
