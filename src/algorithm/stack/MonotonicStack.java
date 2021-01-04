@@ -18,11 +18,11 @@ public class MonotonicStack {
         Stack<Integer> s = new Stack<>();
         for (int i = nums.size() - 1; i >= 0; i--) {
             // 倒着往栈里放
-            while (!s.isEmpty() && s.lastElement() <= nums.get(i)) { // 判断个子高矮
+            while (!s.isEmpty() && s.peek() <= nums.get(i)) { // 判断个子高矮
                 s.pop(); // 矮个子出列，反正也被挡住了
             }
             // 这个元素的身后的第一个高个
-            ans.set(i, s.empty() ? -1 : s.lastElement());
+            ans.set(i, s.empty() ? -1 : s.peek());
             s.push(nums.get(i)); // 进队，接受之后的身高判断
         }
         return ans;
@@ -36,6 +36,8 @@ public class MonotonicStack {
         nums.add(2);
         nums.add(4);
         nums.add(3);
+        System.out.println(nums.firstElement());
+        System.out.println(nums.lastElement());
         Vector<Integer> res = monotonicStack.nextGreaterElement(nums);
         System.out.println(res);
     }
