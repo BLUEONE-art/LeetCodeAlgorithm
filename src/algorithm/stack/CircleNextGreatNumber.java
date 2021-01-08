@@ -1,5 +1,6 @@
 package algorithm.stack;
 
+import java.util.ArrayList;
 import java.util.Stack;
 import java.util.Vector;
 
@@ -9,12 +10,16 @@ import java.util.Vector;
 public class CircleNextGreatNumber {
     private Vector<Integer> nextGreaterElements(Vector<Integer> nums) {
         int n = nums.size();
-        Vector<Integer> res = new Vector<>(n);
+        Vector<Integer> res = new Vector<>(5);
+//        for (int i = 0; i < n; i++) {
+//            res;
+//        }
+        res.setSize(5);
         Stack<Integer> s = new Stack<>();
         // 假装这个数组长度翻倍了
         for (int i = 2 * n -1; i >= 0; i--) {
             while (!s.isEmpty() && s.peek() <= nums.get(i % n))
-                s.peek();
+                s.pop();
             // 利用 % 求模防止索引越界
             res.set((i % n), (s.isEmpty() ? -1 : s.peek()));
             s.push(nums.get(i % n));
