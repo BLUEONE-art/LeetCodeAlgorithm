@@ -13,14 +13,14 @@ public class NextHigherTemperature {
         // answer Array
         Vector<Integer> ans = new Vector<>(); // 初始化 capacity 为 10，表示 Vector 类对象的容量为 10
         ans.setSize(size);
-        Stack<Integer> stack = new Stack<>();
+        Stack<Integer> stack = new Stack<>(); // 存放元素索引，而不是元素
         for (int i = temp.size() - 1; i >= 0; i--) {
 
             while (!stack.isEmpty() && temp.get(stack.peek()) <= temp.get(i)) {
                 stack.pop();
             }
 
-            ans.set(i, stack.isEmpty() ? 0 : (stack.peek() - i));
+            ans.set(i, stack.isEmpty() ? 0 : (stack.peek() - i)); // 得到索引间距
             stack.push(i);
         }
         return ans;
