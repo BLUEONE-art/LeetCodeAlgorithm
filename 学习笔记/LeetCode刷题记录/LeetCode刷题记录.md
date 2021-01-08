@@ -775,3 +775,33 @@ public class LowestCommonAncestor {
 对于情况①，为什么 `left` 和 `right` 非空，就可以说明 `root` 是他们的最近公共祖先？
 
 因为这里是二叉树后序遍历的过程！！！后序遍历是从下往上，好比从 p 和 q 出发往上走，第一次相交的节点就是这个 `root` 。
+
+# 2021.1.8记录
+
+## Java 中数组与 LinkedList(链表)的相互转换
+
+### 数组转 LinkedList
+
+```java
+LinkedList linklist = new LinkedList(Arrays.asList(array));
+```
+
+数组转链表是调用了 Array.asList() 方法
+
+```java
+static List asList(T ... a) // 返回由指定数组支持的固定大小的链表
+```
+
+### LinkedList 转数组
+
+```java
+// 方法1
+String[] array1 = (String[]) linklist.toArray(new String[0]);
+// 此时以正确的顺序(从第一个到最后一个元素)返回一个包含此链表中所有元素的数组
+
+// 方法2
+String[] array2 = new String[linklist.size()];
+linklist.toArray(array2);
+// 以正确的顺组返回一个包含此链表中所有元素的数组，返回的数组的运行时类型是指定数组的运行时类型
+```
+
