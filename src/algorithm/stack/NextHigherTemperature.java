@@ -40,4 +40,5 @@ public class NextHigherTemperature {
         Vector<Integer> res = a.nextHigherTemperature(nums);
         System.out.println(res);
     }
+
 }
