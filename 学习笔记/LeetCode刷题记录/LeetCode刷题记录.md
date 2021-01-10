@@ -938,3 +938,19 @@ void traverse(TreeNode root) {
 # 2021.1.10记录
 
 ## 92-反转链表II
+
+### 递归反转整个链表
+
+**对于递归算法，最重要的就是明确递归函数的定义**。具体来说，我们的 `reverse` 函数定义是这样的：
+
+**输入一个节点** **`head`**，将「以 **`head`** **为起点」的链表反转，并返回反转之后的头结点**。
+
+![](C:\Users\DH\Desktop\GitHubCode\LeetCodeAlgorithm\学习笔记\LeetCode刷题记录\LeetCode刷题记录.assets\反转链表.png)
+
+那么输入 `reverse(head)` 后，会在这里进行递归：
+
+```java
+ListNode last = reverse(head.next);
+```
+
+![](C:\Users\DH\Desktop\GitHubCode\LeetCodeAlgorithm\学习笔记\LeetCode刷题记录\LeetCode刷题记录.assets\反转链表1.png)
