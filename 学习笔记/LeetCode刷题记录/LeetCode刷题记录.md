@@ -941,11 +941,23 @@ void traverse(TreeNode root) {
 
 ### 递归反转整个链表
 
+首先整个代码为：
+
+```java
+ListNode reverse(ListNode head) {
+    if (head == null || head.next == null) return head;
+    ListNode last = reverse(head.next);
+    head.next.next = head;
+    head.next = null;
+    return last;
+}
+```
+
 **对于递归算法，最重要的就是明确递归函数的定义**。具体来说，我们的 `reverse` 函数定义是这样的：
 
 **输入一个节点** **`head`**，将「以 **`head`** **为起点」的链表反转，并返回反转之后的头结点**。
 
-![](C:\Users\DH\Desktop\GitHubCode\LeetCodeAlgorithm\学习笔记\LeetCode刷题记录\LeetCode刷题记录.assets\反转链表.png)
+![](LeetCode刷题记录.assets\反转链表.png)
 
 那么输入 `reverse(head)` 后，会在这里进行递归：
 
@@ -953,4 +965,29 @@ void traverse(TreeNode root) {
 ListNode last = reverse(head.next);
 ```
 
-![](C:\Users\DH\Desktop\GitHubCode\LeetCodeAlgorithm\学习笔记\LeetCode刷题记录\LeetCode刷题记录.assets\反转链表1.png)
+![](LeetCode刷题记录.assets\反转链表1.png)
+
+递归的结果如下：
+
+![](LeetCode刷题记录.assets/反转链表2.png)
+
+将第二个节点指向第一个 head 节点
+
+```java
+head.next.next = head;
+```
+
+执行结果如下
+
+![](LeetCode刷题记录.assets/反转链表3.png)
+
+当链表递归反转之后，新的头结点是 `last`，而之前的 `head` 变成了最后一个节点，别忘了链表的末尾要指向 null：
+
+```java
+head.next = null;
+return last;
+```
+
+![](LeetCode刷题记录.assets/反转链表4.png)
+
+# 2021.1.11记录
