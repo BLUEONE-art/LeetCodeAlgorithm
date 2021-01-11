@@ -1019,10 +1019,13 @@ ListNode reverseN(ListNode head, int n) {
 
 ![](LeetCode刷题记录.assets/反转链表前N个节点.png)
 
+![]()
+
 具体的区别：
 
 1. base case 变为 n == 1，反转一个元素，就是它本身，同时要记录后驱节点
 2. 刚才我们直接把 head.next 设置为 null，因为整个链表反转后原来的 head 变成了整个链表的最后一个节点。但现在 head 节点在递归反转之后不一定是最后一个节点了，所以要记录后驱 successor（第 n + 1 个节点），反转之后将 head 连接上。
+3. base case 中 return head; ==是因为 last = 3，在反转之后就变成了头节点 head。==
 
 ### 反转链表的一部分
 给一个索引区间 [m,n]（索引从 1 开始），仅仅反转区间中的链表元素。
@@ -1033,8 +1036,26 @@ ListNode reverseBetween(ListNode head, int m, int n)
 
 首先，如果 m == 1，就相当于反转链表开头的 n 个元素嘛，也就是我们刚才实现的功能：
 
-
+```java
+ListNode reverseBetween(ListNode head, int m, int n) {
+    // base case
+    if (m == 1) {
+        // 相当于反转前 n 个元素
+        return reverseN(head, n);
+    }
+    // ...
+}
+```
 
 如果 m != 1 怎么办？如果我们把 head 的索引视为 1，那么我们是想从第 m 个元素开始反转对吧；
-如果把 head.next 的索引视为 1 呢？那么相对于 head.next，反转的区间应该是从第 m - 1 个元素开始的；
+如果把 head.next 的索引视为 1 呢？==那么相对于 head.next，反转的区间应该是从第 m - 1 个元素开始的；==
 那么对于 head.next.next 呢……
+
+![](C:\Users\DH\Desktop\GitHubCode\LeetCodeAlgorithm\学习笔记\LeetCode刷题记录\LeetCode刷题记录.assets\反转链表的一部分.png)
+
+所以总的代码为：
+
+```java
+ListNode
+```
+
