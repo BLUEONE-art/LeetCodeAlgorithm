@@ -29,8 +29,29 @@ public class ReverseLinkedListIi{
  * }
  */
 class Solution {
-    public ListNode reverseBetween(ListNode head, int m, int n) {
 
+    public ListNode reverseBetween(ListNode head, int m, int n) {
+        if (m == 1) {
+            // 相当于反转前 N 个元素
+            return reverseN(head, n);
+        }
+
+        head.next = reverseBetween(head.next, m - 1, n - 1);
+        return head;
+    }
+
+    ListNode successor = null;
+    public ListNode reverseN(ListNode head, int n) {
+        // base case
+        if (n == 1) {
+            successor = head.next;
+            return head;
+        }
+
+        ListNode last = reverseN(head.next, n - 1);
+        head.next.next = head;
+        head.next = successor;
+        return last;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
