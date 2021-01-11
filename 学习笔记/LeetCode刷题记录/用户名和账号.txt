@@ -1,0 +1,3 @@
+git config user.name 'BLUEONE-art'
+
+git config user.email '2191380@mail.dhu.edu.cn'
