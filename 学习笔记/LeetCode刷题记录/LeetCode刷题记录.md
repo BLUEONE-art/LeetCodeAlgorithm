@@ -1019,8 +1019,6 @@ ListNode reverseN(ListNode head, int n) {
 
 ![](LeetCode刷题记录.assets/反转链表前N个节点.png)
 
-![]()
-
 具体的区别：
 
 1. base case 变为 n == 1，反转一个元素，就是它本身，同时要记录后驱节点
@@ -1051,11 +1049,51 @@ ListNode reverseBetween(ListNode head, int m, int n) {
 如果把 head.next 的索引视为 1 呢？==那么相对于 head.next，反转的区间应该是从第 m - 1 个元素开始的；==
 那么对于 head.next.next 呢……
 
-![](C:\Users\DH\Desktop\GitHubCode\LeetCodeAlgorithm\学习笔记\LeetCode刷题记录\LeetCode刷题记录.assets\反转链表的一部分.png)
+![](LeetCode刷题记录.assets\反转链表的一部分.png)
 
 所以总的代码为：
 
 ```java
-ListNode
+public ListNode reverseBetween(ListNode head, int m, int n) {
+    if (m == 1) {
+        // 相当于反转前 N 个元素
+        return reverseN(head, n);
+    }
+
+    head.next = reverseBetween(head.next, m - 1, n - 1);
+    return head;
+}
+
+ListNode successor = null;
+public ListNode reverseN(ListNode head, int n) {
+    // base case
+    if (n == 1) {
+        successor = head.next;
+        return head;
+    }
+
+    ListNode last = reverseN(head.next, n - 1);
+    head.next.next = head;
+    head.next = successor;
+    return last;
+}
+```
+
+# 2021.1.12记录
+
+## 如何 K 个一组反转链表？
+
+### 思路分解的过程
+
+![](LeetCode刷题记录.assets/k个一组反转链表1.png)
+
+### 代码实现
+
+首先，我们要实现一个 `reverse` 函数反转一个区间之内的元素。在此之前我们再简化一下，给定链表头结点，如何反转整个链表？
+
+![](LeetCode刷题记录.assets/k个一组反转链表.png)
+
+```java
+
 ```
 
