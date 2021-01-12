@@ -1094,6 +1094,72 @@ public ListNode reverseN(ListNode head, int n) {
 ![](LeetCode刷题记录.assets/k个一组反转链表.png)
 
 ```java
-
+// 反转以 a 为头结点的链表
+ListNode reverse(ListNode a) {
+    ListNode pre, cur, nxt;
+    pre = null; cur = a; nxt = a;
+    while (cur != null) {
+        // 先将 nxt 移到 cur 的下一个节点
+        nxt = cur.next;
+        // 逐个结点反转
+        cur.next = pre;
+        // 更新指针位置
+        pre = cur;
+        cur = nxt;
+    }
+    // 返回反转后的头结点
+    return pre;
+}
 ```
+
+「反转以 `a` 为头结点的链表」其实就是「反转 `a` 到 null 之间的结点」，那么如果让你「反转 `a` 到 `b` 之间的结点」，你会不会？
+
+只要更改函数签名，==并把上面的代码中 `null` 改成 `b`== 即可：
+
+```java
+/** 反转区间 [a, b) 的元素，注意是左闭右开 */
+ListNode reverse(ListNode a, ListNode b) {
+    ListNode pre, cur, nxt;
+    pre = null; cur = a; nxt = a;
+    // while 终止的条件改一下就行了
+    while (cur != b) {
+        nxt = cur.next;
+        cur.next = pre;
+        pre = cur;
+        cur = nxt;
+    }
+    // 返回反转后的头结点
+    return pre;
+}
+```
+
+总体解题的思路为：
+
+![](LeetCode刷题记录.assets/k个一组反转链表2.png)
+
+```java
+// K 个一组反转链表
+public ListNode reverseKGroup(ListNode head, int k) {
+    if (head == null) return null;
+    ListNode a, b;
+    a = b = head;
+    // base case: 当链表节点不满 K 个的时候，直接返回 head，不需要反转
+    for (int i = 0; i < k; i++) {
+        if (b == null) return head; // 先进行判断，在让 b = b.next 用以判断节点不满足 K 时不反转的功能
+        b = b.next;
+        // example：当节点数为 2，K = 2 时，i 取值 0 ~ 1。
+        // 第一次：i = 0, b = head，不满足 if 中条件，执行 b = b.next;
+        // 第二次: i = 1, b = head.next, 不满足 if 中条件，执行 b = b.next; 虽然此时 b = head.next.next == null, 但是此时 i 会递增为 2，不会在进行 for 循环了。
+        // 以此判断节点数够不够 K 个
+    }
+
+    // 更新得到一个新的 head 节点，命名 newHead
+    ListNode newHead = reverse(a, b);
+    // 连接后续递归反转的链表
+    head.next = reverseKGroup(b, k);
+    return newHead;
+}
+```
+
+## 如何判断回文链表？
 
