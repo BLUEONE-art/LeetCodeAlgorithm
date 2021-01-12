@@ -1161,5 +1161,6 @@ public ListNode reverseKGroup(ListNode head, int k) {
 }
 ```
 
-## 如何判断回文链表？
+## 如何求最大回文串？
 
+寻找回文串的核心思想是**从中心向两端扩展：**
