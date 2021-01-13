@@ -1278,3 +1278,113 @@ boolean isPalindrome(ListNode head);
 ```
 
 这道题的关键在于，单链表无法倒着遍历，无法使用双指针技巧。那么最简单的办法就是，把原始链表反转存入一条新的链表，然后比较这两条链表是否相同。
+
+或者将单链表进行后序遍历存入 StringBuilder 中，再进行节点值的比对。
+
+```java
+public boolean isPalindrome(ListNode head) {
+    StringBuilder sb1 = new StringBuilder();
+    StringBuilder sb2 = new StringBuilder();
+
+    preTraverse(head, sb1);
+    postTraverse(head, sb2);
+
+    // 判断
+    for (int i = 0; i < sb1.length(); i++) {
+        if (sb1.charAt(i) != sb2.charAt(i)) return false;
+    }
+    return true;
+}
+
+// 前序遍历链表
+public static void preTraverse(ListNode head, StringBuilder sb) {
+    if (head == null) return;
+
+    // 前序遍历代码
+    sb.append(head.val);
+
+    preTraverse(head.next, sb);
+}
+
+// 后序遍历链表
+public static void postTraverse(ListNode head, StringBuilder sb) {
+    if (head == null) return;
+
+    postTraverse(head.next, sb);
+
+    // 后序遍历代码
+    sb.append(head.val);
+}
+```
+
+其中，在「学习数据结构的框架思维」中说过，链表兼具递归结构，树结构不过是链表的衍生。那么，**链表其实也可以有前序遍历和后序遍历**：
+
+```java
+void traverse(ListNode head) {
+    // 前序遍历代码
+    traverse(head.next);
+    // 后序遍历代码
+}
+```
+
+无论造一条反转链表还是利用后续遍历，算法的时间和空间复杂度都是 O(N)。
+
+## 进阶：优化空间复杂度
+
+**1、先通过「双指针技巧」中的快慢指针来找到链表的中点**：
+
+```java
+ListNode slow, fast;
+slow = fast = head;
+while (fast != null && fast.next != null) {
+    slow = slow.next;
+    fast = fast.next.next;
+}
+// slow 指针现在指向链表中点
+```
+
+图片
+
+**2、如果**`fast`**指针没有指向**`null`**，说明链表长度为奇数，**`slow`**还要再前进一步**：
+
+```
+if (fast != null)
+    slow = slow.next;
+```
+
+图片
+
+**3、从**`slow`**开始反转后面的链表，现在就可以开始比较回文串了**：
+
+```java
+ListNode left = head;
+ListNode right = reverse(slow);
+
+while (right != null) {
+    if (left.val != right.val)
+        return false;
+    left = left.next;
+    right = right.next;
+}
+return true;
+```
+
+图片
+
+算法总体的时间复杂度 O(N)，空间复杂度 O(1)，已经是最优的了。
+
+这种解法虽然高效，但破坏了输入链表的原始结构，能不能避免这个瑕疵呢？
+
+其实这个问题很好解决，关键在于得到`p, q`这两个指针位置：
+
+图片
+
+这样，只要在函数 return 之前加一段代码即可恢复原先链表顺序：
+
+```java
+p.next = reverse(q);
+```
+
+首先，寻找回文串是从中间向两端扩展，判断回文串是从两端向中间收缩。对于单链表，无法直接倒序遍历，可以造一条新的反转链表，可以利用链表的后序遍历，也可以用栈结构倒序处理单链表。
+
+具体到回文链表的判断问题，由于回文的特殊性，可以不完全反转链表，而是仅仅反转部分链表，将空间复杂度降到 O(1)。
