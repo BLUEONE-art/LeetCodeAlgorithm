@@ -1161,9 +1161,11 @@ public ListNode reverseKGroup(ListNode head, int k) {
 }
 ```
 
-## 如何求最大回文串？
+# 2021.1.13记录
 
-寻找回文串的核心思想是**从中心向两端扩展：**(leetcode [5])
+## 如何求最大回文串？(leetcode [5])
+
+寻找回文串的核心思想是**从中心向两端扩展：**
 
 ```java
 public String longestPalindrome(String s) {
@@ -1217,7 +1219,39 @@ public static int findLongest(char[] str, int low, int[] range) {
 }
 ```
 
+## 如何判断一个字符串是否是回文串(leetcode [125])
 
+而判断一个字符串是不是回文串就简单很多，不需要考虑奇偶情况，只需要「双指针技巧」，**从两端向中间逼近即可：**
 
+```java
+// 核心思想：判断是不是回文串，只需从两端的元素进行比较，只要有一个不同，则返回 false，否则返回 true。
+public boolean isPalindrome(String s) {
+    // 先将字符串统一变成小写
+    String str = s.toLowerCase();
+    int left = 0;
+    int right = s.length() - 1;
 
+    // base case
+    if (s == null || s.length() == 0) return true;
+
+    // 注意循环条件
+    while (left < right) {
+        // 假如字符串中左边存在除了字母和数字以外的符号，让 left++;
+        while (left < right && !Character.isLetterOrDigit(str.charAt(left))) {
+            left++;
+        }
+
+        // 假如字符串中右边存在除了字母和数字以外的符号，让 right--;
+        while (left < right && !Character.isLetterOrDigit(str.charAt(right))) {
+            right--;
+        }
+
+        if (str.charAt(left) != str.charAt(right)) return false;
+        left++; right--;
+    }
+    return true;
+}
+```
+
+**因为回文串是对称的，所以正着读和倒着读应该是一样的，这一特点是解决回文串问题的关键**。
 
