@@ -1256,3 +1256,25 @@ public boolean isPalindrome(String s) {
 **因为回文串是对称的，所以正着读和倒着读应该是一样的，这一特点是解决回文串问题的关键**。
 
 ## 如何判断一个「单链表」是不是回文？(leetcode [234])
+
+输入一个单链表的头结点，判断这个链表中的数字是不是回文：
+
+```java
+/**
+ * 单链表节点的定义：
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ * }
+ */
+
+boolean isPalindrome(ListNode head);
+
+输入: 1->2->null
+输出: false
+
+输入: 1->2->2->1->null
+输出: true
+```
+
+这道题的关键在于，单链表无法倒着遍历，无法使用双指针技巧。那么最简单的办法就是，把原始链表反转存入一条新的链表，然后比较这两条链表是否相同。
