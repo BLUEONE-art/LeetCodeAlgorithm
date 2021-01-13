@@ -1,5 +1,4 @@
 package algorithm.stack;
-
 import java.util.Stack;
 import java.util.Vector;
 
