@@ -1517,3 +1517,40 @@ void flatten(TreeNode root);
 上面三步看起来最难的应该是第一步对吧，如何把 `root` 的左右子树拉平？
 
 其实很简单，按照 `flatten` 函数的定义，对 `root` 的左右子树递归调用 `flatten` 函数即可：
+
+```java
+public void flatten(TreeNode root) {
+
+    // base case
+    if (root == null) return;
+
+    // 后序遍历
+    // 不需要管怎么才能把二叉树的左右子树拉直成一个链表，只需要递归调用这个函数即可
+    flatten(root.left);
+    flatten(root.right);
+
+    // 执行完上述递归代码后，我们只需要知道此时二叉树的左右子树已经被拉直了
+    // 考虑如何将 root 先拼接左子树，再在其基础上拼接右子树
+    // 新定义两个 TreeNode 分别存放左子树和右子树
+    TreeNode left = root.left;
+    TreeNode right = root.right;
+
+    // 清零 root 原先的左子树
+    root.left = null;
+    // 让 root 的下一个节点指向左子树的头节点
+    root.right = left;
+
+    // 将右子树拼接到上述的结果中
+    // 在此之前需要获得拼接完左子树后的 root 的最后一个节点
+    // 定义一个 p 复制 root，用它来计算最后一个节点
+    TreeNode p = root;
+    while (p.right != null) {
+        p = p.right;
+    }
+
+    // 再让 p 的指向右子树的头节点即可
+    p.right = right;
+}
+```
+
+这就是递归的魅力，你说 `flatten` 函数是怎么把左右子树拉平的？说不清楚，但是只要知道 `flatten` 的定义如此，相信这个定义，让 `root` 做它该做的事情，然后 `flatten` 函数就会按照定义工作。另外注意递归框架是后序遍历，因为我们要**先拉平左右子树**才能进行后续操作。
