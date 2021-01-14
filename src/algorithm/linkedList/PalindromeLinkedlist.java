@@ -6,17 +6,14 @@ public class PalindromeLinkedlist {
     public boolean isPalindrome(ListNode head) {
         StringBuilder sb1 = new StringBuilder();
         StringBuilder sb2 = new StringBuilder();
+
+        // 不能等链表逆序之后再生成正序的字符串
+        traverse(head, sb1);
+
         // 反转输入的链表
         ListNode reverseHead = reverse(head);
-
-
-        ListNode temp = reverseHead;
-        while (temp != null) {
-            System.out.println(temp.val);
-            temp = temp.next;
-        }
-        traverse(head, sb1);
         traverse(reverseHead, sb2);
+
 
         int size = sb1.length();
 
@@ -57,16 +54,16 @@ public class PalindromeLinkedlist {
         listNode.next.next = new ListNode(3);
         listNode.next.next.next = new ListNode(1);
 
-        StringBuilder sb1 = new StringBuilder();
-        StringBuilder sb2 = new StringBuilder();
-        traverse(listNode, sb1);
-        System.out.println(sb1.length());
-        System.out.println(sb1);
-
-        ListNode reverseHead = reverse(listNode);
-        traverse(reverseHead, sb2);
-        System.out.println(sb2.length());
-        System.out.println(sb2);
+//        StringBuilder sb1 = new StringBuilder();
+//        StringBuilder sb2 = new StringBuilder();
+//        traverse(listNode, sb1);
+//        System.out.println(sb1.length());
+//        System.out.println(sb1);
+//
+//        ListNode reverseHead = reverse(listNode);
+//        traverse(reverseHead, sb2);
+//        System.out.println(sb2.length());
+//        System.out.println(sb2);
 
         Boolean res = palindromeLinkedlist.isPalindrome(listNode);
         System.out.println(res);
