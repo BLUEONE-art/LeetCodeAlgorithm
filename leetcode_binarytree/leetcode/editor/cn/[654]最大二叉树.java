@@ -65,7 +65,31 @@
  */
 class Solution {
     public TreeNode constructMaximumBinaryTree(int[] nums) {
+        return build(nums, 0, nums.length - 1);
+    }
 
+    public TreeNode build(int[] nums, int low, int high) {
+        // base case：如果数组 nums 为空，则返回 null
+        if (high < low) return null;
+
+        // 找到数组中最大的元素当作根节点
+        // 在JDK中，整形类型是有范围的，最大值为Integer.MAX_VALUE，即2147483647，最小值为Integer.MIN_VALUE -2147483648。
+        int index = -1,  maxVal = Integer.MIN_VALUE;
+        for (int i = low; i <= high; i++) {
+            if (nums[i] > maxVal) {
+                index = i;
+                maxVal = nums[i];
+            }
+        }
+
+        // 最大值找到后，以其作为根节点
+        TreeNode root = new TreeNode(maxVal);
+
+        // 递归找子区间的最大值构造根节点，以此类推
+        root.left = build(nums, low, index - 1);
+        root.right = build(nums, index + 1, high);
+
+        return root;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
