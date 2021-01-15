@@ -60,12 +60,20 @@ class Solution {
         TreeNode root = new TreeNode(rootVal);
 
         // ④计算leftSize(左子树元素个数)
-        int leftSize = index - inStart;
+//        int leftSize = index - inStart;
+
+        // 用右子树元素个数试试
+        int rightSize = inEnd - index;
+
+//        root.left = build(inorder, inStart, index - 1,
+//                postorder, postStart,postStart + leftSize - 1);
+//        root.right = build(inorder, index + 1, inEnd,
+//                postorder, postStart + leftSize,postEnd - 1);
 
         root.left = build(inorder, inStart, index - 1,
-                postorder, postStart,postStart + leftSize - 1);
+                postorder, postStart,postEnd - rightSize - 1);
         root.right = build(inorder, index + 1, inEnd,
-                postorder, postStart + leftSize,postEnd - 1);
+                postorder, postEnd - rightSize,postEnd - 1);
 
         return root;
     }
