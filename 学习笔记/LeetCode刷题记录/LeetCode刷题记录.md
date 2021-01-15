@@ -1554,3 +1554,317 @@ public void flatten(TreeNode root) {
 ```
 
 这就是递归的魅力，你说 `flatten` 函数是怎么把左右子树拉平的？说不清楚，但是只要知道 `flatten` 的定义如此，相信这个定义，让 `root` 做它该做的事情，然后 `flatten` 函数就会按照定义工作。另外注意递归框架是后序遍历，因为我们要**先拉平左右子树**才能进行后续操作。
+
+# 2021.1.15记录
+
+## 构造最大二叉树(leetcode [654])
+
+![](LeetCode刷题记录.assets/构建最大二叉树.png)
+
+**对于构造二叉树的问题，根节点要做的就是把想办法把自己构造出来**。
+
+**对于每个根节点，只需要找到当前** **`nums`** **中的最大值和对应的索引，然后递归调用左右数组构造左右子树即可**。
+
+```java
+public TreeNode constructMaximumBinaryTree(int[] nums) {
+    return build(nums, 0, nums.length - 1);
+}
+
+public TreeNode build(int[] nums, int low, int high) {
+    // base case：如果数组 nums 为空，则返回 null
+    if (high < low) return null;
+
+    // 找到数组中最大的元素当作根节点
+    // 在JDK中，整形类型是有范围的，最大值为Integer.MAX_VALUE，即2147483647，最小值为Integer.MIN_VALUE -2147483648。
+    int index = -1,  maxVal = Integer.MIN_VALUE;
+    for (int i = low; i <= high; i++) {
+        if (nums[i] > maxVal) {
+            index = i;
+            maxVal = nums[i];
+        }
+    }
+
+    // 最大值找到后，以其作为根节点
+    TreeNode root = new TreeNode(maxVal);
+
+    // 递归找子区间的最大值构造根节点，以此类推
+    root.left = build(nums, low, index - 1);
+    root.right = build(nums, index + 1, high);
+
+    return root;
+}
+```
+
+## 通过前序和中序遍历结果构造二叉树(leetcode [105])
+
+**要求：**
+
+给出二叉树前序和中序遍历的结果，根据这两个结果重构原二叉树。
+
+### 二叉树的前序和中序遍历结果
+
+![](LeetCode刷题记录.assets/二叉树中序遍历过程.png)
+
+函数签名：
+
+```java
+TreeNode buildTree(int[] preorder, int[] inorder);
+```
+
+
+
+### 思路
+
+**想办法确定根节点的值，把根节点做出来，然后递归构造左右子树即可**。
+
+并且要明确我们定义的函数 **build**(**int**[] preorder, **int** preStart, **int** preEnd, **int**[] inorder, **int** inStart, **int** inEnd) 的功能：就是帮我们根据前序遍历和中序遍历的结果中左子树和右子树的索引返回重构出原左子树和原右子树。我们不要纠结这是怎么恢复的，只需要清楚这个函数的定义即可。
+
+1. 根据前序遍历的结果，很容易得知原二叉树的根节点的值为前序遍历结果数组的第一个元素：preorder[0]
+2. 根据找出的根节点的值，再 inorder[] 数组中找到对应的索引值
+3. 明确左右子树在 inorder[] 中的索引范围：
+   + 左子树：inStart ~ index - 1
+   + 右子树：index + 1 ~ inEnd
+
+4. 明确左右子树在 preorder[] 中的索引范围：
+
+   假设左子树的元素个数为 leftSize，根据前序遍历的结果，可知左子树的范围：
+
+   + 左子树：preStart + 1 ~ preStart + leftSize
+   + 右子树：preStart + leftSize + 1 ~ preEnd
+
+5. 求 leftSize 的值：
+
+   因为在 inorder[] 中我们求得了 root 节点的索引值，在 root 之前的元素都是左子树的元素，所以
+
+   leftSize = index - inStart
+
+   ![](LeetCode刷题记录.assets/求leftSize.png)
+
+### 程序实现
+
+```java
+public TreeNode buildTree(int[] preorder, int[] inorder) {
+
+    return build(preorder, 0, preorder.length - 1,
+                 inorder, 0, inorder.length - 1);
+}
+
+// 定义函数 build()：根据前序遍历和中序遍历的结果中的左子树和右子树的索引范围重构二叉树
+public TreeNode build(int[] preorder, int preStart, int preEnd,
+                      int[] inorder, int inStart, int inEnd) {
+
+    // base case
+    if (preEnd < preStart) return null;
+
+    // ①根据前序遍历的结果可以得出原二叉树的 root 节点的值
+    int rootVal = preorder[preStart];
+
+    // ②根据 root 节点的值找到其在 inorder[] 数组中的索引
+    int index = 0;
+    for (int i = 0; i <= inEnd; i++) {
+        if (inorder[i] == rootVal) {
+            index = i;
+        }
+    }
+
+    // ③构造树
+    TreeNode root = new TreeNode(rootVal);
+
+    // ④计算leftSize(左子树元素个数)
+    int leftSize = index - inStart;
+    root.left = build(preorder, preStart + 1, preStart + leftSize,
+                      inorder, inStart, index - 1);
+    root.right = build(preorder, preStart + leftSize + 1, preEnd,
+                       inorder, index + 1, inEnd);
+
+    return root;
+}
+```
+
+## 通过中序和后序遍历结果构造二叉树(leetcode [106])
+
+### 二叉树的后序和中序遍历结果
+
+![](LeetCode刷题记录.assets/二叉树中序遍历和后序过程.png)
+
+### 思路
+
+**想办法确定根节点的值，把根节点做出来，然后递归构造左右子树即可**。
+
+与上面思路完全相同只是现在求根据 index 求  rightSize，然后得到相应的左子树和右子树分别在后序遍历和中序遍历结果数组中的索引范围。
+
+![](LeetCode刷题记录.assets/中后序遍历重构二叉树.png)
+
+### 实现代码
+
+```java
+public TreeNode buildTree(int[] inorder, int[] postorder)  {
+
+    return build(inorder, 0, inorder.length - 1,
+                 postorder, 0, postorder.length - 1);
+}
+
+// 定义函数 build()：根据前序遍历和中序遍历的结果中的左子树和右子树的索引范围重构二叉树
+public TreeNode build(int[] inorder, int inStart, int inEnd,
+                      int[] postorder, int postStart, int postEnd) {
+
+    // base case
+    if (inEnd < inStart) return null;
+
+    // ①根据前序遍历的结果可以得出原二叉树的 root 节点的值
+    int rootVal = postorder[postEnd];
+
+    // ②根据 root 节点的值找到其在 inorder[] 数组中的索引
+    int index = 0;
+    for (int i = 0; i <= inEnd; i++) {
+        if (inorder[i] == rootVal) {
+            index = i;
+            break;
+        }
+    }
+
+    // ③构造树
+    TreeNode root = new TreeNode(rootVal);
+
+    // ④计算leftSize(左子树元素个数)
+    //        int leftSize = index - inStart;
+
+    // 用右子树元素个数试试
+    int rightSize = inEnd - index;
+
+    //        root.left = build(inorder, inStart, index - 1,
+    //                postorder, postStart,postStart + leftSize - 1);
+    //        root.right = build(inorder, index + 1, inEnd,
+    //                postorder, postStart + leftSize,postEnd - 1);
+
+    root.left = build(inorder, inStart, index - 1,
+                      postorder, postStart,postEnd - rightSize - 1);
+    root.right = build(inorder, index + 1, inEnd,
+                       postorder, postEnd - rightSize,postEnd - 1);
+
+    return root;
+}
+```
+
+## 寻找重复子树(leetcode [652])
+
+### 题目描述
+
+![](LeetCode刷题记录.assets/寻找重复子树题目描述.jpg)
+
+首先，**节点 4 本身可以作为一棵子树**，且二叉树中有多个节点 **4**
+
+类似的，还存在两棵以 2 为根的重复子树。
+
+那么，我们返回的`List`中就应该有两个`TreeNode`，值分别为 4 和 2（具体是哪个节点都无所谓）。
+
+**函数签名：**
+
+```java
+List<TreeNode> findDuplicateSubtrees(TreeNode root);
+```
+
+### 思路
+
+**老套路，先思考，对于某一个节点，它应该做什么**。
+
+比如说，你站在图中这个节点 2 上：
+
+![](LeetCode刷题记录.assets/查找重复子树例子.jpg)
+
+如果你想知道以自己为根的子树是不是重复的，是否应该被加入结果列表中，你需要知道两点：
+
+1. **以我为根的这棵二叉树（子树）长啥样**？
+
+2. **以其他节点为根的子树都长啥样**？
+
+我得知道自己长啥样，还得知道别人长啥样，然后才能知道有没有人跟我重复，对不对？
+
+#### **如何才能知道以自己为根的二叉树长啥样**？
+
+这里就可以判断是使用什么遍历方式：
+
+我要知道以自己为根的子树长啥样，是不是得先知道我的左右子树长啥样，再加上自己，就构成了整棵子树的样子？
+
+比如：计算一棵二叉树有多少个节点。
+
+```java
+int count(TreeNode root) {
+    if (root == null) {
+        return 0;
+    }
+    // 先算出左右子树有多少节点
+    int left = count(root.left);
+    int right = count(root.right);
+    /* 后序遍历代码位置 */
+    // 加上自己，就是整棵二叉树的节点数
+    int res = left + right + 1;
+    return res;
+}
+```
+
+这不就是标准的后序遍历框架嘛，和我们本题在思路上没啥区别对吧。
+
+现在，明确了要用后序遍历，那应该怎么描述一棵二叉树的模样呢？二叉树的前序/中序/后序遍历结果可以描述二叉树的结构。
+
+所以，我们可以通过拼接字符串的方式把二叉树序列化，看下代码：
+
+```java
+String traverse(TreeNode root) {
+    // 对于空节点，可以用一个特殊字符表示
+    if (root == null) {
+        return "#";
+    }
+    // 将左右子树序列化成字符串
+    String left = traverse(root.left);
+    String right = traverse(root.right);
+    /* 后序遍历代码位置 */
+    // 左右子树加上自己，就是以自己为根的二叉树序列化结果
+    String subTree = left + "," + right + "," + root.val;
+    return subTree;
+}
+```
+
+我们用非数字的特殊符`#`表示空指针，并且用字符`,`分隔每个二叉树节点值。
+
+注意我们`subTree`是按照左子树、右子树、根节点这样的顺序拼接字符串，也就是后序遍历顺序。你完全可以按照前序或者中序的顺序拼接字符串，因为这里只是为了描述一棵二叉树的样子，什么顺序不重要。
+
+**这样，我们第一个问题就解决了，对于每个节点，递归函数中的`subTree`变量就可以描述以该节点为根的二叉树**。
+
+#### **我知道了自己长啥样，怎么知道别人长啥样**？
+
+我们借助一个外部数据结构，让每个节点把自己子树的序列化结果存进去，这样，对于每个节点，不就可以知道有没有其他节点的子树和自己重复了么？
+
+这里可以借助 HashSet 记录子树:
+
+```java
+// 记录所有子树
+HashSet<String> memo = new HashSet<>();
+// 记录重复的子树根节点
+LinkedList<TreeNode> res = new LinkedList<>();
+
+String traverse(TreeNode root) {
+    if (root == null) {
+        return "#";
+    }
+
+    String left = traverse(root.left);
+    String right = traverse(root.right);
+
+    String subTree = left + "," + right+ "," + root.val;
+
+    if (memo.contains(subTree)) {
+        // 有人和我重复，把自己加入结果列表
+        res.add(root);
+    } else {
+        // 暂时没人跟我重复，把自己加入集合
+        memo.add(subTree);
+    }
+    return subTree;
+}
+```
+
+但是这样如果出现多棵重复的子树，结果集`res`中必然出现重复，而题目要求不希望出现重复。
+
+所以将 HashSet 升级为 HashMap 记录每个子树出现的频次，即可解决：
+
