@@ -175,6 +175,27 @@ void traverse(TreeNode root) {
 
 <img src="LeetCode刷题记录.assets/二叉搜索树.png" style="zoom:75%;" />
 
+**特性：**
+
+1. 对于 BST 的每一个节点`node`，左子树节点的值都比`node`的值要小，右子树节点的值都比`node`的值大。
+2. 对于 BST 的每一个节点`node`，它的左侧子树和右侧子树都是 BST。
+
+二叉搜索树并不算复杂，但它它构建起了数据结构领域的半壁江山，直接基于 BST 的数据结构有 AVL 树，红黑树等等，拥有了自平衡性质，可以提供 logN 级别的增删查改效率；还有 B+ 树，线段树等结构都是基于 BST 的思想来设计的。
+
+==**从做算法题的角度来看 BST，除了它的定义，还有一个重要的性质：BST 的中序遍历结果是有序的（升序）**。==
+
+也就是说，如果输入一棵 BST，以下代码可以将 BST 中每个节点的值升序打印出来：(2021.1.15 新增)
+
+```java
+void traverse(TreeNode root) {
+    if (root == null) return;
+    traverse(root.left);
+    // 中序遍历代码位置
+    print(root.val);
+    traverse(root.right);
+}
+```
+
 ### 判断一个二叉搜索树是否合法
 
 #### 思想：
@@ -1909,3 +1930,74 @@ public String trverse(TreeNode root) {
 }
 ```
 
+## 寻找第 K 小的元素(leetcode [230])
+
+直接的思路就是升序排序，然后找第`k`个元素呗。BST 的中序遍历其实就是升序排序的结果：
+
+```java
+public int kthSmallest(TreeNode root, int k) {
+
+    traverse(root, k);
+    return res;
+}
+
+// 记录结果
+int res = 0;
+// 创建变量存放当前元素的排名
+int rank = 0;
+
+public void traverse(TreeNode root, int k) {
+
+    // base case
+    if (root == null) return;
+
+    // 中序遍历
+    traverse(root.left, k);
+
+    /* 需要的操作 */
+    // 因为时 BST 的中序遍历，所得的结果即是升序的结果
+    // 所以每次递归，rank + 1
+    rank ++;
+    // 当 rank = K 时，即进行了 K 次递归，返回第 K 大的元素
+    if (rank == k) {
+        res = root.val;
+        return;
+    }
+
+    traverse(root.right, k);
+
+    return;
+}
+```
+
+如果按照我们刚才说的方法，利用「BST 中序遍历就是升序排序结果」这个性质，每次寻找第`k`小的元素都要中序遍历一次，最坏的时间复杂度是`O(N)`，`N`是 BST 的节点个数。
+
+要知道 BST 性质是非常牛逼的，像红黑树这种改良的自平衡 BST，增删查改都是`O(logN)`的复杂度，让你算一个第`k`小元素，时间复杂度竟然要`O(N)`，有点低效了。
+
+**BST 的操作高效的原因：**
+
+就拿搜索某一个元素来说，BST 能够在对数时间找到该元素的根本原因还是在 BST 的定义里，左子树小右子树大，所以每个节点都可以通过对比自身的值判断去左子树还是右子树搜索目标值，从而避免了全树遍历，达到对数级复杂度。
+
+想找到第`k`小的元素，或者说找到排名为`k`的元素，如果想达到对数级复杂度，关键也在于每个节点得知道他自己排第几。
+
+比如说你让我查找排名为`k`的元素，当前节点知道自己排名第`m`，那么我可以比较`m`和`k`的大小：
+
+1. 如果`m == k`，显然就是找到了第`k`个元素，返回当前节点就行了。
+
+2. 如果`k < m`，那说明排名第`k`的元素在左子树，所以可以去左子树搜索第`k`个元素。
+
+3. 如果`k > m`，那说明排名第`k`的元素在右子树，所以可以去右子树搜索第`k - m - 1`个元素。
+
+但这需要在二叉树节点中维护额外信息。**每个节点需要记录，以自己为根的这棵二叉树有多少个节点**。需要在 TreeNode 加一个字段
+
+```java
+class TreeNode {
+    int val;
+    // 以该节点为根的树的节点总数
+    int size;
+    TreeNode left;
+    TreeNode right;
+}
+```
+
+有了`size`字段，外加 BST 节点左小右大的性质，对于每个节点`node`就可以通过`node.left`推导出`node`的排名，从而做到我们刚才说到的对数级算法。
