@@ -1868,3 +1868,44 @@ String traverse(TreeNode root) {
 
 所以将 HashSet 升级为 HashMap 记录每个子树出现的频次，即可解决：
 
+```java
+// 创建一个 HashMap 记录每个子树及其出现的频次
+HashMap<String, Integer> memo = new HashMap<>();
+// 创建一个 LinkedList 记录每一个重复的子树
+LinkedList<TreeNode> res = new LinkedList<>();
+
+public List<TreeNode> findDuplicateSubtrees(TreeNode root) {
+
+    trverse(root); // 遍历二叉树
+    return res;
+}
+
+public String trverse(TreeNode root) {
+
+    //        StringBuilder s = new StringBuilder("#");
+    // base case
+    if (root == null) return "#";
+
+    // 后序遍历的位置
+    String left = trverse(root.left);
+    String right = trverse(root.right);
+
+    //        StringBuilder subTree = new StringBuilder();
+    // 得到每一次递归的时候，每一个节点以自己为根节点时构成的子树 subTree
+    String subTree = left + "," + right + "," + root.val;
+
+    // 获取每一个子树出现的频次
+    // 当Map集合中有这个key时，就使用这个key对应的value值，如果没有就使用默认值defaultValue
+    // 相当于每次递归都会生成一个 subTree，每次都会判断 memo 中该子树的频次
+    int freq = memo.getOrDefault(subTree, 0);
+    memo.put(subTree, freq + 1);
+
+    // 将前节点构成的子树与其他节点构成的子树进行对比
+    if (freq == 1) {
+        res.add(root);
+    }
+
+    return subTree; // 返回最终递归完成的 subTree，即序列化完成的结果
+}
+```
+
