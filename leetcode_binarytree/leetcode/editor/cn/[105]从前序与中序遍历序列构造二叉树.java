@@ -51,6 +51,7 @@ class Solution {
         for (int i = 0; i <= inEnd; i++) {
             if (inorder[i] == rootVal) {
                 index = i;
+                break;
             }
         }
 
