@@ -49,7 +49,37 @@
  */
 class Solution {
     public int kthSmallest(TreeNode root, int k) {
-        
+
+        traverse(root, k);
+        return res;
+    }
+
+    // 记录结果
+    int res = 0;
+    // 创建变量存放当前元素的排名
+    int rank = 0;
+
+    public void traverse(TreeNode root, int k) {
+
+        // base case
+        if (root == null) return;
+
+        // 中序遍历
+        traverse(root.left, k);
+
+        /* 需要的操作 */
+        // 因为时 BST 的中序遍历，所得的结果即是升序的结果
+        // 所以每次递归，rank + 1
+        rank ++;
+        // 当 rank = K 时，即进行了 K 次递归，返回第 K 大的元素
+        if (rank == k) {
+            res = root.val;
+            return;
+        }
+
+        traverse(root.right, k);
+
+        return;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
