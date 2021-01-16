@@ -171,7 +171,7 @@ void traverse(TreeNode root) {
 
 ### 二叉搜索树(Binary Search Tree, BST)
 
-**定义：**一个二叉树中，任意根节点的值要大于等于左子树所有节点的值，且要小于等于右子树的所有节点的值。
+**定义：**一个二叉树中，任意根节点的值要大于等于左子树所有节点的值，==且要小于等于右子树的所有节点的值。==
 
 <img src="LeetCode刷题记录.assets/二叉搜索树.png" style="zoom:75%;" />
 
@@ -202,11 +202,36 @@ void traverse(TreeNode root) {
 
 把一棵二叉树分成三个部分，左子树、右子树以及对应的根节点。代码中包含约束，找出树中最小节点和最大节点，左边子树中始终满足约束：
 
-+ 最小节点的值<左孩子节点的值＜子树对应根节点的值
++ 最小节点的值 < 左孩子节点的值 ＜ 子树对应根节点的值
 
 右边子树中始终满足约束：
 
-+ 子树对应根节点的值<左孩子节点的值<最大节点的值
++ 子树对应根节点的值 < 左孩子节点的值 < 最大节点的值
+
+#### 代码实现：
+
+```java
+public boolean isValidBST(TreeNode root) {
+
+    return isValidBST(root, null, null);
+}
+
+public boolean isValidBST(TreeNode root, TreeNode min, TreeNode max) {
+
+    // base case
+    if (root == null) return true;
+    // 判断是否合法 min < root.val < max
+    if (min != null && root.val <= min.val) return false;
+    if (max != null && root.val >= max.val) return false;
+
+    // ①左子树中：最小节点的值 < 左孩子节点的值 ＜ 子树对应根节点的值
+    return isValidBST(root.left, min, root)
+        // ②右子树中：子树对应根节点的值 < 右孩子节点的值 ＜ 最大节点的值
+        && isValidBST(root.right, root, max);
+}
+```
+
+**通过使用辅助函数，增加函数参数列表，在参数中携带额外信息，将这种约束传递给子树的所有节点，这也是二叉树算法的一个小技巧**
 
 ---
 
@@ -243,7 +268,7 @@ void BST(TreeNode root, int target) {
 
 具体到插入一个数，就是先找到插入位置，然后进行插入操作。
 
-上述总结的框架就是”找“的问题，在这个框架上加入”改“的操作即可。**一旦涉及”改“，函数就要返回 `TreeNode`类型，并且对递归调用的返回值进行接收。定义 insertIntoBST() 函数
+上述总结的框架就是”找“的问题，在这个框架上加入”改“的操作即可。==**一旦涉及”改“，函数就要返回 `TreeNode`类型，并且对递归调用的返回值进行接收。==定义 insertIntoBST() 函数
 
 ```java
 // 分两种情况进行递归调用
@@ -310,6 +335,10 @@ if (root.val == target) {
 ```
 
 4. 最后套框架，分别递归当 root.val > target 和 root.val < target 的情况，最后返回 root。
+
+注意一下，这个删除操作并不完美，因为我们一般不会通过`root.val = minNode.val`修改节点内部的值来交换节点，而是通过一系列略微复杂的链表操作交换`root`和`minNode`两个节点。
+
+因为具体应用中，`val`域可能会是一个复杂的数据结构，修改起来非常麻烦；而链表操作无非改一改指针，而不会去碰内部数据。
 
 ---
 
@@ -2001,3 +2030,79 @@ class TreeNode {
 ```
 
 有了`size`字段，外加 BST 节点左小右大的性质，对于每个节点`node`就可以通过`node.left`推导出`node`的排名，从而做到我们刚才说到的对数级算法。
+
+# 2021.1.16记录
+
+## BST 转化累加树(leetcode [538 & 1038])
+
+### 题目描述
+
+![](LeetCode刷题记录.assets/BST 转化累加树.jpg)
+
+比如图中的节点 5，转化成累加树的话，比 5 大的节点有 6，7，8，加上 5 本身，所以累加树上这个节点的值应该是 5+6+7+8=26。
+
+### 思路
+
+**利用 BST 的中序遍历特性**。
+
+BST 的中序遍历代码可以**升序**打印节点的值：
+
+```java
+void traverse(TreeNode root) {
+    if (root == null) return;
+    traverse(root.left);
+    // 中序遍历代码位置
+    print(root.val);
+    traverse(root.right);
+}
+```
+
+**降序**打印节点的值，修改代码：
+
+```java
+void traverse(TreeNode root) {
+    if (root == null) return;
+    // 先递归遍历右子树
+    traverse(root.right);
+    // 中序遍历代码位置
+    print(root.val);
+    // 后递归遍历左子树
+    traverse(root.left);
+}
+```
+
+**这段代码可以从大到小降序打印 BST 节点的值，如果维护一个外部累加变量`sum`，然后把`sum`赋值给 BST 中的每一个节点，不就将 BST 转化成累加树了吗**？
+
+### 代码实现
+
+```java
+public TreeNode convertBST(TreeNode root) {
+
+// traverse() 返回 root
+return traverse(root);
+}
+
+// 定义一个 sum 记录每次遍历后降序求和的结果
+// 比如：第一个 sum 就是最大节点的值，第二个 sum 是最大和第二大节点值的和，以此类推...
+// 每一个 sum 赋值给当前 root 节点
+int sum = 0;
+
+public TreeNode traverse(TreeNode root) {
+
+// base case
+if (root == null) return null;
+
+// 二叉搜索树的中序遍历
+// 正常情况：从小到大，升序
+// 先递归右子树：从大到小，降序
+traverse(root.right);
+
+sum += root.val;
+root.val = sum;
+
+traverse(root.left);
+
+return root;
+}
+```
+
