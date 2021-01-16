@@ -179,6 +179,14 @@
             </LeetcodeEditor>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/leetcode_binarytree/leetcode/editor/cn/[1038]把二叉搜索树转换为累加树.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/leetcode_binarytree/leetcode/editor/cn/[1038]把二叉搜索树转换为累加树.java" />
+              <option name="questionId" value="1114" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/leetcode_binarytree/leetcode/editor/cn/[105]从前序与中序遍历序列构造二叉树.java">
           <value>
             <LeetcodeEditor>
@@ -232,6 +240,14 @@
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/leetcode_binarytree/leetcode/editor/cn/[230]二叉搜索树中第K小的元素.java" />
               <option name="questionId" value="230" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/leetcode_binarytree/leetcode/editor/cn/[538]把二叉搜索树转换为累加树.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/leetcode_binarytree/leetcode/editor/cn/[538]把二叉搜索树转换为累加树.java" />
+              <option name="questionId" value="538" />
             </LeetcodeEditor>
           </value>
         </entry>
