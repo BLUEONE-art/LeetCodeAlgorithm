@@ -105,6 +105,7 @@ public class Codec {
         // 返回 root
         return root;
     }
+    String name = "Dh";
 }
 
 // Your Codec object will be instantiated and called as such:
