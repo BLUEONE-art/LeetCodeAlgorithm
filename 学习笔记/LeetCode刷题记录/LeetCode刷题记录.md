@@ -446,7 +446,7 @@ return 1 + countCompleteTree(root.left) + countCompleteTree(root.right);
 
 # 2020.12.25 & 26记录
 
-## 序列化和反序列化二叉树
+## 序列化和反序列化二叉树(LeetCode297)
 
 ### 序列化和反序列化的意义
 
@@ -599,7 +599,32 @@ private void postorderSerialize(TreeNode root, StringBuilder sb) {
 
 由上图可见，root 的值时列表最后一个元素。我们应该从后往前取出列表元素，先用最后一个元素构造 root，然后递归调用生成 root 的左右子树。
 
-注意：根据上图，从后往前在 nodes 列表中取元素，==一定要先构造 root.right 子树，后构造 root.left 子树。==
+```java
+/* 主函数，将字符串反序列化为二叉树结构 */
+TreeNode deserialize(String data) {
+    LinkedList<String> nodes = new LinkedList<>();
+    for (String s : data.split(SEP)) {
+        nodes.addLast(s);
+    }
+    return deserialize(nodes);
+}
+
+/* 辅助函数，通过 nodes 列表构造二叉树 */
+TreeNode deserialize(LinkedList<String> nodes) {
+    if (nodes.isEmpty()) return null;
+    // 从后往前取出元素
+    String last = nodes.removeLast();
+    if (last.equals(NULL)) return null;
+    TreeNode root = new TreeNode(Integer.parseInt(last));
+    // 限构造右子树，后构造左子树
+    root.right = deserialize(nodes);
+    root.left = deserialize(nodes);
+
+    return root;
+}
+```
+
+**注意，根据上图，从后往前在 `nodes` 列表中取元素，一定要先构造 `root.right` 子树，后构造 `root.left` 子树**。
 
 ### 中序遍历
 
@@ -2117,4 +2142,12 @@ traverse(root.left);
 return root;
 }
 ```
+
+# 2021.1.17记录
+
+## 扁平化嵌套列表迭代器(leetcode [341])
+
+### 题目描述
+
+
 
