@@ -50,7 +50,7 @@ public class Codec {
     // 前序遍历的解法
     public String serialize(TreeNode root) {
 
-        StringBuilder sb = new StringBuilder<>();
+        StringBuilder sb = new StringBuilder();
         serialize(root, sb);
         return sb.toString();
     }
@@ -93,10 +93,10 @@ public class Codec {
         // ②拿到根节点，要做什么？然后剩下的交给递归
         String first = nodes.removeFirst();
         // 虽然 nodes 此时不为空，但需要有一个结束的条件
-        if (first == null) return null;
+        if (first.equals(NULL)) return null;
 
         // 构建 root 根节点
-        TreeNode root = new TreeNode(first);
+        TreeNode root = new TreeNode(Integer.parseInt(first));
 
         // 前序遍历框架位置
         root.left = deserialize(nodes);
@@ -105,7 +105,6 @@ public class Codec {
         // 返回 root
         return root;
     }
-    String name = "Dh";
 }
 
 // Your Codec object will be instantiated and called as such:
