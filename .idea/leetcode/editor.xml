@@ -315,6 +315,14 @@
             </LeetcodeEditor>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/leetcode_binarytree/leetcode/editor/cn/[P105]从前序与中序遍历序列构造二叉树.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/leetcode_binarytree/leetcode/editor/cn/[P105]从前序与中序遍历序列构造二叉树.java" />
+              <option name="questionId" value="105" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/leetcode_binarytree/leetcode/editor/cn/[P297]SerializeAndDeserializeBinaryTree.java">
           <value>
             <LeetcodeEditor>
@@ -336,6 +344,14 @@
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/leetcode_binarytree/leetcode/editor/cn/[P297_SerializeAndDeserializeBinaryTree.java" />
               <option name="questionId" value="297" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/leetcode_binarytree/leetcode/editor/cn/[P341]扁平化嵌套列表迭代器.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/leetcode_binarytree/leetcode/editor/cn/[P341]扁平化嵌套列表迭代器.java" />
+              <option name="questionId" value="341" />
             </LeetcodeEditor>
           </value>
         </entry>

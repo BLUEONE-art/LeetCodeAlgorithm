@@ -30,6 +30,8 @@ class Solution {
 
         // 递归除了头结点 head 后面的节点
         ListNode last = reverseList(head.next);
+
+        // 更新节点信息
         head.next.next = head;
         head.next = null;
 

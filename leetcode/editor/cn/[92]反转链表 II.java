@@ -33,15 +33,19 @@ class Solution {
 
     ListNode successor = null;
     public ListNode reverseN(ListNode head, int n) {
+
         // base case
         if (n == 1) {
+            // 记录
             successor = head.next;
             return head;
         }
 
         ListNode last = reverseN(head.next, n - 1);
+
         head.next.next = head;
         head.next = successor;
+
         return last;
     }
 }
