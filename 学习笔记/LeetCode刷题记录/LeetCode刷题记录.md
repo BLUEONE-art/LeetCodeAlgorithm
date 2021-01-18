@@ -749,7 +749,7 @@ private TreeNode deLevelSerialize(String data) {
 }
 ```
 
-## Git原理之二叉树最近公共祖先
+## Git原理之二叉树最近公共祖先(leetcode [236])
 
 使用 Git 的时候，比如
 
@@ -817,7 +817,7 @@ TreeNode lowestCommonAcestor(TreeNode root, TreeNode p, TreeNode q) {
 
 **情况①：**
 
-如果 p 和 q 都在以 root 为根的数中，函数的返沪即是 p 和 q 的公共祖先节点。
+如果 p 和 q 都在以 root 为根的数中，函数的返回即是 p 和 q 的公共祖先节点。
 
 **情况②：**
 
@@ -825,7 +825,7 @@ TreeNode lowestCommonAcestor(TreeNode root, TreeNode p, TreeNode q) {
 
 **情况③：**
 
-如果 p 和 q 只有一个存在于以 root 为根的树中，函数会返回那个节点。
+如果 p 和 q 只有一个存在于以 root 为根的树中，函数会返回那个节点。(**这个意思是输入的 p 和 q 中只有一个节点在树中，另一个是瞎写的不在树中，返回的是在树中的那个节点**)
 
 题目说了输入的 p 和 q 一定存在于以 root 为根的树中，但是递归过程中，以上三种情况都有可能发生。这是 `lowestCommonAcestor()`函数的定义，无论发生什么，都不要怀疑这个定义的正确性。
 
@@ -838,6 +838,20 @@ TreeNode lowestCommonAcestor(TreeNode root, TreeNode p, TreeNode q) {
 + **得到函数递归的结果，你该干什么，即做什么选择？**
 
 ==如果 `left` 和 `right` 不为 null， 说明他们分别是 p 和 q。==
+
+ **base case:**
+
+1. 如果`root`为空，肯定得返回`null`。
+2. 如果`root`本身就是`p`或者`q`，比如说`root`就是`p`节点吧，如果`q`存在于以`root`为根的树中，显然`root`就是最近公共祖先；
+3. 即使`q`不存在于以`root`为根的树中，按照情况 3 的定义，也应该返回`root`节点。
+
+**递归调用的结果`left`和`right`：**
+
+情况 1，如果`p`和`q`都在以`root`为根的树中，那么`left`和`right`一定分别是`p`和`q`（从 base case 看出来的）。
+
+情况 2，如果`p`和`q`都不在以`root`为根的树中，直接返回`null`。
+
+情况 3，如果`p`和`q`只有一个存在于`root`为根的树中，函数返回该节点。
 
 最后得到补充框架后的结果为：
 
