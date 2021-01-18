@@ -58,7 +58,60 @@ cond2(no)->op5
 
 ```
 
------
+### 代码实现：
+
+```java
+int cap;
+// 选用 LinkedHashMap 可以保证快速地添加和删除节点，时间复杂度为 O(1)
+// 并且能够保证快速访问节点，因为 LinkedHashMap 底层是 HashMap + 双向链表
+// HashMap 映射保证可以快速访问节点，双向链表保证了快速增加删除节点
+LinkedHashMap<Integer, Integer> cache = new LinkedHashMap<>();
+public LRUCache(int capacity) {
+
+    this.cap = capacity;
+}
+
+// 快速返回 key 对应的节点
+public int get(int key) {
+
+    if (!cache.containsKey(key)) {
+        return -1;
+    }
+
+    // 让被 get 的 key 变成最新的
+    makeRencently(key);
+    return cache.get(key);
+}
+
+public void put(int key, int value) {
+
+    // ①如果存在 key，直接修改 key 对应的 value 值
+    if (cache.containsKey(key)) {
+        // 修改值
+        cache.put(key, value);
+        // 将 key 变成最近使用
+        makeRencently(key);
+        return;
+    }
+
+    // 如果此时 cache 容量已经满了，找到最久未使用的 key 删除
+    if (cache.size() >= this.cap) {
+        // 链表头部就是最久未使用的 key
+        int oldestkey = cache.keySet().iterator().next();
+        cache.remove(oldestkey); // 删除 key 和对应的 val
+    }
+    cache.put(key, value);
+}
+
+private void makeRencently(int key) {
+    int val = cache.get(key);
+    // 删除 key，重新插入到队尾
+    cache.remove(key);
+    cache.put(key, val);
+}
+```
+
+---
 
 # 2020.12.17记录
 
