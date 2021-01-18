@@ -2149,5 +2149,225 @@ return root;
 
 ### 题目描述
 
+首先，现在有一种数据结构`NestedInteger`，**这个结构中存的数据可能是一个`Integer`整数，也可能是一个`NestedInteger`列表**。注意，这个列表里面装着的是`NestedInteger`，也就是说这个列表中的每一个元素可能是个整数，可能又是个列表，这样无限递归嵌套下去……
 
+`NestedInteger`有如下 API：
+
+```java
+public class NestedInteger {
+    // 如果其中存的是一个整数，则返回 true，否则返回 false
+    public boolean isInteger();
+
+    // 如果其中存的是一个整数，则返回这个整数，否则返回 null
+    public Integer getInteger();
+
+    // 如果其中存的是一个列表，则返回这个列表，否则返回 null
+    public List<NestedInteger> getList();
+}
+```
+
+我们的算法会被输入一个`NestedInteger`列表，我们需要做的就是写一个迭代器类，将这个带有嵌套结构`NestedInteger`的列表「拍平」：
+
+```java
+public class NestedIterator implements Iterator<Integer> {
+    // 构造器输入一个 NestedInteger 列表
+    public NestedIterator(List<NestedInteger> nestedList) {}
+
+    // 返回下一个整数
+    public Integer next() {}
+
+    // 是否还有下一个整数？
+    public boolean hasNext() {}
+}
+```
+
+我们写的这个类会被这样调用，**先调用`hasNext`方法，后调用`next`方法**：
+
+```java
+NestedIterator i = new NestedIterator(nestedList);
+while (i.hasNext())
+    print(i.next());
+```
+
+![](LeetCode刷题记录.assets/扁平化嵌套列表迭代器.jpg)
+
+**迭代器是设计模式的一种**，目的就是为调用者屏蔽底层数据结构的细节，简单地通过`hasNext`和`next`方法有序地进行遍历。
+
+### `NestedInteger`结构：
+
+```java
+public class NestedInteger {
+    private Integer val;
+    private List<NestedInteger> list;
+
+    public NestedInteger(Integer val) {
+        this.val = val;
+        this.list = null;
+    }
+    public NestedInteger(List<NestedInteger> list) {
+        this.list = list;
+        this.val = null;
+    }
+
+    // 如果其中存的是一个整数，则返回 true，否则返回 false
+    public boolean isInteger() {
+        return val != null;
+    }
+
+    // 如果其中存的是一个整数，则返回这个整数，否则返回 null
+    public Integer getInteger() {
+        return this.val;
+    }
+
+    // 如果其中存的是一个列表，则返回这个列表，否则返回 null
+    public List<NestedInteger> getList() {
+        return this.list;
+    }
+}
+```
+
+### 和 N 叉树的关系：
+
+```java
+class NestedInteger {
+    Integer val;
+    List<NestedInteger> list;
+}
+
+/* 基本的 N 叉树节点 */
+class TreeNode {
+    int val;
+    TreeNode[] children;
+}
+```
+
+**这不就是棵 N 叉树吗？叶子节点是`Integer`类型，其`val`字段非空；其他节点都是`List<NestedInteger>`类型，其`val`字段为空，但是`list`字段非空，装着孩子节点**。
+
+比如说输入是`[[1,1],2,[1,1]]`，其实就是如下树状结构：
+
+![](LeetCode刷题记录.assets/嵌入列表与N叉树的关系.jpg)
+
+把一个`NestedInteger`扁平化对吧？**这不就等价于遍历一棵 N 叉树的所有「叶子节点」吗**？我把所有叶子节点都拿出来，不就可以作为迭代器进行遍历了吗？
+
+### N 叉树的遍历框架
+
+```java
+void traverse(TreeNode root) {
+    for (TreeNode child : root.children)
+        traverse(child);
+```
+
+这个框架可以遍历所有节点，而我们只对整数型的`NestedInteger`感兴趣，也就是我们只想要「叶子节点」，所以`traverse`函数只要在到达叶子节点的时候把`val`加入结果列表即可。
+
+### 代码实现：
+
+```java
+private Iterator<Integer> it;
+// List<NestedInteger> 是一个包含 NestedInteger 整数和 NestedInteger 类型列表的一个无线嵌套的结果
+// [1, 2, [1, 2], [1, [1, 2]], 3, [1, [12, 2, [1, 3, 4]]]]
+public NestedIterator(List<NestedInteger> nestedList) {
+    // 创建一个 result 列表存放将 List<NestedInteger> ”打平“之后的结果
+    List<Integer> result = new LinkedList<>();
+    for (NestedInteger node : nestedList) {
+
+        // 以每个节点为根节点进行遍历，遍历函数：traverse()
+        traverse(node, result);
+    }
+    // 得到 result 列表的迭代器
+    this.it = result.iterator();
+}
+
+@Override
+// 迭代器不是静止不动的，它是随着 next()方法而移动的
+// 一开始迭代器在所有元素的左边，调用next()之后，迭代器移到第一个和第二个元素之间，next()方法返回迭代器刚刚经过的元素。
+// hasNext()若返回True，则表明接下来还有元素，迭代器不在尾部。
+// remove()方法必须和next方法一起使用，功能是去除刚刚next方法返回的元素。
+public Integer next() {
+
+    return it.next();
+}
+
+@Override
+public boolean hasNext() {
+
+    return it.hasNext();
+}
+
+public void traverse(NestedInteger root, List<Integer> result) {
+
+    // base case：如果 root.isInteger() 返回 true, 说明此时的 root 是叶子节点
+    if (root.isInteger()) {
+
+        result.add(root.getInteger());
+        return;
+    }
+
+    // 如果不是叶子节点，root.getList() 返回 List<NestedInteger> 列表
+    // 再对这个列表里的 child 节点进行遍历判断：
+    // 如果 child.getInteger() 为 true，就把这个节点装入 result
+    // 否则继续遍历，以此输出所有的叶子节点的值装入 result 列表
+    // N 叉树递归遍历过程
+    for (NestedInteger child : root.getList()) {
+
+        traverse(child, result);
+    }
+}
+```
+
+### 缺点及改进方案
+
+我们的解法中，一次性算出了所有叶子节点的值，全部装到`result`列表，也就是内存中，`next`和`hasNext`方法只是在对`result`列表做迭代。如果输入的规模非常大，构造函数中的计算就会很慢，而且很占用内存。
+
+一般的迭代器求值应该是「惰性的」，也就是说，如果你要一个结果，我就算一个（或是一小部分）结果出来，而不是一次把所有结果都算出来。
+
+**改进思路：**
+
+**调用`hasNext`时，如果`nestedList`的第一个元素是列表类型，则不断展开这个元素，直到第一个元素是整数类型**。
+
+由于调用`next`方法之前一定会调用`hasNext`方法，这就可以保证每次调用`next`方法的时候第一个元素是整数型，直接返回并删除第一个元素即可。
+
+```java
+// 循环求拆解 NestedInteger 列表解法
+private LinkedList<NestedInteger> list;
+// List<NestedInteger> 是一个包含 NestedInteger 整数和 NestedInteger 类型列表的一个无线嵌套的结果
+// [1, 2, [1, 2], [1, [1, 2]], 3, [1, [12, 2, [1, 3, 4]]]]
+public NestedIterator(List<NestedInteger> nestedList) {
+
+    // 不直接用 nestedList 的引用，是因为不能确定它的底层实现
+    // 必须保证是 LinkedList，否则下面的 addFirst 会很低效
+    list = new LinkedList<>(nestedList);
+}
+
+@Override
+// 迭代器不是静止不动的，它是随着 next()方法而移动的
+// 一开始迭代器在所有元素的左边，调用next()之后，迭代器移到第一个和第二个元素之间，next()方法返回迭代器刚刚经过的元素。
+// hasNext()若返回True，则表明接下来还有元素，迭代器不在尾部。
+// remove()方法必须和next方法一起使用，功能是去除刚刚next方法返回的元素。
+// 因为 hasNext() 方法保证了将 NestedInteger 列表的第一个元素为“打平”之后的整数
+public Integer next() {
+
+    // 返回列表中的整数
+    return list.remove(0).getInteger();
+}
+
+@Override
+public boolean hasNext() {
+
+    // 当 list 列表中第一个元素是一个被嵌套的列表时，将其展开
+    while (!list.isEmpty() && !list.get(0).isInteger()) {
+
+        // 取出 list 列表中的第一个元素并删除,这样下一个列表中的元素才能到第一个位置
+        List<NestedInteger> first = list.remove(0).getList();
+
+        // 将 first 列表中的元素“打平”
+        // 即使 first 列表中还有 NestedInteger 类型的列表嵌套，只要 list 的第一个元素不是整数，一直在 while 循环
+        for (int i = first.size() - 1; i >= 0; i--) {
+
+            list.addFirst(first.get(i));
+        }
+    }
+
+    return !list.isEmpty();
+}
+```
 
