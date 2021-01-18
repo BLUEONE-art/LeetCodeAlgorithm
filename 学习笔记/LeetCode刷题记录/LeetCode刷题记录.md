@@ -440,6 +440,8 @@ return 1 + countCompleteTree(root.left) + countCompleteTree(root.right);
 
 所以这两个递归，只有一个会真的递归下去，另一个一定会触发 **hl == hr** 而立即返回，不会再从最底部往上回归。
 
+![](LeetCode刷题记录.assets/完全二叉树节点计算.png)
+
 综上：算法的递归深度是树的深度 O(logN)，每次递归所花费的时间就是 while 循环，需要 O(logN)，所以总体的时间复杂度为 O(logNlogN)。所以说，“完全二叉树”还是有它存在的道理的，不仅适用于数组实现二叉堆，而且连计算节点总数这种看起来简单的操作都有高效的算法实现。
 
 ---
