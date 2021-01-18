@@ -17,17 +17,9 @@
 //解释: 通过重复调用 next 直到 hasNext 返回 false，next 返回的元素的顺序应该是: [1,4,6]。
 // 
 // Related Topics 栈 设计 
-// 👍 184 👎 0
+// 👍 185 👎 0
 
-package com.yourname.leetcode.editor.cn; //如果你的算法题是中文的，后缀就是cn，如果是英文的就是en
- /**
- * @author  YourName
- * @date 2021-01-17 13:10:40
- */
-public class FlattenNestedListIterator{
-    public static void main(String[] args) {
-        Solution solution = new FlattenNestedListIterator().new Solution();
-   }
+
 //leetcode submit region begin(Prohibit modification and deletion)
 /**
  * // This is the interface that allows for creating nested lists.
@@ -48,18 +40,55 @@ public class FlattenNestedListIterator{
  */
 public class NestedIterator implements Iterator<Integer> {
 
+    private Iterator<Integer> it;
+    // List<NestedInteger> 是一个包含 NestedInteger 整数和 NestedInteger 类型列表的一个无线嵌套的结果
+    // [1, 2, [1, 2], [1, [1, 2]], 3, [1, [12, 2, [1, 3, 4]]]]
     public NestedIterator(List<NestedInteger> nestedList) {
-        
+        // 创建一个 result 列表存放将 List<NestedInteger> ”打平“之后的结果
+        List<Integer> result = new LinkedList<>();
+        for (NestedInteger node : nestedList) {
+
+            // 以每个节点为根节点进行遍历，遍历函数：traverse()
+            traverse(node, result);
+        }
+        // 得到 result 列表的迭代器
+        this.it = result.iterator();
     }
 
     @Override
+    // 迭代器不是静止不动的，它是随着 next()方法而移动的
+    // 一开始迭代器在所有元素的左边，调用next()之后，迭代器移到第一个和第二个元素之间，next()方法返回迭代器刚刚经过的元素。
+    // hasNext()若返回True，则表明接下来还有元素，迭代器不在尾部。
+    // remove()方法必须和next方法一起使用，功能是去除刚刚next方法返回的元素。
     public Integer next() {
-        
+
+        return it.next();
     }
 
     @Override
     public boolean hasNext() {
-        
+
+        return it.hasNext();
+    }
+
+    public void traverse(NestedInteger root, List<Integer> result) {
+
+        // base case：如果 root.isInteger() 返回 true, 说明此时的 root 是叶子节点
+        if (root.isInteger()) {
+
+            result.add(root.getInteger());
+            return;
+        }
+
+        // 如果不是叶子节点，root.getList() 返回 List<NestedInteger> 列表
+        // 再对这个列表里的 child 节点进行遍历判断：
+        // 如果 child.getInteger() 为 true，就把这个节点装入 result
+        // 否则继续遍历，以此输出所有的叶子节点的值装入 result 列表
+        // N 叉树递归遍历过程
+        for (NestedInteger child : root.getList()) {
+
+            traverse(child, result);
+        }
     }
 }
 
@@ -69,5 +98,3 @@ public class NestedIterator implements Iterator<Integer> {
  * while (i.hasNext()) v[f()] = i.next();
  */
 //leetcode submit region end(Prohibit modification and deletion)
-
-}
