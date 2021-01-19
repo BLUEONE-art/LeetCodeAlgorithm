@@ -2,7 +2,7 @@
 
 # 2020.12.14记录
 
-## LRU 缓存淘汰算法
+## LRU 缓存淘汰算法(leetcode[146])
 
 Java 中的内置类型 LinkedHashMap 可以直接实现。LinkedHashMap 继承于HashMap，HashMap 是无序的，当我们希望有顺序地去存储 key-value 时，就需要使用 LinkedHashMap 了。**借助链表的有序性使得链表元素维持插入顺序，同时借助哈希映射的快速访问能力使得我们可以以O(1)的时间复杂度访问链表的任意元素。**
 
@@ -115,7 +115,7 @@ private void makeRencently(int key) {
 
 # 2020.12.17记录
 
-## LFU淘汰算法的实现
+## LFU淘汰算法的实(leetcode[460])
 
 ### 需求分析
 
@@ -185,7 +185,128 @@ cond2(no)->op5
    + 找到当前 key 对应的 freq
    + 更新 KF 表，将 key 对应的 freq 加 1 
    + 更新 KF 表，将原 key 从原 freq 对应的 key 的列表中删除；再添加至 freq + 1 对应的 key 的列表中
-   + 判断如果被移除的 freq 对应的 key 的列表空了，则删除 freq 和其对应的 key 列表；在此基础上，如果 freq == minFreq，则使得 minFreq++
+   + 判断如果被移除的 freq 对应的 key 的列表空了，则删除 freq 和其对应的 key 列表；在此基础上，如果 freq = minFreq，则使得 minFreq++
+
+### 代码实现：
+
+```java
+// 缓存容量
+int cap;
+// 创建 minFreq
+int minFreq;
+// 创建 key-val 表，能够快速根据 key 查询到对应的 val 值
+HashMap<Integer, Integer> keyToVal;
+// 创建 key-freq 表，能够快速查询 key 对应的 freq
+HashMap<Integer, Integer> keyToFreq;
+// 创建 freq-keys 表，能够快速根据 freq 查询到对应的 keys 列表
+HashMap<Integer, LinkedHashSet<Integer>> freqToKeys;
+
+public LFUCache(int capacity) {
+    // 初始化各种表和初始值
+    keyToVal = new HashMap<>();
+    keyToFreq = new HashMap<>();
+    freqToKeys = new HashMap<>();
+    this.cap = capacity;
+    this.minFreq = 0;
+}
+
+/* get()：查询缓存中的键 key */
+// ①如果不存在 key，返回 -1；
+// ②如果存在 key，返回对应的 val，并且使 key 对应的 freq + 1
+public int get(int key) {
+
+    if (!keyToVal.containsKey(key)) return -1;
+
+    // 否则存在 key，调用它时会将 key 对应的 freq + 1
+    increaseFreq(key);
+    return keyToVal.get(key);
+}
+
+/* put()：插入或修改缓存 */
+// ①如果存在 key：将原始的 key 对应的 val 修改为新值，并将 key 的 freq + 1
+
+// ②如果不存在 key：
+// i)缓存容量未满,不存在键 key：插入键值对(key, val)，并将 key 的 freq 设置为 1
+
+// ii)缓存容量已满不存在键 key：此时容量已满，想加入新的 key 必须删除旧的 key
+// 要找到 minFreq 对应的 key 列表，如果 minFreq 对应多个 key，找到列表中最靠前的 key 删除
+public void put(int key, int value) {
+    if (this.cap <= 0) return;
+
+    if (keyToVal.containsKey(key)) {
+
+        keyToVal.put(key, value);
+        increaseFreq(key);
+        return; // 如果包含，执行到此即结束，剩下的就是不包括 key 的情况
+    }
+
+    // 不存在 key && 容量已满
+    if (keyToVal.size() >= this.cap) {
+        removeMinFreqKey();
+    }
+
+    // 此时包括两种情况：
+    // ①容量已满并且删除了 minFreq 对应的 key 之后要 put(key, value)
+    // ②容量没满自然要 put(key, value)
+    keyToVal.put(key, value);
+
+    // 更新另外两张表，因为这个 key 时新增的
+    keyToFreq.put(key, 1);
+    // putIfAbsent()：如果 1 频次没有对应的 LinkedHashSet，则 new 一个
+    // 否则就使用旧的，不 new
+    freqToKeys.putIfAbsent(1, new LinkedHashSet<>());
+    freqToKeys.get(1).add(key);
+
+    // 此时是新增 key，其对应的频次即为最小频次
+    this.minFreq = 1;
+}
+
+// 写 util 函数 removeMinFreqKey()
+private void removeMinFreqKey() {
+
+    // 先要找到 freqToKeys 表中最小频次对应的 keys 列表
+    LinkedHashSet<Integer> keyList = freqToKeys.get(this.minFreq);
+    // keyList 中可能存在很多个 key，要找到最旧的那个 key 删除
+    int oldestKey = keyList.iterator().next();
+    // 更新 freqToKeys 表
+    keyList.remove(oldestKey);
+    // 如果 minFreq 对应的 keys 列表都空了，就需要删除
+    if (keyList.isEmpty()) {
+        freqToKeys.remove(this.minFreq);
+    }
+    // 更新 keyToVal 表
+    keyToVal.remove(oldestKey);
+    // 更新 keyToFreq 表
+    keyToFreq.remove(oldestKey);
+}
+
+// 写 util 函数 increaseFreq()
+// 这里肯定在 keyToVal.put() 之后，只需要更新另外两个表
+private void increaseFreq(int key) {
+
+    // 更新 keyToFreq 表
+    // 获取 key 的原始频次
+    int freq = keyToFreq.get(key);
+    keyToFreq.put(key, freq + 1);
+    // 更新 freqToKeys 表
+    // 此时 key 的 freq 变了，所以需要把它从原来频次对应的 keys 表中删除
+    freqToKeys.get(freq).remove(key);
+    // 新建一个 freq + 1 的 keys 表，如果有就不需要建，并把 key 放入
+    freqToKeys.putIfAbsent(freq + 1, new LinkedHashSet<>());
+    freqToKeys.get(freq + 1).add(key);
+    // 考虑 freq 频次对应的 keys 表中元素被全部取出的情况
+    if (freqToKeys.get(freq).isEmpty()) {
+
+        // 删除这个频次
+        freqToKeys.remove(freq);
+        // 如果 freq 为 minFreq, 表示 minFreq 对应的 keys 表元素被全部取出啦
+        // 需要让 minFreq++ 作为新的 minFreq
+        if (freq == this.minFreq) {
+            this.minFreq++;
+        }
+    }
+}
+```
 
 ### 注：
 
@@ -2438,5 +2559,80 @@ public boolean hasNext() {
 
     return !list.isEmpty();
 }
+```
+
+# 2021.1.19记录
+
+## 数据流的中位数(LeetCode[295])
+
+### 题目描述
+
+如果输入一个数组，求中位数：排序
+
++ 如果数组长度是奇数，最中间的一个元素就是中位数；
+
++ 如果数组长度是偶数，最中间两个元素的平均数作为中位数。
+
+如果数据规模非常巨大，排序是不太现实的。
+
+![](LeetCode刷题记录.assets/数据流的中位数题目描述.jpg)
+
+一个直接的解法可以用一个数组记录所有`addNum`添加进来的数字，通过插入排序的逻辑保证数组中的元素有序，当调用`findMedian`方法时，可以通过数组索引直接计算中位数。
+
+但是用数组作为底层容器的问题也很明显，`addNum`搜索插入位置的时候可以用二分搜索算法，但是插入操作需要搬移数据，所以最坏时间复杂度为 O(N)。那换链表？链表插入元素很快，但是查找插入位置的时候只能线性遍历，最坏时间复杂度还是 O(N)。
+
+### 思路
+
+**我们必然需要有序数据结构，本题的核心思路是使用两个优先级队列**。
+
+#### Java 中优先级队列介绍
+
+Java中PriorityQueue通过二叉小顶堆实现，可以用一棵完全二叉树表示。
+
++ add()和offer()
+
+  `add(E e)`和`offer(E e)`的语义相同，都是向优先队列中插入元素，只是`Queue`接口规定二者对插入失败时的处理不同，前者在插入失败时抛出异常，后则则会返回`false`。
+
++ `element()`和`peek()`的语义完全相同，都是获取但不删除队首元素，也就是队列中权值最小的那个元素，二者唯一的区别是当方法失败时前者抛出异常，后者返回`null`。根据小顶堆的性质，堆顶那个元素就是全局最小的那个；
+
++ `remove()`和`poll()`方法的语义也完全相同，都是获取并删除队首元素，区别是当方法失败时前者抛出异常，后者返回`null`。
+
++ `remove(Object o)`方法用于删除队列中跟`o`相等的某一个元素（如果有多个相等，只删除一个），该方法不是*Queue*接口内的方法，而是*Collection*接口的方法。
+
+中位数是有序数组最中间的元素算出来的对吧，我们可以把「有序数组」抽象成一个倒三角形(**从小到大的队列，顶部是最大元素**)，宽度可以视为元素的大小，那么这个倒三角的中部就是计算中位数的元素。
+
+这个大的倒三角形从正中间切成两半，变成一个小倒三角和一个梯形，这个小倒三角形相当于一个**从小到大的有序数组**，这个梯形相当于一个**从大到小的有序数组**。(从底部往上看的)
+
+![](LeetCode刷题记录.assets/求中位数的双堆思想.png)
+
+梯形虽然是小顶堆，但其中的元素是较大的，我们称其为`large`，倒三角虽然是大顶堆，但是其中元素较小，我们称其为`small`。(因为本身就是由一个大顶堆分开而成的)
+
+==要想求出中位数，**两个堆中的元素之差不能超过 1**。==
+
+**`findMedian`函数思路**，假设元素总数是`n`：
+
++ 如果`n`是偶数，我们希望两个堆的元素个数是一样的，这样把两个堆的堆顶元素拿出来求个平均数就是中位数；
++ 如果`n`是奇数，那么我们希望两个堆的元素个数分别是`n/2 + 1`和`n/2`，这样元素多的那个堆的堆顶元素就是中位数。
+
+现在的问题是，如何实现`addNum`方法，维护「两个堆中的元素之差不能超过 1」这个条件呢？
+
+==**不仅要维护`large`和`small`的元素个数之差不超过 1，还要维护`large`堆的堆顶元素要大于等于`small`堆的堆顶元素**。==
+
+**简单说，想要往`large`里添加元素，不能直接添加，而是要先往`small`里添加，然后再把`small`的堆顶元素加到`large`中；向`small`中添加元素同理**。
+
+假设我们准备向`large`中插入元素：
+
++ 如果插入的`num`小于`small`的堆顶元素，那么`num`就会留在`small`堆里，为了保证两个堆的元素数量之差不大于 1，作为交换，把`small`堆顶部的元素再插到`large`堆里。
++ 如果插入的`num`大于`small`的堆顶元素，那么`num`就会成为`samll`的堆顶元素，最后还是会被插入`large`堆中。
++ 反之，向`small`中插入元素是一个道理，这样就巧妙地保证了`large`堆整体大于`small`堆，且两个堆的元素之差不超过 1，那么中位数就可以通过两个堆的堆顶元素快速计算了。
+
+### 时间复杂度
+
+`addNum`方法时间复杂度 O(logN)，`findMedian`方法时间复杂度 O(1)。
+
+### 代码实现
+
+```java
+
 ```
 
