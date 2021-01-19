@@ -94,6 +94,8 @@ class LRUCache {
         // 如果此时 cache 容量已经满了，找到最久未使用的 key 删除
         if (cache.size() >= this.cap) {
             // 链表头部就是最久未使用的 key
+            // hash.keySet()是HashMap类中一bai个方法
+            // 它的返回类型是一个迭代器Set，也就是说hash.keySet()就有了Set的属性和方法
             int oldestkey = cache.keySet().iterator().next();
             cache.remove(oldestkey); // 删除 key 和对应的 val
         }
