@@ -1092,6 +1092,16 @@ linklist.toArray(array2);
 
 ## 特殊数据结构-单调栈，解决一类寻找 Next Greater Element 的问题
 
+### 下一个更大元素 I(LeetCode[496])
+
+### 题目描述
+
+比如说，输入一个数组`nums = [2,1,2,4,3]`，你返回数组`[4,2,4,-1,-1]`。
+
+解释：第一个 2 后面比 2 大的数是 4; 1 后面比 1 大的数是 2；第二个 2 后面比 2 大的数是 4; 4 后面没有比 4 大的数，填 -1；3 后面没有比 3 大的数，填 -1。
+
+![](LeetCode刷题记录.assets/下一个更大的数.png)
+
 **定义：** 单调栈实际就是栈，使得每次新元素入栈后，栈内的元素都保持单调(单调递增或单调递减)。框架为：
 
 ```java
@@ -1120,6 +1130,12 @@ public class MonotonicStack {
         return ans;
     }
 ```
+
+for 循环要从后往前扫描元素，因为我们借助的是栈的结构，倒着入栈，其实是正着出栈。while 循环是把两个「个子高」元素之间的元素排除，因为他们的存在没有意义，前面挡着个「更高」的元素，所以他们不可能被作为后续进来的元素的 Next Great Number 了。
+
+### 时间复杂度
+
+分析它的时间复杂度，要从整体来看：总共有`n`个元素，每个元素都被`push`入栈了一次，而最多会被`pop`一次，没有任何冗余操作。所以总的计算规模是和元素规模`n`成正比的，也就是`O(n)`的复杂度。
 
 # 2021.1.9记录
 
@@ -2587,7 +2603,7 @@ public boolean hasNext() {
 
 #### Java 中优先级队列介绍
 
-Java中PriorityQueue通过二叉小顶堆实现，可以用一棵完全二叉树表示。
+Java中PriorityQueue通过二叉小顶堆实现，可以用一棵完全二叉树表示。它可以对插入的元素**自动排序**。乱序的元素插入其中就被放到了正确的位置，可以按照从小到大（或从大到小）有序地取出元素。
 
 + add()和offer()
 
@@ -2633,6 +2649,55 @@ Java中PriorityQueue通过二叉小顶堆实现，可以用一棵完全二叉树
 ### 代码实现
 
 ```java
+/** initialize your data structure here. */
+// 求中位数可以将元素进行排序求中间元素(分奇偶讨论)
+// 可以把排序好的数看成一个大顶堆(倒三角)，从中间一分为二
+// 第一部分：仍是倒三角，即大顶堆
+// 第二部分：成了一个梯形，即小顶堆
+// 大顶堆顶部元素 < 小顶堆顶部元素
+// ①当输入数据为奇数时，中位数就是元素多的那个堆的顶部元素
+// ②当输入数据为偶数时，中位数就是两个堆的顶部元素之和/2
+private PriorityQueue<Integer> small;
+private PriorityQueue<Integer> large;
+public MedianFinder() {
+    // 初始化小顶堆
+    small = new PriorityQueue<>();
+    // 初始化大顶堆
+    large = new PriorityQueue<>((a, b) -> {
+        return b - a;
+    });
+}
 
+/* 向堆中添加元素 */
+// 核心思想：保持两堆元素个数只差不超过1，并且始终保持大顶堆堆顶元素小于小顶堆堆顶元素
+public void addNum(int num) {
+
+    if (small.size() >= large.size()) {
+        // 按道理说此时新加元素要加到大顶堆中
+        // 但先把要添加的元素加到小顶堆中进行排序后
+        // 将排序好的堆顶元素(大顶堆中的最大元素)加到小顶堆中
+        // 保持大顶堆顶部元素 < 小顶堆顶部元素
+        small.offer(num);
+        large.offer(small.poll());
+    } else {
+        large.offer(num);
+        small.offer(large.poll());
+    }
+}
+
+/* 寻找中位数 */
+// 核心思想：使大顶堆和小顶堆元素个数相差不超过 1
+public double findMedian() {
+
+    // 如果两个堆元素不相同，则元素多的堆的顶部元素必是中位数
+    if (small.size() > large.size()) {
+        return small.peek();
+    } else if (small.size() < large.size()){
+        return large.peek();
+    }
+
+    // 两个堆元素相等
+    return (small.peek() + large.peek()) / 2.0;
+}
 ```
 
