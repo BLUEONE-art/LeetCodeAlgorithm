@@ -2830,6 +2830,12 @@ int[] arr1 = list1.stream().mapToInt(Integer::valueOf).toArray();
 // 想要转换成int[]类型，就得先转成IntStream。
 // 这里就通过mapToInt()把Stream<Integer>调用Integer::valueOf来转成IntStream
 // 而IntStream中默认toArray()转成int[]。
+
+// 将 ArrayList res 转换成 int[] 类型返回
+int[] arr = new int[res.size()];
+for (int i = 0; i < res.size(); i++) {
+    arr[i] = res.get(i);
+}
 ```
 
 ### int[] 转 Integer[]
@@ -2867,4 +2873,92 @@ Integer[] integers2 = list1.toArray(new Integer[0]);
 List<Integer> list2 = Arrays.asList(integers1);
 // 最简单的方式。String[]转List<String>也同理。
 ```
+
+## 滑动窗口最大值(Leetcode[239])
+
+### 题目描述
+
+输入一个数组`nums`和一个正整数`k`，有一个大小为`k`的窗口在`nums`上从左至右滑动，请你输出每次窗口中`k`个元素的最大值。
+
+![](LeetCode刷题记录.assets/滑动窗口最大值实例.png)
+
+### 解题思路
+
+本题难点在于如何在`O(1)`时间算出每个「窗口」中的最大值，使得整个算法在线性时间完成。这种问题的特殊点在于，「窗口」是不断滑动的，也就是你得**动态地**计算窗口中的最大值。
+
+**在一堆数字中，已知最值为`A`，如果给这堆数添加一个数`B`，那么比较一下`A`和`B`就可以立即算出新的最值；但如果减少一个数，就不能直接得到最值了，因为如果减少的这个数恰好是`A`，就需要遍历所有数重新找新的最值**。
+
+这道题的场景，每个窗口前进的时候，要添加一个数同时减少一个数，所以想在 O(1) 的时间得出新的最值，不是那么容易的，需要「单调队列」这种特殊的数据结构来辅助。
+
+「单调队列」就是一个「队列」，只是使用了一点巧妙的方法，使得**队列中的元素全都是单调递增（或递减）的**。
+
+一个普通的队列一定有这两个操作：
+
+> ```java
+> class Queue {
+>     // enqueue 操作，在队尾加入元素 n
+>     void push(int n);
+>     // dequeue 操作，删除队头元素
+>     void pop();
+> }
+> ```
+
+一个「单调队列」的操作也差不多：
+
+```java
+class MonotonicQueue {
+    // 在队尾添加元素 n
+    void push(int n);
+    // 返回当前队列中的最大值
+    int max();
+    // 队头元素如果是 n，删除它
+    void pop(int n);
+}
+```
+
+![](LeetCode刷题记录.assets/滑动窗口最大值过程.png)
+
+### 单调队列数据结构的实现
+
+观察滑动窗口的过程就能发现，实现「单调队列」必须使用一种数据结构支持在头部和尾部进行插入和删除，很明显**双链表**是满足这个条件的。
+
+「单调队列」的核心思路和「单调栈」类似，`push`方法依然在队尾添加元素，**但是要把前面比自己小的元素都删掉。**
+
+可以想象，加入数字的大小代表人的体重，把前面体重不足的都压扁了，直到遇到更大的量级才停住。
+
+![](LeetCode刷题记录.assets/单调队列push过程.png)
+
+如果每个元素被加入时都这样操作，最终单调队列中的元素大小就会保持一个**单调递减**的顺序。
+
+队头元素`n`也可能已经被「压扁」了，可能已经不存在了。
+
+![](LeetCode刷题记录.assets/单调队列队头元素被压扁的情况.png)
+
+### 代码实现
+
+```java
+
+```
+
+## Java LinkedList 的方法
+
++ **int size（）：它返回此列表中元素的数量。**
++ void clear（）：它删除列表中的所有元素。
++ Object clone（）：它用于制作现有链接列表的副本。
++ **Object set（int index，Object element）：它用于用新元素替换列表中的现有元素。**
++ **boolean contains（Object element）：如果元素存在于列表中，则返回true。**
++ boolean add（Object element）：它将元素附加到列表的末尾。
++ **void addLast（Object element）：它将元素附加在列表的末尾**
++ **void add（int index，Object element）：它将元素插入列表中'index'位置。**
++ boolean addAll（Collection C）：它将一个集合追加到链接列表。
++ **Object get（int index）：它返回列表中位置'index'处的元素。如果索引超出了列表的范围，它会抛出'IndexOutOfBoundsException'。**
++ **Object getFirst（）：它返回链表的第一个元素。**
++ **Object getLast（）：它返回链接列表的最后一个元素。**
++ int indexOf（Object element）：如果找到元素，它将返回元素第一次出现的索引。否则，它返回-1。
++ int lastIndexOf（Object element）：如果找到元素，它将返回元素最后一次出现的索引。否则，它返回-1
++ **Object remove（）：它用于从列表头部删除并返回元素。**
++ **Object remove（int index）：它删除此列表中位置'index'处的元素。如果列表为空，它会抛出'NoSuchElementException'。**
++ boolean remove（Object O）：它用于从链表中移除一个特定的元素并返回一个布尔值。
++ **Object removeLast（）：它用于删除并返回链接列表的最后一个元素。**
++ **Object pollLast() : 此方法用于检索链表的最后一个元素或结尾元素，最后从列表中删除最后一个元素。如果列表为空，则它将返回null。**与 remove() 的区别是当没有特定元素的时候返回不一样，remove() 报异常，pollLast() 返回 null。
 
