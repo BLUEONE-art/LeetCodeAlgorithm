@@ -73,7 +73,7 @@ class Solution {
         public void push(int n) {
 
             // 加入元素之前会把 q 中小于该元素的其他元素删除，保持单调递减性
-            while (!q.isEmpty() && q.getLast() <= n) {
+            while (!q.isEmpty() && q.getLast() < n) { // 相等的情况不能删
                 q.pollLast();
             }
             // 然后在加入元素 n
@@ -127,6 +127,7 @@ class Solution {
             arr[i] = res.get(i);
         }
         return arr;
+//        return res.stream().mapToInt(Integer::valueOf).toArray();
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
