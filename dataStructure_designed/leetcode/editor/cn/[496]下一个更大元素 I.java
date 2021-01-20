@@ -50,8 +50,8 @@ class Solution {
     // 即下一个更大的元素，输出没被“遮住”的元素
     public int[] nextGreaterElement(int[] nums1, int[] nums2) {
 
-        ArrayList<Integer> allRes = new ArrayList<>(nums2.length);
-        ArrayList<Integer> resTemp;
+        HashMap<Integer, Integer> map = new HashMap<>();
+        int [] res = new int[nums1.length];
         // 栈中用来存放“更大的数”并不断更新
         Stack<Integer> s = new Stack<>();
         // 将 nums 数组的元素倒着放入栈中
@@ -63,25 +63,13 @@ class Solution {
                 s.pop();
             }
 
-            allRes.add(i, s.isEmpty() ? -1 : s.peek());
+            map.put(nums2[i], s.isEmpty() ? -1 : s.peek());
 
             s.push(nums2[i]);
         }
 
-        int lowIndex = 0;
-        int highIndex = 0;
-        for (int i = 0; i <= nums2.length - 1; i++) {
-            if (nums2[i] == nums1[0]) {
-                lowIndex = i;
-            }
-            if (nums2[i] == nums1[nums1.length - 1]) {
-                highIndex = i;
-            }
-        }
-        resTemp = (ArrayList<Integer>) allRes.subList(lowIndex, highIndex + 1);
-        int[] res = new int[resTemp.size()];
-        for (int i = 0; i < resTemp.size(); i++) {
-            res[i] = resTemp.get(i);
+        for (int i = 0; i < nums1.length; i++) {
+            res[i] = map.get(nums1[i]);
         }
         return res;
     }
