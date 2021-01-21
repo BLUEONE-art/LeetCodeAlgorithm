@@ -83,6 +83,22 @@
             </LeetcodeEditor>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/array/leetcode/editor/cn/[1011]在 D 天内送达包裹的能力.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/array/leetcode/editor/cn/[1011]在 D 天内送达包裹的能力.java" />
+              <option name="questionId" value="1056" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/array/leetcode/editor/cn/[875]爱吃香蕉的珂珂.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/array/leetcode/editor/cn/[875]爱吃香蕉的珂珂.java" />
+              <option name="questionId" value="907" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/dataStructure_designed/leetcode/editor/cn/[146]LRU 缓存机制.java">
           <value>
             <LeetcodeEditor>
@@ -152,6 +168,14 @@
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/dataStructure_designed/leetcode/editor/cn/[739]每日温度.java" />
               <option name="questionId" value="739" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/dataStructure_designed/leetcode/editor/cn/[875]爱吃香蕉的珂珂.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/dataStructure_designed/leetcode/editor/cn/[875]爱吃香蕉的珂珂.java" />
+              <option name="questionId" value="907" />
             </LeetcodeEditor>
           </value>
         </entry>
