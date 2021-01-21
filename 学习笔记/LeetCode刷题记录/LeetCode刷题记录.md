@@ -3108,6 +3108,8 @@ class MyQueue {
 
 ​	解决方法简单粗暴，把队列前面的都取出来再加入队尾，让	之前的队尾元素排到队头，这样就可以取出了。
 
+![](LeetCode刷题记录.assets/队列实现栈的pop方法.png)
+
 ​	这样实现还有一点小问题就是，原来的队尾元素被提到队头	并删除了，但是`top_elem`变量没有更新。
 
 + 最后，API`empty`就很容易实现了，只要看底层的队列是否为空即可
@@ -3115,10 +3117,421 @@ class MyQueue {
 ### 代码实现
 
 ```java
+Queue<Integer> q;
+int top_elem;
+/** Initialize your data structure here. */
+public MyStack() {
 
+    q = new LinkedList<>();
+    this.top_elem = 0;
+}
+
+/** Push element x onto stack. */
+public void push(int x) {
+
+    // 因为底层是队列，先进先出(尾部加入，头部取出)
+    // 用于实现栈，则新加入队列的元素(队列尾部)为栈顶元素
+    q.offer(x);
+    top_elem = x;
+}
+
+/** Removes the element on top of the stack and returns that element. */
+public int pop() {
+
+    // 获取栈顶(队列尾部)元素好获取，因为在每次 push() 的时候可以用一个变量记录
+    // 但是 remove 的时候，队列仅提供队列头部元素的 remove 方法
+    // 将队头的元素取出来重新添加到队尾，这样队尾的元素就被提到队头了
+    int size = q.size();
+    // 暂时保存队尾的两个元素
+    while (size > 2) {
+
+        // 循环将队列头部的元素加到队尾
+        q.offer(q.poll());
+        size--;
+    }
+
+    // 此时原队列尾部的两个元素被移到头部了
+    // 更新 top_elem：即为即将要放到队尾的元素
+    top_elem = q.peek();
+    // 再把这个元素移到队尾
+    q.offer(q.poll());
+    // 此时原来在队尾的元素被真正移到队头了，返回即可
+    return q.poll();
+}
+
+/** Get the top element. */
+public int top() {
+
+    // 返回栈顶元素，即 push() 后的元素 top_elem
+    return top_elem;
+}
+
+/** Returns whether the stack is empty. */
+public boolean empty() {
+
+    return q.isEmpty();
+}
 ```
 
 ### 复杂度分析
 
 很明显，用队列实现栈的话，pop 操作时间复杂度是 O(N)，其他操作都是 O(1)。
+
+# 2021.1.21记录
+
+## 队列 java.util.Queue 方法
+
++ **add**    增加一个元索           如果队列已满，则抛出一个IIIegaISlabEepeplian异常
++ **remove**  移除并返回队列头部的元素  如果队列为空，则抛出一个NoSuchElementException异常
++ **element** 返回队列头部的元素       如果队列为空，则抛出一个NoSuchElementException异常
++ **peek**    返回队列头部的元素       如果队列为空，则返回null
++ **offer**    添加一个元素并返回true    如果队列已满，则返回false
++ **poll**     移除并返问队列头部的元素  如果队列为空，则返回null
++ **put**     添加一个元素           如果队列满，则阻塞
++ **take**    移除并返回队列头部的元素   如果队列为空，则阻塞
+
+## 二分查找算法详解
+
+总的模板：
+
+```java
+int binarySearch(int[] nums, int target) {
+    int left = 0, right = ...;
+    
+    while(...) {
+        int mid = (right + left) / 2;
+        if (nums[mid] == target) {
+            ...
+        } else if (nums[mid] < target) {
+            // 在 mid 的右边区间继续查找
+            left = ...;
+        } else if (nums[mid] > target) {
+            // 在 mid 的左边区间继续查找
+            right = ...;
+        }
+    }
+    return ...;
+}
+```
+
+**分析二分查找的一个技巧是：不要出现 else，而是把所有情况用 else if 写清楚，这样可以清楚地展现所有细节**。其中...标记的部分，就是可能出现细节问题的地方，当你见到一个二分查找的代码时，首先注意这几个地方。
+
+### 寻找一个数(基本的二分搜索)
+
+**应用场景：**搜索一个数，如果存在，返回其索引，否则返回 -1
+
+#### 代码框架
+
+```java
+int binarySearch(int[] nums, int target) {
+    int left = 0;
+    int right = nums.length - 1; // 注意
+    
+    while(left <= right) { // 注意
+        int mid = (right + left) / 2;
+        if (nums[mid] == target) {
+            return mid;
+        } else if (nums[mid] < target) {
+            left = mid - 1; // 注意
+        } else if (nums[mid] >  target) {
+            right = mid + 1; // 注意
+        }
+    }
+    return -1;
+}
+```
+
+>  *1*. 为什么 while 循环的条件中是 <=，而不是 < ？
+
+答：因为元素索引从 0 开始，初始化 right 的赋值是 nums.length - 1，即最后一个元素的索引，而不是 nums.length。
+
+这二者可能出现在不同功能的二分查找中，区别是：前者相当于两端都闭区间 [left, right]，后者相当于左闭右开区间 [left, right)，因为索引大小为 nums.length 是越界的。
+
+我们这个算法中使用的是 [left, right] 两端都闭的区间。**这个区间就是每次进行搜索的区间，我们不妨称为「搜索区间」**。
+
+> *2*. 什么时候应该停止搜索呢？
+
+答：如果没找到，就需要 while 循环终止，然后返回 -1。那 while 循环什么时候应该终止？**搜索区间为空的时候应该终止**，意味着你没得找了，就等于没找到嘛。
+
++ while(left <= right)的终止条件是 left == right + 1，写成区间的形式就是 [right + 1, right]，或者带个具体的数字进去 [3, 2]，可见**这时候搜索区间为空**，因为没有数字既大于等于 3 又小于等于 2 的吧。所以这时候 while 循环终止是正确的，直接返回 -1 即可。
++ while(left < right)的终止条件是 left == right，写成区间的形式就是 [right, right]，或者带个具体的数字进去 [2, 2]，**这时候搜索区间非空**，还有一个数 2，但此时 while 循环终止了。也就是说这区间 [2, 2] 被漏掉了，索引 2 没有被搜索，如果这时候直接返回 -1 就可能出现错误。
+
+> *3.*为什么 left = mid + 1，right = mid - 1？
+
+我看有的代码是 right = mid 或者 left = mid，没有这些加加减减，到底怎么回事，怎么判断？
+
+答：刚才明确了「搜索区间」这个概念，而且本算法的搜索区间是两端都闭的，即 [left, right]。那么当我们发现索引 mid 不是要找的 target 时，如何确定下一步的搜索区间呢？
+
+当然是去搜索 [left, mid - 1] 或者 [mid + 1, right] 对不对？因为 mid 已经搜索过，应该从搜索区间中去除。
+
+> *4.*此算法有什么缺陷？
+
+比如说给你有序数组 nums = [1,2,2,2,3]，target = 2，此算法返回的索引是 2，没错。但是如果我想得到 target 的左侧边界，即索引 1，或者我想得到 target 的右侧边界，即索引 3，这样的话此算法是无法处理的。
+
+这样的需求很常见。你也许会说，找到一个 target 索引，然后向左或向右线性搜索不行吗？可以，但是不好，因为这样难以保证二分查找对数级的复杂度了。
+
+### 寻找左侧边界的二分搜索
+
+**代码框架：**
+
+```java
+int left_bound(int[] nums, int target) {
+    if (nums.length == 0) return -1;
+    int left = 0;
+    int right = nums.length; // 注意
+
+    while (left < right) { // 注意
+        int mid = (left + right) / 2;
+        if (nums[mid] == target) {
+            // 此时把搜索区间分成[left, mid)
+            // 然后再在这个区间内寻找
+            right = mid; // 注意
+        } else if (nums[mid] < target) {
+            left = mid + 1;
+        } else if (nums[mid] > target) {
+            right = mid; // 注意
+        }
+    }
+    // ①当数组中存在 target时， right = mid，[left, mid) 左闭右开，只有当 left = right = mid 时才会停止搜索，即 return left <==> return right <==> return mid;
+    // ②当数组中不存在 target 时，「左侧边界」的含义就是在数组中寻找比 target 元素小的元素个数
+    return left;
+}
+```
+
+> *1.*为什么没有返回 -1 的操作？如果 nums 中不存在 target 这个值，怎么办？
+
+答：先理解一下这个「左侧边界」有什么特殊含义：
+
+![](LeetCode刷题记录.assets/二分搜索算法左侧边界.png)
+
+对于这个数组，算法会返回 1。这个 1 的含义可以这样解读：nums 中小于 2 的元素有 1 个。如果 target = 4，则会返回 5，表示 nums 中小于 4 的元素有五个。
+
+综上可以看出，函数的返回值（即 left 变量的值）取值区间是闭区间 [0, nums.length]，所以我们简单添加两行代码就能在正确的时候 return -1：
+
+```java
+while (left < right) {
+    //...
+}
+// 如果 target 比数组中所有数都大，所以此时 left 会逐步逼近 right，并最终成为 righ = nums.length
+// 此时就表示没有匹配项
+if (left == num.length) return -1;
+// 如果 left 还在搜索区间[left, right)内,如果找到匹配的元素，则返回该元素的索引，否则返回 -1
+return nums[left] == target ? left : -1;
+```
+
+> *2.* 为什么 left = mid + 1，right = mid ？和之前的算法不一样？
+
+答：这个很好解释，因为我们的「搜索区间」是 [left, right) 左闭右开，所以当 nums[mid] 被检测之后，下一步的搜索区间应该去掉 mid 分割成两个区间，即 [left, mid) 或 [mid + 1, right)。
+
+> *3.*为什么该算法能够搜索左侧边界？
+
+答：关键在于对于 nums[mid] == target 这种情况的处理：
+
+```java
+    if (nums[mid] == target)
+        right = mid;
+```
+
+可见，找到 target 时不要立即返回，而是缩小「搜索区间」的上界 right，在区间 [left, mid) 中继续搜索，即不断向左收缩，达到锁定左侧边界的目的。
+
+> *4.* 为什么返回 left 而不是 right？
+
+答：都是一样的，因为 while 终止的条件是 left == right。
+
+### 寻找右侧边界的二分查找
+
+**代码框架：**
+
+```java
+int right_bound(int[] nums, int target) {
+    if (nums.length == 0) return -1;
+    int left = 0, right = nums.length;
+
+    while (left < right) {
+        int mid = (left + right) / 2;
+        if (nums[mid] == target) {
+            left = mid + 1; // 注意
+        } else if (nums[mid] < target) {
+            left = mid + 1;
+        } else if (nums[mid] > target) {
+            right = mid;
+        }
+    }
+    return left - 1; // 注意
+}
+```
+
+>*1.*为什么这个算法能够找到右侧边界？
+
+答：类似地，关键点还是这里：
+
+```java
+    if (nums[mid] == target) {
+        left = mid + 1;
+```
+
+当 nums[mid] == target 时，不要立即返回，而是增大「搜索区间」的下界 left，使得区间不断向右收缩，达到锁定右侧边界的目的。
+
+>*2.*为什么最后返回 left - 1 而不像左侧边界的函数，返回 left？而且我觉得这里既然是搜索右侧边界，应该返回 right 才对。
+
+答：首先，while 循环的终止条件是 left == right，所以 left 和 right 是一样的，你非要体现右侧的特点，返回 right - 1 好了。
+
+至于为什么要减一，这是搜索右侧边界的一个特殊点，关键在这个条件判断：
+
+```java
+    if (nums[mid] == target) {
+        left = mid + 1;
+        // 这样想: mid = left - 1
+```
+
+因为我们对 left 的更新必须是 left = mid + 1，就是说 while 循环结束时，nums[left] 一定不等于 target 了，而 nums[left - 1] 可能是 target。
+
+> *3.* 为什么没有返回 -1 的操作？如果 nums 中不存在 target 这个值，怎么办？
+
+答：类似之前的左侧边界搜索，因为 while 的终止条件是 left == right，就是说 left 的取值范围是 [0, nums.length]，所以可以添加两行代码，正确地返回 -1：
+
+```java
+while (left < right) {
+    // ...
+}
+if (left == 0) return -1;
+return nums[left-1] == target ? (left-1) : -1;
+```
+
+### 总结
+
++ 最基本的二分查找算法：
+
+```
+因为我们初始化 right = nums.length - 1
+所以决定了我们的「搜索区间」是 [left, right]
+所以决定了 while (left <= right)
+同时也决定了 left = mid+1 和 right = mid-1
+
+因为我们只需找到一个 target 的索引即可
+所以当 nums[mid] == target 时可以立即返回
+```
+
++ 寻找左侧边界的二分查找：
+
+```
+因为我们初始化 right = nums.length
+所以决定了我们的「搜索区间」是 [left, right)
+所以决定了 while (left < right)
+同时也决定了 left = mid+1 和 right = mid
+
+因为我们需找到 target 的最左侧索引
+所以当 nums[mid] == target 时不要立即返回
+而要收紧右侧边界以锁定左侧边界
+```
+
++ 寻找右侧边界的二分查找：
+
+```
+因为我们初始化 right = nums.length
+所以决定了我们的「搜索区间」是 [left, right)
+所以决定了 while (left < right)
+同时也决定了 left = mid+1 和 right = mid
+
+因为我们需找到 target 的最右侧索引
+所以当 nums[mid] == target 时不要立即返回
+而要收紧左侧边界以锁定右侧边界
+
+又因为收紧左侧边界时必须 left = mid + 1
+所以最后无论返回 left 还是 right，必须减一
+```
+
+### 经验
+
++ 分析二分查找代码时，不要出现 else，全部展开成 else if 方便理解。
++ 注意「搜索区间」和 while 的终止条件，如果存在漏掉的元素，记得在最后检查。
++ 如需要搜索左右边界，只要在 nums[mid] == target 时做修改即可。搜索右侧时需要减一。
+
+## 爱吃香蕉的珂珂(LeetCode[875])
+
+### 题目描述
+
+![](LeetCode刷题记录.assets/KoKo吃香蕉题目描述.jpg)
+
+Koko 每小时最多吃一堆香蕉，如果吃不下的话留到下一小时再吃；如果吃完了这一堆还有胃口，也只会等到下一小时才会吃下一堆。在这个条件下，让我们确定 Koko 吃香蕉的**最小速度**（根/小时）。
+
+先抛开二分查找技巧，**想想如何暴力解决这个问题呢？**
+
+算法要求的是「`H`小时内吃完香蕉的最小速度」，我们不妨称为`speed`，**请问`speed`最大可能为多少，最少可能为多少呢？**
+
+显然最少为 1，最大为`max(piles)`，因为一小时最多只能吃一堆香蕉。那么暴力解法就很简单了，只要从 1 开始穷举到`max(piles)`，一旦发现发现某个值可以在`H`小时内吃完所有香蕉，这个值就是最小速度：
+
+```java
+int minEatingSpeed(int[] piles, int H) {
+    /* 暴力解法(不通过) */
+    // 求 piles 数组最大值
+    int max = getMax(piles);
+    // 对速度由 1 根每小时遍历到 max 根每小时
+    // 只要找到满足在 H 小时内吃掉所有香蕉的最小速度，即停止遍历并返回
+    for(int speed = 1; speed < max; speed++) {
+        if (canFinish(piles, speed, H)) {
+            return speed;
+        }
+    }
+    // 否则每小时必要吃掉这堆香蕉中最大的一堆
+    return max;
+}
+```
+
+### 思路
+
+注意这个 for 循环，就是在**连续的空间线性搜索，这就是二分查找可以发挥作用的标志**。
+
+由于我们要求的是最小速度，所以可以用一个**搜索左侧边界的二分查找**来代替线性搜索，提升效率
+
+### 代码实现
+
+```java
+public int minEatingSpeed(int[] piles, int H) {
+    /* 二分查找(因为寻找最小值，所以使用左侧边界框架) */
+    // 求 piles 数组最大值
+    int max = getMax(piles);
+    // 因为暴力解法：for(int speed = 1; speed < max; speed++) speed 从 1 开始
+    // 搜索空间：[left, right) = [1, max + 1)，并不包括 max + 1
+    int left = 1, right = max + 1;
+
+    while (left < right) {
+        // 计算 mid，在本题相当于 speed
+        int speed = (left + right) / 2;
+        if (canFinish(piles, speed, H)) { // 这里包括 time <= H 的情况
+            right = speed;
+        } else { // time > H，加大吃香蕉速度
+            left = speed + 1;
+        }
+    }
+    return left;
+}
+
+private boolean canFinish(int[] piles, int speed, int H) {
+
+    // 定义以 speed 根每小时吃完香蕉所需要的时间
+    int time = 0;
+    // 计算吃完所有堆香蕉花费的总时间
+    for (int n : piles) {
+        time += timeOf(n, speed); // 吃完一堆要花费的时间
+    }
+    // 如果 time <= H，返回 true，否则 false
+    return time <= H;
+}
+
+private int timeOf(int n, int speed) {
+
+    // n / speed：整数部分小时，如果有余数，再计算
+    // n % speed：小数部分，如果大于 0，表示有余数，还需花 1h 吃完，如果等于 0，就刚好
+    return (n / speed) + ((n % speed) > 0 ? 1 : 0);
+}
+
+private int getMax(int[] piles) {
+    int max = 0;
+    for (int p : piles) {
+        max = Math.max(p, max);
+    }
+    return max;
+}
+```
 
