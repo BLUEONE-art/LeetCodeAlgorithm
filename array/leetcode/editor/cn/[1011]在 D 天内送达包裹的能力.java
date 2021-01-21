@@ -60,6 +60,51 @@
 class Solution {
     public int shipWithinDays(int[] weights, int D) {
 
+        // 最小的载重，因为货物不能被分割，所以最小载重就是 weight 矩阵中的最大值
+        int left = getMax(weights);
+        // 最大的载重就是货物重量之和，因为是搜索左侧边界，所以 + 1
+        int right = getSum(weights) + 1;
+        while (left < right) {
+            int mid = left + (right - left) / 2; // 等价于 (left + right) / 2
+            if (canFinish(weights, mid, D)) {
+                right = mid;
+            } else {
+                left = mid + 1;
+            }
+        }
+        return left;
+    }
+
+    // 判断 D 天内能否以 cap 吨/天 的速度运完
+    private boolean canFinish(int[] weights, int cap, int D) {
+        // 记录运送了多少件货物
+        int i = 0;
+        // 计算 D 天内运送了 i 件货物
+        for (int day = 0; day < D; day++) {
+            int maxCap = cap;
+            while ((maxCap -= weights[i]) >= 0) {
+                i++;
+                // 假设计算了 D 天，若 i = weights.length
+                if (i == weights.length) return true;
+            }
+        }
+        return false;
+    }
+
+    private int getMax(int[] weights) {
+        int max = 0;
+        for (int w : weights) {
+            max = Math.max(w, max);
+        }
+        return max;
+    }
+
+    private int getSum(int[] weights) {
+        int sum = 0;
+        for (int w : weights) {
+            sum += w;
+        }
+        return sum;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
