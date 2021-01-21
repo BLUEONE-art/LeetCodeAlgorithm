@@ -70,7 +70,23 @@
  */
 public class Solution {
     public ListNode detectCycle(ListNode head) {
-        
+
+        ListNode slow, fast;
+        slow = fast = head;
+        // 步进 2，所以必须保证 fast 和 fast.next != null
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+            if (slow == fast) {
+                break;
+            }
+        }
+        slow = head;
+        while (slow != null) {
+            slow = slow.next;
+            fast = fast.next;
+        }
+        return slow;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
