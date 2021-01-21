@@ -3535,3 +3535,138 @@ private int getMax(int[] piles) {
 }
 ```
 
+## 在 D 天内送达包裹的能力(LeetCode[1011])
+
+### 思路
+
+与 H 天吃香蕉问题类似，不同的是 left 是 weights 数组中的最大数，因为货物不能拆分每次必须保证能至少运送一件货物；right 为 weights 数组的货物重量之和。
+
+### 代码实现
+
+```java
+public int shipWithinDays(int[] weights, int D) {
+
+    // 最小的载重，因为货物不能被分割，所以最小载重就是 weight 矩阵中的最大值
+    int left = getMax(weights);
+    // 最大的载重就是货物重量之和，因为是搜索左侧边界，所以 + 1
+    int right = getSum(weights) + 1;
+    while (left < right) {
+        int mid = left + (right - left) / 2; // 等价于 (left + right) / 2
+        if (canFinish(weights, mid, D)) {
+            right = mid;
+        } else {
+            left = mid + 1;
+        }
+    }
+    return left;
+}
+
+// 判断 D 天内能否以 cap 吨/天 的速度运完
+private boolean canFinish(int[] weights, int cap, int D) {
+    // 记录运送了多少件货物
+    int i = 0;
+    // 计算 D 天内运送了 i 件货物
+    for (int day = 0; day < D; day++) {
+        int maxCap = cap;
+        while ((maxCap -= weights[i]) >= 0) {
+            i++;
+            // 假设计算了 D 天，若 i = weights.length
+            if (i == weights.length) return true;
+        }
+    }
+    return false;
+}
+
+private int getMax(int[] weights) {
+    int max = 0;
+    for (int w : weights) {
+        max = Math.max(w, max);
+    }
+    return max;
+}
+
+private int getSum(int[] weights) {
+    int sum = 0;
+    for (int w : weights) {
+        sum += w;
+    }
+    return sum;
+}
+```
+
+首先思考使用 for 循环暴力解决问题，观察代码是否如下形式：
+
+```java
+for (int i = 0; i < n; i++)
+    if (isOK(i))
+        return answer;
+```
+
+如果是，那么就可以使用二分搜索优化搜索空间：如果要求最小值就是搜索左侧边界的二分，如果要求最大值就用搜索右侧边界的二分。
+
+## 双指针技巧汇总
+
+双指针技巧还可以分为两类，一类是「快慢指针」，一类是「左右指针」。前者解决主要解决链表中的问题，比如典型的判定链表中是否包含环；后者主要解决数组（或者字符串）中的问题，比如二分查找。
+
+### 环形链表I(判断链表中是否有环LeetCode[141])
+
+单链表的特点是每个节点只知道下一个节点，所以一个指针的话无法判断链表中是否含有环的。
+
+如果链表中不含环，那么这个指针最终会遇到空指针 null 表示链表到头了，这还好说，可以判断该链表不含环。
+
+```java
+boolean hasCycle(ListNode head) {
+    while (head != null)
+        head = head.next;
+    return false;
+}
+```
+
+但是如果链表中含有环，那么这个指针就会陷入死循环，因为环形数组中没有 null 指针作为尾部节点。
+
+经典解法就是用两个指针，一个每次前进两步，一个每次前进一步。如果不含有环，跑得快的那个指针最终会遇到 null，说明链表不含环；如果含有环，快指针最终会超慢指针一圈，和慢指针相遇，说明链表含有环。
+
+```java
+public boolean hasCycle(ListNode head) {
+
+    // 定义快慢指针
+    ListNode slow, faster;
+    slow = faster = head;
+    // 如果该链表不为环形链表，faster 必比 slow 先到末尾 null 的位置
+    // slow 步进 1，faster 步进 2
+    // 如果没有环，他们永远不会相遇，有环肯定会相遇的
+    while (faster != null && faster.next != null) { // 快指针会先到末尾
+        faster = faster.next.next;
+        slow = slow.next;
+
+        if (slow == faster) return true;
+    }
+    return false;
+}
+```
+
+### 环形链表II(已知链表中含有环，返回这个环的起始位置LeetCode[142])
+
+#### 题目描述
+
+![](LeetCode刷题记录.assets/链表中求环的起始位置描述.png)
+
+#### 思路
+
+**核心思想：**当快慢指针第一次相遇的时候，让其中任意一个指针重新指向头结点，然后让它俩以**相同**的速度前进，再次相遇时 slow/fast 所在的节点就是环开始的起始位置。
+
+**解释：**
+
+第一次相遇时，假设慢指针 slow 走了 k 步，那么快指针 fast 一定走了 2k 步，也就是说比 slow 多走了 k 步（也就是环的长度）。**这一步是检测链表中是否有环**
+
+![](LeetCode刷题记录.assets/快慢指针第一次相遇.png)
+
+但是**不能保证**第一次相遇时 相遇点 = 环起始点！
+
+设相遇点距环的起点的距离为 m，那么环的起点距头结点 head 的距离为 k - m，也就是说如果从 head 前进 k - m 步就能到达环起点。
+
+![](LeetCode刷题记录.assets/快慢指针第二次相遇情况.png)
+
+如果从相遇点继续前进 k - m 步，也恰好到达环起点。
+
+所以，只要我们把快慢指针中的任一个重新指向 head，然后两个指针同速前进，k - m 步后就会相遇，相遇之处就是环的起点了。
