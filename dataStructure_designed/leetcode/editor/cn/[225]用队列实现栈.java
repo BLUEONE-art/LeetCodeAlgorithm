@@ -22,29 +22,59 @@
 //leetcode submit region begin(Prohibit modification and deletion)
 class MyStack {
 
+    Queue<Integer> q;
+    int top_elem;
     /** Initialize your data structure here. */
     public MyStack() {
 
+        q = new LinkedList<>();
+        this.top_elem = 0;
     }
-    
+
     /** Push element x onto stack. */
     public void push(int x) {
 
+        // 因为底层是队列，先进先出(尾部加入，头部取出)
+        // 用于实现栈，则新加入队列的元素(队列尾部)为栈顶元素
+        q.offer(x);
+        top_elem = x;
     }
-    
+
     /** Removes the element on top of the stack and returns that element. */
     public int pop() {
 
+        // 获取栈顶(队列尾部)元素好获取，因为在每次 push() 的时候可以用一个变量记录
+        // 但是 remove 的时候，队列仅提供队列头部元素的 remove 方法
+        // 将队头的元素取出来重新添加到队尾，这样队尾的元素就被提到队头了
+        int size = q.size();
+        // 暂时保存队尾的两个元素
+        while (size > 2) {
+
+            // 循环将队列头部的元素加到队尾
+            q.offer(q.poll());
+            size--;
+        }
+
+        // 此时原队列尾部的两个元素被移到头部了
+        // 更新 top_elem：即为即将要放到队尾的元素
+        top_elem = q.peek();
+        // 再把这个元素移到队尾
+        q.offer(q.poll());
+        // 此时原来在队尾的元素被真正移到队头了，返回即可
+        return q.poll();
     }
-    
+
     /** Get the top element. */
     public int top() {
 
+        // 返回栈顶元素，即 push() 后的元素 top_elem
+        return top_elem;
     }
-    
+
     /** Returns whether the stack is empty. */
     public boolean empty() {
 
+        return q.isEmpty();
     }
 }
 
