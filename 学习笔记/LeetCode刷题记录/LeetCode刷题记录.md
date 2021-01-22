@@ -3670,3 +3670,214 @@ public boolean hasCycle(ListNode head) {
 如果从相遇点继续前进 k - m 步，也恰好到达环起点。
 
 所以，只要我们把快慢指针中的任一个重新指向 head，然后两个指针同速前进，k - m 步后就会相遇，相遇之处就是环的起点了。
+
+#### 代码实现
+
+```java
+public ListNode detectCycle(ListNode head) {
+
+    ListNode slow, fast;
+    slow = fast = head;
+    // 步进 2，所以必须保证 fast 和 fast.next != null
+    //        while (fast != null && fast.next != null) {
+    while (true) {
+        if (fast == null || fast.next == null) return null;
+        fast = fast.next.next;
+        slow = slow.next;
+        if (slow == fast) break;
+    }
+    slow = head;
+    while (slow != fast) {
+        slow = slow.next;
+        fast = fast.next;
+    }
+    return slow;
+}
+```
+
+### 链表的中间结点(LeetCode[876])
+
+#### 题目描述
+
+找到一个非环形链表的中间节点并返回，如果链表元素个数为偶数，返回链表中间节点的第二个节点。
+
+#### 思路
+
+可以让快指针一次前进两步，慢指针一次前进一步，当快指针到达链表尽头时，慢指针就处于链表的中间位置。
+
+当链表的长度是奇数时，slow 恰巧停在中点位置；如果长度是偶数，slow 最终的位置是中间偏右：
+
+![](LeetCode刷题记录.assets/链表中间节点.png)
+
+**寻找链表中点的一个重要作用是对链表进行归并排序。**
+
+数组的归并排序：求中点索引递归地把数组二分，最后合并两个有序数组。对于链表，合并两个有序链表是很简单的，难点就在于二分。
+
+#### 代码实现
+
+```java
+public ListNode middleNode(ListNode head) {
+
+    // 定义快慢指针
+    ListNode slow, fast;
+    slow = fast = head;
+    // 因为 fast 步进 2，所以当奇数时 fast 最终会在最后一个节点，没指向 null
+    // 偶数时，fast 指向 null
+    // 所以当 fast == null || fast.next == null，循环结束
+    // 否命题就是 fast != null && fast.next != null
+    // a || b --> 否 a && 否 b
+    // a && b --> 否 a || 否 b
+    while (fast != null && fast.next != null) {
+        slow =slow.next;
+        fast = fast.next.next;
+    }
+    return slow;
+}
+```
+
+### [剑指 Offer 22]链表中倒数第k个节点
+
+#### 题目描述
+
+输入一个链表，输出该链表中倒数第k个节点。为了符合大多数人的习惯，本题从1开始计数，即链表的尾节点是倒数第1个节点。例如，一个链表有6个节点，从头节点开始，它们的值依次是1、2、3、4、5、6。这个链表的倒数第3个节点是值为4的节点。
+
+#### 思路
+
+思路还是使用快慢指针，让快指针先走 k 步，然后快慢指针开始同速前进。这样当快指针走到链表末尾 null 时，慢指针所在的位置就是倒数第 k 个链表节点（为了简化，假设 k 不会超过链表长度）
+
+#### 代码实现
+
+```java
+public ListNode getKthFromEnd(ListNode head, int k) {
+
+    ListNode slow, fast;
+    slow = fast = head;
+
+    // 先让 fast 先走 k 步
+    while (k > 0) {
+        fast = fast.next;
+        k--;
+    }
+    while (fast != null) {
+        fast = fast.next;
+        slow = slow.next;
+    }
+    return slow;
+}
+```
+
+# 2021.1.22记录
+
+## 左右指针的常用算法
+
+### 二分查找
+
+见上面二分查找算法详解
+
+### 两数之和
+
+#### 题目描述
+
+![](LeetCode刷题记录.assets/两数之和题目描述.jpg)
+
+#### 思路
+
+只要数组有序，就应该想到双指针技巧。这道题的解法有点类似二分查找，通过调节 left 和 right 可以调整 sum 的大小。
+
+#### Java 自带排序方法
+
++ 快速排序：首先是最简单的Array.sort，直接进行排序：
+
+```java
+int[] arr = {4,3,5,1,7,9,3};
+Arrays.sort(arr);
+```
+
++ 部分排序法：使用Array.sort还可进行选择想要排序的部分数字，如将下角标编号为1~4的数字进行排序，其他数字顺序不变。
+
+```java
+int[] arr = {4,3,5,1,2,9,3,0};
+Arrays.sort(arr,1,4);
+```
+
+#### Java 中复制数组的方法
+
+```java
+// nums：原数组
+// 0：起始位置
+// nums.length：新数组的长度
+int[] arr = Arrays.copyOfRange(nums, 0, nums.length);
+```
+
+根据 sort() 方法可以很方便的计算数组最大值
+
+#### 代码实现
+
+```java
+// 有序数组就要想到左右指针的方法
+public int[] twoSum(int[] nums, int target) {
+    int left = 0; // 左侧最小索引
+    int right = nums.length - 1; // 搜索空间：[left, right]
+    int[] arr = Arrays.copyOfRange(nums, 0, nums.length);
+    Arrays.sort(arr);
+    while (left <= right) {
+        int sum = arr[left] + arr[right];
+        if (sum == target) {
+            int a = findIndex(left, arr, nums);
+            int b = findIndex(right, arr, nums);
+            if (a == b) {
+                // 找到一个不在 nums 数组中的数
+                // 此时 arr 为有序数组，arr[arr.length - 1] 表示 arr 和 nums 数组的最大值
+                // arr[arr.length - 1] + 1 在 nums 中一定不存在
+                nums[b] = arr[arr.length - 1] + 1;
+                b = findIndex(right, arr, nums);
+            }
+            return new int[]{a, b};
+        } else if (sum < target) {
+            left++; // 让 left 大一点再搜索
+        } else if (sum > target) {
+            right--; // right 小一点再搜索
+        }
+    }
+    return new int[]{-1, -1};
+}
+
+// 找到 left 和 right 在 nums 数组中的索引
+private int findIndex(int afterIndex, int[] arr, int[] nums) {
+    int orignalIndex = 0, i = 0;
+    while (i < nums.length) {
+        if (arr[afterIndex] == nums[i]) {
+            orignalIndex = i;
+            break;
+        }
+        i++;
+    }
+    return orignalIndex;
+}
+```
+
+### 反转数组
+
+#### 思路
+
+利用左右指针分别指向数组的最左边和最右边，先交换这两个值，依次对左右指针--，遍历数组元素即可完成反转。
+
+#### 代码实现
+
+```java
+public void traverse(int[] nums) {
+    int left = 0;
+    int right = nums.length - 1;
+    while(left < right) { // 排除奇数元素个数的情况
+        int tmp = nums[left];
+        nums[left] = nums[right];
+        nums[right] = tmp;
+        left--;
+        right--;
+    }
+}
+```
+
+### 滑动窗口算法
+
+这也许是双指针技巧的最高境界了，如果掌握了此算法，可以解决一大类子字符串匹配的问题，不过「滑动窗口」算法比上述的这些算法稍微复杂些。
