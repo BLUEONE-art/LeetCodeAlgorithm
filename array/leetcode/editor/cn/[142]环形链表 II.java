@@ -74,15 +74,15 @@ public class Solution {
         ListNode slow, fast;
         slow = fast = head;
         // 步进 2，所以必须保证 fast 和 fast.next != null
-        while (fast != null && fast.next != null) {
-            slow = slow.next;
+//        while (fast != null && fast.next != null) {
+        while (true) {
+            if (fast == null || fast.next == null) return null;
             fast = fast.next.next;
-            if (slow == fast) {
-                break;
-            }
+            slow = slow.next;
+            if (slow == fast) break;
         }
         slow = head;
-        while (slow != null) {
+        while (slow != fast) {
             slow = slow.next;
             fast = fast.next;
         }
