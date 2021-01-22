@@ -46,19 +46,22 @@
 class Solution {
     // 有序数组就要想到左右指针的方法
     public int[] twoSum(int[] nums, int target) {
-        int[] arr = Arrays.copyOfRange(nums, 0, nums.length);
-//        int[] arr = new int[nums.length];
-//        for (int i = 0; i < nums.length; i++) {
-//            arr[i] = nums[i];
-//        }
-        Arrays.sort(arr);
         int left = 0; // 左侧最小索引
-        int right = arr.length - 1; // 搜索空间：[left, right]
-        while (left < right) {
+        int right = nums.length - 1; // 搜索空间：[left, right]
+        int[] arr = Arrays.copyOfRange(nums, 0, nums.length);
+        Arrays.sort(arr);
+        while (left <= right) {
             int sum = arr[left] + arr[right];
             if (sum == target) {
                 int a = findIndex(left, arr, nums);
                 int b = findIndex(right, arr, nums);
+                if (a == b) {
+                    // 找到一个不在 nums 数组中的数
+                    // 此时 arr 为有序数组，arr[arr.length - 1] 表示 arr 和 nums 数组的最大值
+                    // arr[arr.length - 1] + 1 在 nums 中一定不存在
+                    nums[b] = arr[arr.length - 1] + 1;
+                    b = findIndex(right, arr, nums);
+                }
                 return new int[]{a, b};
             } else if (sum < target) {
                 left++; // 让 left 大一点再搜索
@@ -75,6 +78,7 @@ class Solution {
         while (i < nums.length) {
             if (arr[afterIndex] == nums[i]) {
                 orignalIndex = i;
+                break;
             }
             i++;
         }
