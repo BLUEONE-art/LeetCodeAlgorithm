@@ -64,7 +64,8 @@ class Solution {
             }
 
             // 再往右滑的过程中，如果找到一个可行解，判断要不要收缩
-            while (right - left >= s1_arr.length) { // 只要大于等于字串的长度就应该移动
+            // 只要大于等于字串的长度就应该移动，保证字串的长度就是窗口的长度
+            while (right - left >= s1_arr.length) {
                 if (valid == need.size()) {
                     return true;
                 }
