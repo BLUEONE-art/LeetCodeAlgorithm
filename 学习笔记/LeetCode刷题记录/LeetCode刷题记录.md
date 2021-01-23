@@ -4098,3 +4098,73 @@ public boolean checkInclusion(String s1, String s2) {
 **2、**当发现`valid == need.size()`时，就说明窗口中就是一个合法的排列，所以立即返回`true`。
 
 至于如何处理窗口的扩大和缩小，和最小覆盖子串完全相同。
+
+### 找所有字母异位词(LeetCode[438])
+
+#### 题目描述
+
+![](LeetCode刷题记录.assets/所有字母异位词问题描述.jpg)
+
+#### 思路
+
+ 这个所谓的字母异位词，不就是排列吗？
+
+**相当于，输入一个串`S`，一个串`T`，找到`S`中所有`T`的排列，返回它们的起始索引**。
+
+#### 实现代码
+
+```java
+public List<Integer> findAnagrams(String s, String p) {
+    HashMap<Character, Integer> need = new HashMap<>();
+    HashMap<Character, Integer> window = new HashMap<>();
+    List<Integer> res = new ArrayList<>();
+    // 将 t 字串的每个字符放入 need 和 window，初始化各个字符的次数都为 0
+    char[] s_arr = s.toCharArray();
+    char[] p_arr = p.toCharArray();
+    for (char c : p_arr) need.put(c, need.getOrDefault(c, 0) + 1);
+    // 初始化左右指针，初始位置：[left, right) = [0, 0)
+    int left = 0, right = 0;
+    // 用 valid 变量表示窗口中满足 need 条件的字符个数
+    int valid = 0;
+    // 循环遍历整个字符转 s
+    while (right < s_arr.length) {
+        // 先 left 不动，移动 right，直到找到一个可行解
+        char c = s_arr[right];
+        // 右移扩大窗口
+        right++;
+        // 更新窗口内的数据
+        if (need.containsKey(c)) {
+            // 如果 c 就是我们要找的字符之一，让 window 中对应的 key 的值 + 1
+            // window.getOrDefault(c, 0)：如果 window 中没有 c，自动创建并设置默认值为 0
+            window.put(c, window.getOrDefault(c, 0) + 1);
+            // 如果两个 map 中 c 对应的次数一致，即找到一个想要的字符
+            if (window.get(c).equals(need.get(c))) {
+                valid++;
+            }
+        }
+
+        // 如果在扩大 right 的过程中找到了一个可行解，判断是否需要缩小 left 以获得最优解
+        // 此 while 在上一个 while 中
+        while (right - left >= p_arr.length) {
+            if (valid == need.size()) {
+                res.add(left);
+            }
+            // 逐步将窗口左边的元素移除窗口，看 valid == need.size() 还成立不？
+            char d = s_arr[left];
+            // 移动左边的窗口
+            left++;
+            // 更新窗口中的数据，如果 d 有用
+            if (need.containsKey(d)) {
+                // 如果 d 在 need 和 window 中出现的次数相同，即为 1
+                if (window.get(d).equals(need.get(d))) {
+                    valid--;
+                }
+                window.put(d, window.getOrDefault(d, 0) - 1);
+            }
+        }
+    }
+    return res;
+}
+```
+
+跟寻找字符串的排列一样，只是找到一个合法异位词（排列）之后将起始索引加入`res`即可。
