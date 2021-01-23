@@ -3881,3 +3881,149 @@ public void traverse(int[] nums) {
 ### 滑动窗口算法
 
 这也许是双指针技巧的最高境界了，如果掌握了此算法，可以解决一大类子字符串匹配的问题，不过「滑动窗口」算法比上述的这些算法稍微复杂些。
+
+# 2021.1.22记录
+
+#### 晃动窗口顺口溜
+
+```markdown
+链表字串数组题，double指针快下笔
+双指针家三兄弟，各个都是万人迷
+
+快慢指针最神奇，链表操作无压力
+归并排序找中点，链表成环做判定
+
+左右指针最常见，左右两端向中间
+反转数组简单写，二分搜索信手拈
+
+滑动窗口无敌哥，字串问题别得瑟
+左右指针滑窗口，齐头并进分前后
+```
+
+#### Java 中遍历字符串字符的方法
+
+```java
+String str = "asdfghjkl";
+// 方法一
+for(int i=0; i<str.length(); i++){
+	char ch = str.charAt(i);
+}
+// 方法二
+char[] c=s.toCharArray();
+for(char cc:c){
+...//cc直接用了
+} 
+// 方法三
+for(int i=0;i<str.length();i++){
+	String subStr = str.substring(i, i+1);
+}
+```
+
+### 最小覆盖字串(LeetCode[76])
+
+#### 问题描述
+
+![](LeetCode刷题记录.assets/最小覆盖字串描述.png)
+
+就是说要在`S`(source) 中找到包含`T`(target) 中全部字母的一个子串，且这个子串一定是所有可能子串中最短的。
+
+#### 滑动窗口思路
+
+***1、***我们在字符串`S`中使用双指针中的左右指针技巧，初始化`left = right = 0`，**把索引左闭右开区间`[left, right)`称为一个「窗口」**。
+
+***2、***我们先不断地增加`right`指针扩大窗口`[left, right)`，直到窗口中的字符串符合要求（包含了`T`中的所有字符）。**可行解**
+
+***3、***此时，我们停止增加`right`，转而不断增加`left`指针缩小窗口`[left, right)`，直到窗口中的字符串不再符合要求（不包含`T`中的所有字符了）。同时，每次增加`left`，我们都要更新一轮结果。**寻找最优解**
+
+***4、***重复第 2 和第 3 步，直到`right`到达字符串`S`的尽头。
+
+**第 2 步相当于在寻找一个「可行解」，然后第 3 步在优化这个「可行解」，最终找到最优解，**也就是最短的覆盖子串。
+
+画图理解一下，`needs`和`window`相当于计数器，分别记录`T`中字符出现次数和「窗口」中的相应字符的出现次数。
+
+初始状态：
+
+![](LeetCode刷题记录.assets/寻找最小覆盖字串初始状态.png)
+
+增加`right`，直到窗口`[left, right)`包含了`T`中所有字符：
+
+![](LeetCode刷题记录.assets/增大窗口.png)
+
+现在开始增加`left`，缩小窗口`[left, right)`。
+
+![](LeetCode刷题记录.assets/缩小窗口.png)
+
+直到窗口中的字符串不再符合要求，`left`不再继续移动。**虽然 left = 3 不满足最小字串条件，但是在缩小窗口之前由变量 start = left 记录了最小字串的左边界**  
+
+![](LeetCode刷题记录.assets/缩小窗口停止条件.png)
+
+之后重复上述过程，先移动`right`，再移动`left`…… 直到`right`指针到达字符串`S`的末端，算法结束。
+
+#### 代码实现
+
+```java
+public String minWindow(String s, String t) {
+    HashMap<Character, Integer> need = new HashMap<>();
+    HashMap<Character, Integer> window = new HashMap<>();
+    // 将 t 字串的每个字符放入 need 和 window，初始化各个字符的次数都为 0
+    char[] s_arr = s.toCharArray();
+    char[] t_arr = t.toCharArray();
+    for (char c : t_arr) need.put(c, need.getOrDefault(c, 0) + 1);
+    // 初始化左右指针，初始位置：[left, right) = [0, 0)
+    int left = 0, right = 0;
+    // 用 valid 变量表示窗口中满足 need 条件的字符个数
+    int valid = 0;
+    // 记录覆盖最小字串的起始坐标和长度
+    int start = 0, len = Integer.MAX_VALUE;
+    // 循环遍历整个字符转 s
+    while (right < s_arr.length) {
+        // 先 left 不动，移动 right，直到找到一个可行解
+        char c = s_arr[right];
+        // 右移扩大窗口
+        right++;
+        // 更新窗口内的数据
+        if (need.containsKey(c)) {
+            // 如果 c 就是我们要找的字符之一，让 window 中对应的 key 的值 + 1
+            // window.getOrDefault(c, 0)：如果 window 中没有 c，自动创建并设置默认值为 0
+            window.put(c, window.getOrDefault(c, 0) + 1);
+            // 如果两个 map 中 c 对应的次数一致，即找到一个想要的字符
+            if (window.get(c).equals(need.get(c))) {
+                valid++;
+            }
+        }
+
+        // 如果在扩大 right 的过程中找到了一个可行解，判断是否需要缩小 left 以获得最优解
+        // 此 while 在上一个 while 中
+        while (valid == need.size()) {
+            // 更新最小覆盖字串
+            // 初次比较肯定小于 len
+            if (right - left < len) {
+                // 记录原始 left
+                start = left;
+                len = right - left;
+            }
+            // 逐步将窗口左边的元素移除窗口，看 valid == need.size() 还成立不？
+            char d = s_arr[left];
+            // 移动左边的窗口
+            left++;
+            // 更新窗口中的数据，如果 d 有用
+            if (need.containsKey(d)) {
+                // 如果 d 在 need 和 window 中出现的次数相同，即为 1
+                if (window.get(d).equals(need.get(d))) {
+                    valid--;
+                }
+                window.put(d, window.getOrDefault(d, 0) - 1);
+            }
+        }
+    }
+    return len == Integer.MAX_VALUE ? "" : s.substring(start, start + len);
+}
+```
+
+需要注意的是，当我们发现某个字符在`window`的数量满足了`need`的需要，就要更新`valid`，表示有一个字符已经满足要求。而且，你能发现，两次对窗口内数据的更新操作是完全对称的。
+
+**当`valid == need.size()`时，说明`T`中所有字符已经被覆盖，已经得到一个可行的覆盖子串**，现在应该开始收缩窗口了，以便得到「最小覆盖子串」。
+
+移动`left`收缩窗口时，窗口内的字符都是可行解，所以应该在收缩窗口的阶段进行最小覆盖子串的更新，以便从可行解中找到长度最短的最终结果。
+
+### 
