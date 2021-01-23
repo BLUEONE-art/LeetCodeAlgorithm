@@ -4026,4 +4026,75 @@ public String minWindow(String s, String t) {
 
 移动`left`收缩窗口时，窗口内的字符都是可行解，所以应该在收缩窗口的阶段进行最小覆盖子串的更新，以便从可行解中找到长度最短的最终结果。
 
-### 
+### 字符串的排列(Leetcode[567])
+
+#### 题目描述
+
+![](LeetCode刷题记录.assets/字符串的排序问题描述.jpg)
+
+#### 思路
+
+注意，输入的`s1`是可以包含重复字符的。这种题目，是明显的滑动窗口算法，**相当给你一个`S`和一个`T`，请问你`S`中是否存在一个子串，包含`T`中所有字符且不包含其他字符**？
+
+#### 代码实现
+
+```java
+/* 找出 s2 中是否存在一个字串，包含 s1 中所有字符而不包括其他字符 */
+// 滑动窗口无敌哥，字串问题别得瑟
+// 左右指针滑窗口，齐头并进分前后
+public boolean checkInclusion(String s1, String s2) {
+    HashMap<Character, Integer> need = new HashMap<>();
+    HashMap<Character, Integer> window = new HashMap<>();
+    // String to char[]
+    char[] s1_arr = s1.toCharArray();
+    char[] s2_arr = s2.toCharArray();
+    // 将所要找的元素和其出现的次数放入 need 中
+    for (char c : s1_arr) {
+        need.put(c, need.getOrDefault(c, 0) + 1);
+    }
+    int left = 0, right = 0;
+    // 记录 window 中元素的个数
+    int valid = 0;
+    // 滑动 right
+    while (right < s2_arr.length) {
+        // c 是滑动的元素
+        char c = s2_arr[right];
+        right ++;
+        // 更新 window 中的数据
+        if (need.containsKey(c)) {
+            window.put(c, window.getOrDefault(c, 0) + 1);
+            // 如果 need 和 window 中 c 对应的 val 相同，说明完成了一个字符
+            if (need.get(c).equals(window.get(c))) {
+                valid++;
+            }
+        }
+
+        // 再往右滑的过程中，如果找到一个可行解，判断要不要收缩
+        // 只要大于等于字串的长度就应该移动，保证字串的长度就是窗口的长度
+        while (right - left >= s1_arr.length) {
+            if (valid == need.size()) {
+                return true;
+            }
+            // d 是 left 向右滑动要去掉的元素
+            char d = s2_arr[left];
+            left++;
+            // 更新 window 中的数据
+            if (need.containsKey(d)) {
+                if (need.get(d).equals(window.get(d))) {
+                    valid--;
+                }
+                window.put(d, window.getOrDefault(d, 0) - 1);
+            }
+        }
+    }
+    return false;
+}
+```
+
+对于这道题的解法代码，基本上和最小覆盖子串一模一样，只需要改变两个地方：
+
+**1、**本题移动`left`缩小窗口的时机是窗口大小大于`t.size()`时，因为排列嘛，显然长度应该是一样的。
+
+**2、**当发现`valid == need.size()`时，就说明窗口中就是一个合法的排列，所以立即返回`true`。
+
+至于如何处理窗口的扩大和缩小，和最小覆盖子串完全相同。
