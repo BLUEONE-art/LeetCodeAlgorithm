@@ -3034,7 +3034,8 @@ public int[] maxSlidingWindow(int[] nums, int k) {
 + **Object remove（int index）：它删除此列表中位置'index'处的元素。如果列表为空，它会抛出'NoSuchElementException'。**
 + boolean remove（Object O）：它用于从链表中移除一个特定的元素并返回一个布尔值。
 + **Object removeLast（）：它用于删除并返回链接列表的最后一个元素。**
-+ **Object pollLast() : 此方法用于检索链表的最后一个元素或结尾元素，最后从列表中删除最后一个元素。如果列表为空，则它将返回null。**与 remove() 的区别是当没有特定元素的时候返回不一样，remove() 报异常，pollLast() 返回 null。
++ **Object pollLast() : 此方法用于检索链表的最后一个元素或结尾元素，最后从列表中删除最后一个元素。如果列表为空，则它将返回null。**与 remove() 的区别是当没有特定元素的时候返回不一样，remove() 报异s常，pollLast() 返回 null。
++ **Collections.swap(数组nums, index1, index2)：**交换数组中的两个元素
 
 ## 用栈实现队列(Leetcode[232])
 
@@ -4209,4 +4210,84 @@ public int lengthOfLongestSubstring(String s) {
 这里和之前不一样，**要在收缩窗口完成后更新`res`**，因为窗口收缩的 while 条件是存在重复元素，换句话说收缩完成后一定保证窗口中没有重复。
 
 # 2021.1.24记录
+
+## 常数时间插入、删除和获取随机元素(LeetCode[380])
+
+### 题目描述
+
+![](C:\Users\dell\Desktop\GithubProject\LeetCodeAlgorithm\学习笔记\LeetCode刷题记录\LeetCode刷题记录.assets\常数时间插入获取随机元素的描述.jpg)
+
+**1、插入，删除，获取随机元素这三个操作的时间复杂度必须都是 O(1)**。
+
+**2、`getRandom`方法返回的元素必须等概率返回随机元素**，也就是说，如果集合里面有`n`个元素，每个元素被返回的概率必须是`1/n`。
+
+### 思路
+
+对于`getRandom`方法，如果想「等概率」且「在 O(1) 的时间」取出元素，一定要满足：**底层用数组实现，且数组必须是紧凑的**。
+
+这样我们就可以直接生成随机数作为索引，从数组中取出该随机索引对应的元素，作为随机元素。
+
+**但如果用数组存储元素的话，插入，删除的时间复杂度怎么可能是 O(1) 呢**？
+
+可以做到！对数组尾部进行插入和删除操作不会涉及数据搬移，时间复杂度是 O(1)。
+
+**所以，如果我们想在 O(1) 的时间删除数组中的某一个元素`val`，可以先把这个元素交换到数组的尾部，然后再`pop`掉**。
+
+交换两个元素必须通过索引进行交换对吧，那么我们需要一个哈希表`valToIndex`来记录每个元素值对应的索引。
+
+### 代码实现
+
+```java
+/* 以 O(1) 时间复杂度完成插入、删除、随机获取元素的操作*/
+class RandomizedSet {
+    // 想要以 O(1) 随机访问元素，必选数组实现
+    ArrayList<Integer> nums;
+    // 创建 HashMap 记录数组元素对应的索引值
+    HashMap<Integer, Integer> valToIndex;
+    /** Initialize your data structure here. */
+    public RandomizedSet() {
+        this.nums = new ArrayList<>();
+        this.valToIndex = new HashMap<>();
+    }
+
+    /** Inserts a value to the set. Returns true if the set did not already contain the specified element. */
+    public boolean insert(int val) {
+        // 如果数组中存在 val，则返回false
+        if (valToIndex.containsKey(val)) return false;
+        // 想要以 O(1) 复杂度插入元素，为了避免移动元素，必须将元素插入至数组末尾
+        // 没加任何数之前，nums.size() == 0
+        valToIndex.put(val, nums.size());
+        nums.add(val);
+        return true;
+    }
+
+    /** Removes a value from the set. Returns true if the set contained the specified element. */
+    public boolean remove(int val) {
+        // 如果元素不存在 val，返回false
+        if (!valToIndex.containsKey(val)) return false;
+        // 想要以 O(1) 复杂度移除元素，先将要删除元素移动至数组末尾，再删除
+        int index = valToIndex.get(val); // 获取 val 的索引 index
+        // 将 valToIndex 中最后元素(即 nums 里最后的元素)索引换成 index
+        valToIndex.put(nums.get(nums.size() - 1), index);
+        // 将数组中 val 和 最后的元素互换位置, 此时 val 就是最后的元素
+        Collections.swap(nums, index, nums.size() - 1);
+        // 删除数组最后一个元素，即为 val
+        nums.remove(nums.size() - 1);
+        // 删除 valToIndex 中 val 对应的索引
+        valToIndex.remove(val);
+        return true;
+    }
+
+    /** Get a random element from the set. */
+    public int getRandom() {
+        return nums.get((int)(Math.random() * nums.size()));
+    }
+}
+```
+
+### Java 中生成随机数的方法
+
+```java
+nums.get((int)(Math.random() * nums.size()));
+```
 
