@@ -3893,7 +3893,7 @@ public void traverse(int[] nums) {
 快慢指针最神奇，链表操作无压力
 归并排序找中点，链表成环做判定
 
-左右指针最常见，左右两端向中间
+左右指针最常见，两端分别向中间
 反转数组简单写，二分搜索信手拈
 
 滑动窗口无敌哥，字串问题别得瑟
@@ -4173,11 +4173,40 @@ public List<Integer> findAnagrams(String s, String p) {
 
 #### 问题描述
 
-
+![](C:\Users\dell\Desktop\GithubProject\LeetCodeAlgorithm\学习笔记\LeetCode刷题记录\LeetCode刷题记录.assets\最长无重复字串问题描述.jpg)
 
 #### 思路
 
-
+`need`和`valid`都不需要，而且更新窗口内数据也只需要简单的更新计数器`window`即可，当`window[c]`值大于 1 时，说明窗口中存在重复字符，不符合条件，就该移动`left`缩小窗口了。
 
 #### 代码实现
+
+```java
+public int lengthOfLongestSubstring(String s) {
+    HashMap<Character, Integer> window = new HashMap<>();
+    int res = 0;
+    int left = 0, right = 0;
+    char[] s_arr = s.toCharArray();
+    while (right < s_arr.length) {
+        char c = s_arr[right];
+        right++;
+        window.put(c, window.getOrDefault(c, 0) + 1);
+
+        // 收缩窗口
+        while (window.get(c) > 1) { // 此时有重复元素了
+            char d = s_arr[left];
+            left++;
+            window.put(d, window.getOrDefault(d, 0) - 1);
+        }
+        res = Math.max(res, right - left);
+    }
+    return res;
+}
+```
+
+唯一需要注意的是，在哪里更新结果`res`呢？我们要的是最长无重复子串，哪一个阶段可以保证窗口中的字符串是没有重复的呢？
+
+这里和之前不一样，**要在收缩窗口完成后更新`res`**，因为窗口收缩的 while 条件是存在重复元素，换句话说收缩完成后一定保证窗口中没有重复。
+
+# 2021.1.24记录
 
