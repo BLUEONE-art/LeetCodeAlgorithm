@@ -4638,7 +4638,42 @@ public ListNode deleteDuplicates(ListNode head) {
 }
 ```
 
-## 有序链表去重(LeetCode[83])
+## 移除元素(LeetCode[27])
+
+### 题目描述
+
+![](LeetCode刷题记录.assets/移除元素描述.jpg)
+
+### 思路
+
+如果`fast`遇到需要去除的元素，则直接跳过，否则就告诉`slow`指针，并让`slow`前进一步。
+
+### 代码实现
+
+```java
+/* 原地删除数组中指定的值并返回删除元素后数组的长度 */
+public int removeElement(int[] nums, int val) {
+    int slow = 0, fast = 0;
+    while (fast < nums.length) {
+        // 若 nums[fast] == val，说明 fast 踩到雷了，别让 slow++ 了
+        // 必须先判断再 fast++，因为有可能第一个元素就等于 val
+        if (nums[fast] != val) {
+            // 更新 slow 对应的值
+            nums[slow] = nums[fast]; // 此时 slow 和 fast 都没 ++
+            // 没踩到雷时，slow 前进
+            slow++;
+        }
+        // fast 前进
+        fast++;
+    }
+    // 因为到最后 slow 实际上比 fast 先进行 ++，所以返回 slow 即可
+    return slow;
+}
+```
+
+**注意这里和有序数组去重的解法有一个重要不同**，我们这里是先给`nums[slow]`赋值然后再给`slow++`，这样可以保证`nums[0..slow-1]`是不包含值为`val`的元素的，最后的结果数组长度就是`slow`。**实际上 slow++ 是先执行的**
+
+## 移动零(LeetCode[283])
 
 ### 题目描述
 
@@ -4654,7 +4689,7 @@ public ListNode deleteDuplicates(ListNode head) {
 1
 ```
 
-## 有序链表去重(LeetCode[83])
+## 有序(LeetCode[])
 
 ### 题目描述
 
