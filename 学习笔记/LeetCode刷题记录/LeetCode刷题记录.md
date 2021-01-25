@@ -4677,16 +4677,30 @@ public int removeElement(int[] nums, int val) {
 
 ### 题目描述
 
-
+给你输入一个数组`nums`，请你**原地修改**，将数组中的所有值为 0 的元素移到数组末尾。比如说给你输入`nums = [0,1,4,0,2]`，你的算法没有返回值，但是会把`nums`数组原地修改成`[1,4,2,0,0]`。
 
 ### 思路
 
-
+题目让我们将所有 0 移到最后，其实就相当于移除`nums`中的所有 0，然后再把后面的元素都赋值为 0 即可。
 
 ### 代码实现
 
 ```java
-1
+public void moveZeroes(int[] nums) {
+    int slow = 0, fast = 0;
+    int l = nums.length;
+    while (fast < l) {
+        // 判断 fast 是否踩到雷(0)
+        if (nums[fast] != 0) {
+            nums[slow] = nums[fast];
+            slow++;
+        }
+        fast++;
+    }
+    for (int index = slow; index < l; index++) {
+        nums[index] = 0;
+    }
+}
 ```
 
 ## 有序(LeetCode[])
