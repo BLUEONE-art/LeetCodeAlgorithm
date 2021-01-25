@@ -4174,7 +4174,7 @@ public List<Integer> findAnagrams(String s, String p) {
 
 #### 问题描述
 
-![](C:\Users\dell\Desktop\GithubProject\LeetCodeAlgorithm\学习笔记\LeetCode刷题记录\LeetCode刷题记录.assets\最长无重复字串问题描述.jpg)
+![](LeetCode刷题记录.assets/最长无重复字串问题描述.jpg)
 
 #### 思路
 
@@ -4215,7 +4215,7 @@ public int lengthOfLongestSubstring(String s) {
 
 ### 题目描述
 
-![](C:\Users\dell\Desktop\GithubProject\LeetCodeAlgorithm\学习笔记\LeetCode刷题记录\LeetCode刷题记录.assets\常数时间插入获取随机元素的描述.jpg)
+![](LeetCode刷题记录.assets/常数时间插入获取随机元素描述.jpg)
 
 **1、插入，删除，获取随机元素这三个操作的时间复杂度必须都是 O(1)**。
 
@@ -4291,3 +4291,201 @@ class RandomizedSet {
 nums.get((int)(Math.random() * nums.size()));
 ```
 
+# 2021.1.25记录
+
+## Java 中数组的相关方法
+
++ 声明数组
+
+```java
+String[] aArray = new String[5];
+String[] bArray = {"a","b","c", "d", "e"};
+String[] cArray = new String[]{"a","b","c","d","e"};
+```
+
++ 打印数组
+
+```java
+int[] intArray = { 1, 2, 3, 4, 5 };
+String intArrayString = Arrays.toString(intArray);
+// print directly will print reference value
+System.out.println(intArray);
+// [I@7150bd4d
+System.out.println(intArrayString);
+// [1, 2, 3, 4, 5]
+```
+
++ 由数组创建一个 ArrayList
+
+```java
+String[] stringArray = { "a", "b", "c", "d", "e" };
+ArrayList<String> arr = new ArrayList<String>(Arrays.asList(StringArray));
+System.out.println(arr);
+// [a, b, c, d, e]
+```
+
++ 检查数组是否包含一个值
+
+```java
+String[] stringArray = { "a", "b", "c", "d", "e" };
+boolean b = Arrays.asList(stringArray).contains("a");
+System.out.println(b);
+// true
+```
+
++ 合并数组
+
+```java
+int[] intArray = { 1, 2, 3, 4, 5 };
+int[] intArray2 = { 6, 7, 8, 9, 10 };
+// Apache Commons Lang library
+int[] combinedIntArray = ArrayUtils.addAll(intArray, intArray2);
+```
+
++ 一行代码声明数组
+
+```java
+method(new String[]{"a", "b", "c", "d", "e"});
+```
+
++ 把数组中的元素用指定的分隔符连接起来
+
+```java
+// containing the provided list of elements
+// Apache common lang
+String j = StringUtils.join(new String[] { "a", "b", "c" }, ", ");
+System.out.println(j);
+// a, b, c
+```
+
++ 把一个 ArrayList 转换成数组
+
+见上述记录
+
++ 把一个数组转换成 Set
+
+```java
+String[] stringArray = { "a", "b", "c", "d", "e" };
+// Arrays.asList()方法的作用是将数组或一些元素转为集合,而你得到的集合并不是我们通常使用的List集合，而是Arrays里面的一个内部类。
+Set<String> set = new HashSet<String>(Arrays.asList(stringArray));
+System.out.println(set);
+//[d, e, b, c, a]
+```
+
++ 反转数组
+
+```java
+int[] intArray = { 1, 2, 3, 4, 5 };
+ArrayUtils.reverse(intArray);
+System.out.println(Arrays.toString(intArray));
+//[5, 4, 3, 2, 1]
+```
+
++ 移除数组中的元素
+
+```java
+int[] intArray = { 1, 2, 3, 4, 5 };
+int[] removed = ArrayUtils.removeElement(intArray, 3);//create a new array
+System.out.println(Arrays.toString(removed));
+```
+
+## 避开黑名单的随机数(LeetCode[710])
+
+### 题目描述
+
+输入一个正整数`N`，代表左闭右开区间`[0,N)`，再给你输入一个数组`blacklist`，其中包含一些「黑名单数字」，且`blacklist`中的数字都是区间`[0,N)`中的数字。
+
+需要设计数据结构：
+
+```java
+class Solution {
+public:
+    // 构造函数，输入参数
+    Solution(int N, vector<int>& blacklist) {}
+
+    // 在区间 [0,N) 中等概率随机选取一个元素并返回
+    // 这个元素不能是 blacklist 中的元素
+    int pick() {}
+};
+```
+
+`pick`函数会被多次调用，每次调用都要在区间`[0,N)`中「等概率随机」返回一个「不在`blacklist`中」的整数。
+
+**而且题目要求，在`pick`函数中应该尽可能少调用随机数生成函数`rand()`**。
+
+### 思路
+
+ **类似上一道题，我们可以将区间`[0,N)`看做一个数组，然后将`blacklist`中的元素移到数组的最末尾，同时用一个哈希表进行映射**。
+
++ 分区间：size = N - blacklist.length;
+
+  表示 size 左边的数都不是黑名单的数，pick() 函数调用的时候只会生成 [0, size）范围内的随机数，即使 size 左边有黑名单内的数，我们也要把他映射成不是黑名单的数。
+
++ 细节1：若 [size, N - 1) 内有黑名单的数，不需要再次映射了。
+
++ 细节2：要保证 mapping.put(b, last) 中 last 一定不是内名单内的数，需要进行处理。其中 mapping 为黑名单元素到不是黑名单元素的 HashMap，b 为黑名单的数，last = N - 1。 
+
+#### 处理时会出现的情况
+
++ 黑名单内的数都在 size 左边
+
+![](LeetCode刷题记录.assets/全在size左边.png)
+
++ 黑名单内的数都在 size 两边
+
+![](LeetCode刷题记录.assets/黑名单内的数都在 size 两边.png)
+
+**在对`mapping[b]`赋值时，要保证`last`一定不在`blacklist`中**
+
+### 代码实现
+
+```java
+int N;
+int size;
+int[] blacklist;
+HashMap<Integer, Integer> mapping = new HashMap<>();
+public Solution(int N, int[] blacklist) {
+    this.N = N;
+    this.blacklist = blacklist;
+    // 需要定义一个边界，让 size 左边在黑名单的数字映射成 size 右边不在黑名单内的数字
+    // 则数组分成了两边，size 左边都是不在黑名单内的，即使在，也被映射成了不在黑名单的数字
+    // size 右边都是黑名单内的数字，不会在 size ~ N - 1 范围内取数字
+    size = N - blacklist.length;
+    // 给黑名单数初始化到 mapping 中
+    for (int i : blacklist) {
+        mapping.put(i, 666);
+    }
+    int last = N - 1;
+    // 映射 blacklist 中的黑名单数
+    for (int b : blacklist) {
+        // 若 size 右边本身存在黑名单数，不需要重新映射
+        if (b >= size) {
+            continue;
+        }
+        // 当 last == N - 1 已经在 mapping 中了
+        // 即在初始化 mapping 过程中，blacklist 中包括有 last
+        // 要保证 size 右边的 last 一定是一个不在黑名单内的数
+        while (mapping.containsKey(last)) {
+            last--;
+        }
+        // 只有 b 比 size 小才需要重新映射
+        mapping.put(b, last);
+        last--;
+    }
+}
+
+public int pick() {
+    int randomNum = (int) (Math.random() * size);
+    // 如果 randomNum 是在黑名单内
+    if (mapping.containsKey(randomNum)) {
+        return mapping.get(randomNum);
+    }
+    return randomNum;
+}
+```
+
+### 总结核心思想
+
++ 如果想高效地，等概率地随机获取元素，就要使用数组作为底层容器。
++ 如果要保持数组元素的紧凑性，可以把待删除元素换到最后，然后`pop`掉末尾的元素，这样时间复杂度就是 O(1) 了。当然，我们需要额外的哈希表记录值到索引的映射。
++ 对于第二题，数组中含有「空洞」（黑名单数字），也可以利用哈希表巧妙处理映射关系，让数组在逻辑上是紧凑的，方便随机取元素。
