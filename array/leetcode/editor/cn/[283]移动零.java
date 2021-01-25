@@ -18,7 +18,19 @@
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public void moveZeroes(int[] nums) {
-
+        int slow = 0, fast = 0;
+        int l = nums.length;
+        while (fast < l) {
+            // 判断 fast 是否踩到雷(0)
+            if (nums[fast] != 0) {
+                nums[slow] = nums[fast];
+                slow++;
+            }
+            fast++;
+        }
+        for (int index = slow; index < l; index++) {
+            nums[index] = 0;
+        }
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
