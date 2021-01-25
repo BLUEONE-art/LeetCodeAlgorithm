@@ -4555,3 +4555,118 @@ public String smallestSubsequence(String s) {
 }
 ```
 
+## 有序数组去重(LeetCode[26])
+
+### 题目描述
+
+![](LeetCode刷题记录.assets/有序数组去重描述.jpg)
+
+如果不是原地修改的话，我们直接 new 一个`int[]`数组，把去重之后的元素放进这个新数组中，然后返回这个新数组即可。
+
+但是原地删除，不允许我们 new 新数组，只能在原数组上操作，然后返回一个长度，这样就可以通过返回的长度和原始数组得到我们去重后的元素有哪些了。
+
+### 思路
+
+**通用解法就是快慢指针技巧**。我们让慢指针`slow`走在后面，快指针`fast`走在前面探路，找到一个不重复的元素就告诉`slow`并让`slow`前进一步。这样当`fast`指针遍历完整个数组`nums`后，**`nums[0..slow]`就是不重复元素**。
+
+![](LeetCode刷题记录.assets/有序数组去重思路.gif)
+
+### 代码实现
+
+```java
+/* 原地删除(不增加新的存储空间)数组中的重复项 */
+// 核心思想：快指针先去前面探路，没有重复项，让 slow++，并且 nums[slow] == nums[fast]
+public int removeDuplicates(int[] nums) {
+    if (nums.length == 0) return 0;
+
+    // 定义快慢指针
+    int slow = 0, fast = 0;
+    // 遍历数组，快指针在前，满指针在后
+    while (fast < nums.length) {
+        // 若 nums[slow] != nums[fast]，说明 fast 前进到跟 slow 不重复的地方了
+        if (nums[fast] != nums[slow]) {
+            // slow 可以往前移动了，前面没有雷
+            slow++;
+            // 把 num[fast] 的值赋给 num[slow]
+            nums[slow] = nums[fast];
+        }
+        fast++;
+    }
+    return slow + 1;
+}
+```
+
+## 有序链表去重(LeetCode[83])
+
+### 题目描述
+
+给定一个排序链表，删除所有重复的元素，使得每个元素只出现一次。 
+
+### 思路
+
+同有序数组去重，唯一的区别是把数组赋值操作变成操作指针。
+
+![](LeetCode刷题记录.assets/有序链表去重.gif)
+
+### 代码实现
+
+```java
+/* 原地删除(不增加新的存储空间)链表中的重复项 */
+// 核心思想：快指针先去前面探路，没有重复项，让 slow++，并且 nums[slow] == nums[fast]
+public ListNode deleteDuplicates(ListNode head) {
+    if (head == null) return null;
+
+    // 定义快慢指针
+    ListNode slow, fast;
+    slow = fast = head;
+    // fast 指针去前面探雷
+    while (fast != null) {
+        // 刚开始快慢指针对应的值肯定是相同的，随着 fast 的前行，当快慢指针对应的值不等时
+        if (fast.val != slow.val) {
+            // 更新 slow 的指针信息
+            slow.next = fast;
+            // slow++，维持 slow 与 fast 又在同一起跑线上
+            //                slow = slow.next; // slow = slow.next = fast;
+            slow = fast;
+        }
+        // 快指针递增
+        fast = fast.next;
+    }
+    // 遍历完成后
+    slow.next = null;
+    return head;
+}
+```
+
+## 有序链表去重(LeetCode[83])
+
+### 题目描述
+
+
+
+### 思路
+
+
+
+### 代码实现
+
+```java
+1
+```
+
+## 有序链表去重(LeetCode[83])
+
+### 题目描述
+
+
+
+### 思路
+
+
+
+### 代码实现
+
+```java
+1
+```
+
