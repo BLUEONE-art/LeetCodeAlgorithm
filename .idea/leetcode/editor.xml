@@ -91,6 +91,14 @@
             </LeetcodeEditor>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/array/leetcode/editor/cn/[1081]不同字符的最小子序列.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/array/leetcode/editor/cn/[1081]不同字符的最小子序列.java" />
+              <option name="questionId" value="1159" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/array/leetcode/editor/cn/[141]环形链表.java">
           <value>
             <LeetcodeEditor>
@@ -120,6 +128,14 @@
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/array/leetcode/editor/cn/[1]两数之和.java" />
               <option name="questionId" value="1" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/array/leetcode/editor/cn/[316]去除重复字母.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/array/leetcode/editor/cn/[316]去除重复字母.java" />
+              <option name="questionId" value="316" />
             </LeetcodeEditor>
           </value>
         </entry>
