@@ -4489,3 +4489,69 @@ public int pick() {
 + 如果想高效地，等概率地随机获取元素，就要使用数组作为底层容器。
 + 如果要保持数组元素的紧凑性，可以把待删除元素换到最后，然后`pop`掉末尾的元素，这样时间复杂度就是 O(1) 了。当然，我们需要额外的哈希表记录值到索引的映射。
 + 对于第二题，数组中含有「空洞」（黑名单数字），也可以利用哈希表巧妙处理映射关系，让数组在逻辑上是紧凑的，方便随机取元素。
+
+## 去除重复字母(LeetCode[316]) && 不同字符的最小子序列(LeetCode[1081])
+
+### 问题描述
+
+![](LeetCode刷题记录.assets/去除重复字母问题描述.png)
+
+要求一、**要去重**。
+
+要求二、去重字符串中的字符顺序**不能打乱`s`中字符出现的相对顺序**。
+
+要求三、在所有符合上一条要求的去重字符串中，**字典序最小**的作为最终结果。
+
+比如说输入字符串`s = "babc"`，去重且符合相对位置的字符串有两个，分别是`"bac"`和`"abc"`，但是我们的算法得返回`"abc"`，因为它的字典序更小。
+
+### 思路
+
++ 保证字串中没有重复字母 --> 通过 inStack[] 数组记录 s 中的字母是否在栈 stk 中
++ 要使得获得的字串中字典序最小 --> 通过比较入栈元素和栈顶元素的大小判断是否需要弹栈
++  保证即使字典序大，但是只有唯一的一个字母，也不能进行弹栈操作 --> 维护一个 count[] 记录每个字母的次数
+
+### 代码实现
+
+```java
+/* ①保证字串中没有重复字母 --> 通过 inStack[] 数组记录 s 中的字母是否在栈 stk 中
+*  ②要使得获得的字串中字典序最小 --> 通过比较入栈元素和栈顶元素的大小判断是否需要弹栈
+*  ③保证即使字典序大，但是只有唯一的一个字母，也不能进行弹栈操作 --> 维护一个 count[] 记录每个字母的次数*/
+public String smallestSubsequence(String s) {
+    // 定义 stk，对 s 中的元素进行入、出栈的操作
+    Stack<Character> stk = new Stack<>();
+    // 定义一个数组记录每个字母出现的次数
+    int[] count = new int[256]; // 字母的话，存 ASCII 码，0~255够了
+    for (int i = 0; i < s.length(); i++) {
+        count[s.charAt(i)]++;
+    }
+    boolean[] inStark = new boolean[256];
+    // 遍历 s 中所有字母进行 进、出栈 操作
+    for (char c : s.toCharArray()) {
+        // 遍历一个元素，该元素对应的次数减一
+        count[c]--;
+
+        // 若 c 已经在 inStack[] 中了，不需要再 进、出栈 了
+        if (inStark[c]) continue;
+
+        // 循环判断 stk 是否为空并且入栈元素和栈顶元素的字典序
+        // 字典序由小到大，不满足的弹栈
+        while (!stk.isEmpty() && stk.peek() > c) {
+            // 如果此时 stk.peek() 的次数已经为 0 了，即使 stk.peek() > c，也不要 pop(stk.peek())
+            if (count[stk.peek()] == 0) {
+                break;
+            }
+            // 否则 pop 并更新 c 在 inStack 中的状态
+            inStark[stk.pop()] = false;
+        }
+        stk.push(c);
+        // 更新 c 在 inStack[] 中的状态，表示 c 在 inStack[] 中了
+        inStark[c] = true;
+    }
+    StringBuilder sb = new StringBuilder();
+    while (!stk.empty()) {
+        sb.append(stk.pop());
+    }
+    return sb.reverse().toString();
+}
+```
+
