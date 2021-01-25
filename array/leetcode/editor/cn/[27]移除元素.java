@@ -51,18 +51,38 @@
 
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
+
     /* 原地删除数组中指定的值并返回删除元素后数组的长度 */
     public int removeElement(int[] nums, int val) {
         int slow = 0, fast = 0;
         while (fast < nums.length) {
             // 若 nums[fast] == val，说明 fast 踩到雷了，别让 slow++ 了
+            // 必须先判断再 fast++，因为有可能第一个元素就等于 val
             if (nums[fast] != val) {
-                nums[slow] = nums[fast];
+                // 更新 slow 对应的值
+                nums[slow] = nums[fast]; // 此时 slow 和 fast 都没 ++
+                // 没踩到雷时，slow 前进
                 slow++;
             }
+            // fast 前进
             fast++;
         }
+        // 因为到最后 slow 实际上比 fast 先进行 ++，所以返回 slow 即可
         return slow;
     }
+
+//    /* 原地删除数组中指定的值并返回删除元素后数组的长度 */
+//    public int removeElement(int[] nums, int val) {
+//        int slow = 0, fast = 0;
+//        while (fast < nums.length) {
+//            // 若 nums[fast] == val，说明 fast 踩到雷了，别让 slow++ 了
+//            if (nums[fast] != val) {
+//                nums[slow] = nums[fast];
+//                slow++;
+//            }
+//            fast++;
+//        }
+//        return slow;
+//    }
 }
 //leetcode submit region end(Prohibit modification and deletion)
