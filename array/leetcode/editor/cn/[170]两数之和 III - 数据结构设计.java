@@ -1,6 +1,6 @@
-/* 设计一个类，拥有两个 API：*/
+/* 设计一个类，拥有两个 API：哈希表实现*/
 class TwoSum {
-    // 创建存放 元素 --> 索引 的 HashMap
+    // 创建存放 元素 --> 出现频次 的 HashMap
     HashMap<Integer, Integer> index = new HashMap<>();
     // 向数据结构中添加一个数 number
     public void add(int number) {
@@ -17,5 +17,24 @@ class TwoSum {
             if (key != other && index.containsKey(other)) return true;
         }
         return false;
+    }
+}
+
+/* 设计一个类，拥有两个 API：哈希集合实现*/
+class TwoSum {
+    // 创建存放所有元素全部组合的 sum
+    Set<Integer> sum = new HashSet<>();
+    // 创建存放 number 的数组
+    ArrayList<Integer> nums = new ArrayList<>();
+    // 向数据结构中添加一个数 number
+    public void add(int number) {
+        for (Integer num : nums) {
+            sum.add(num + number);
+        }
+        nums.add(number);
+    }
+    // 寻找当前数据结构中是否存在两个数的和为 value
+    public boolean find(int value) {
+        return sum.containsKey(value);
     }
 }
