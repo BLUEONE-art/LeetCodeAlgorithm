@@ -54,23 +54,52 @@ class Solution {
 //        return fib(n - 1) + fib(n - 2);
 //    }
 
-    /* 构建备忘录进行计算 */
+//    /* 构建备忘录进行计算，O(N) */
+//    public int fib(int n) {
+//        if (n < 1) return 0;
+//        // 创建一个数组(备忘录)记录每个节点的计算结果，防止冗余计算
+//        ArrayList<Integer> memo = new ArrayList<>(Collections.nCopies(n + 1, 0));
+//        // 初始化 memo 全设置为 0
+//        return helper(memo, n);
+//    }
+//
+//    private int helper(ArrayList<Integer> memo, int n) {
+//        // base case
+//        if (n == 1 || n == 2) return 1;
+//        // 如果已经计算过 n 节点的值，直接调用 memo[n]
+//        if (memo.get(n) != 0) return memo.get(n);
+//        // 不断计算 memo[n] 的值
+//        memo.set(n, helper(memo, n -1) + helper(memo, n - 2));
+//        return memo.get(n);
+//    }
+
+//    /* 根据 DP 表和状态方程解决 */
+//    public int fib(int n) {
+//        if (n < 1) return 0;
+//        if (n == 1 || n == 2) return 1;
+//        // 以数组形式创建 DP 表
+//        ArrayList<Integer> DP = new ArrayList<>(Collections.nCopies(n + 1, 0));
+//        // base case
+//        DP.set(1, 1); DP.set(2, 1);
+//        for (int i = 3; i <= n; i++) {
+//            DP.set(i, DP.get(i - 1) + DP.get(i - 2));
+//        }
+//        return DP.get(n);
+//    }
+
+    /* 根据状态方程解决 --> 优化：只需要每次维护 DP[n - 1] 和 DP[n - 2] 即可 O(1)*/
     public int fib(int n) {
         if (n < 1) return 0;
-        // 创建一个数组(备忘录)记录每个节点的计算结果，防止冗余计算
-        ArrayList<Integer> memo = new ArrayList<>(Collections.nCopies(n + 1, 0));
-        // 初始化 memo 全设置为 0
-        return helper(memo, n);
-    }
-
-    private int helper(ArrayList<Integer> memo, int n) {
-        // base case
         if (n == 1 || n == 2) return 1;
-        // 如果已经计算过 n 节点的值，直接调用 memo[n]
-        if (memo.get(n) != 0) return memo.get(n);
-        // 不断计算 memo[n] 的值
-        memo.set(n, helper(memo, n -1) + helper(memo, n - 2));
-        return memo.get(n);
+        // base case
+        int prev = 1, curr = 1;
+        for (int i = 3; i <= n; i++) {
+            int sum = prev + curr;
+            // 更新 prev(DP[n - 1]) 和 curr(DP[n - 2])
+            prev = curr; // 新的 prev 是以前的 curr
+            curr = sum; // 新的 curr 就是以前的 sum
+        }
+        return curr;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
