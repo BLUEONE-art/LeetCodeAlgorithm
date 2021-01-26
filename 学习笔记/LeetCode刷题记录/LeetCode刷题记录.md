@@ -3775,7 +3775,7 @@ public ListNode getKthFromEnd(ListNode head, int k) {
 
 见上面二分查找算法详解
 
-### 两数之和
+### 两数之和(LeetCode[1] && [167])
 
 #### 题目描述
 
@@ -3856,6 +3856,116 @@ private int findIndex(int afterIndex, int[] arr, int[] nums) {
     return orignalIndex;
 }
 ```
+
+### 无序数组的 TwoSum 问题
+
+#### 思路
+
+核心思想：在哈希表 index 存储的元素中，如果能找到两个元素之和等于 target 并且它们的索引不同，则这两个元素的索引即为所求
+
+#### 代码实现
+
+```java
+/* 使用 HashMap 存储每个元素索引解决问题*/
+public int[] twoSum(int[] nums, int target) {
+    // 创建 nums 数组中元素 --> 其对应索引 的映射
+    HashMap<Integer, Integer> index = new HashMap<>();
+    // 将元素和索引放入 index
+    for (int i = 0; i < nums.length; i++) {
+        index.put(nums[i], i);
+    }
+    // 核心思想：在 index 存储的元素中，如果能找到两个元素之和等于 target 并且它们的索引不同，则即为所求
+    for (int i = 0; i < nums.length; i++) {
+        // nums[i] + other = target
+        int other = target - nums[i];
+        // 若 other 也在 index 中并且 other 的索引跟 nums[i] 的索引还不一样
+        if (index.containsKey(other) && index.get(other) != i) {
+            return new int[]{i, index.get(other)};
+        }
+    }
+    return new int[]{-1, -1};
+}
+```
+
+由于哈希表的查询时间为 O(1)，算法的时间复杂度降低到 O(N)，但是需要 O(N) 的空间复杂度来存储哈希表。
+
+### 两数之和 III - 数据结构设计(LeetCode[167])
+
+#### 题目描述
+
+设计一个类，拥有两个 API：
+
+```java
+class TwoSum {
+    // 向数据结构中添加一个数 number
+    public void add(int number);
+    // 寻找当前数据结构中是否存在两个数的和为 value
+    public boolean find(int value);
+}
+```
+
+#### 思路
+
++ 可以仿照上一道题目，使用一个哈希表辅助`find`方法。
+
+  这个解法的时间复杂度呢，`add`方法是 O(1)，`find`方法是 O(N)，空间复杂度为 O(N)
+
++ 对于频繁使用`find`方法的场景，我们可以进行优化。我们可以参考上一道题目的暴力解法，借助**哈希集合**来针对性优化`find`方法
+
+  这样`sum`中就储存了所有加入数字可能组成的和，每次`find`只要花费 O(1) 的时间在集合中判断一下是否存在就行。
+
+#### 代码实现
+
+```java
+/* 设计一个类，拥有两个 API：哈希表辅助 find 方法*/
+class TwoSum {
+    // 创建存放 元素 --> 索引 的 HashMap
+    HashMap<Integer, Integer> index = new HashMap<>();
+    // 向数据结构中添加一个数 number
+    public void add(int number) {
+        index.put(number, index.getOrDefault(number, 0) + 1);
+    }
+    // 寻找当前数据结构中是否存在两个数的和为 value
+    public boolean find(int value) {
+        for (Integer key : index.keySet()) { // 获取 HashMap 中的 key 的集合
+            // other = value - key
+            int other = value - key;
+            // 此时有两个一样的元素组成 value
+            if (key == other && index.get(key) > 1) return true;
+            // 两个不一样的元素组成
+            if (key != other && index.containsKey(other)) return true;
+        }
+        return false;
+    }
+}
+
+/* 设计一个类，拥有两个 API：哈希集合实现*/
+class TwoSum {
+    // 创建存放所有元素全部组合的 sum
+    Set<Integer> sum = new HashSet<>();
+    // 创建存放 number 的数组
+    ArrayList<Integer> nums = new ArrayList<>();
+    // 向数据结构中添加一个数 number
+    public void add(int number) {
+        for (Integer num : nums) {
+            sum.add(num + number);
+        }
+        nums.add(number);
+    }
+    // 寻找当前数据结构中是否存在两个数的和为 value
+    public boolean find(int value) {
+        return sum.containsKey(value);
+    }
+}
+```
+
+#### 总结
+
+对于 TwoSum 问题，一个难点就是给的数组**无序**。对于一个无序的数组，我们似乎什么技巧也没有，只能暴力穷举所有可能。
+
+**一般情况下，我们会首先把数组排序再考虑双指针技巧**。
+
+TwoSum 启发我们，HashMap 或者 HashSet 也可以帮助我们处理无序数组相关的简单问题。
 
 ### 反转数组
 
@@ -4702,6 +4812,8 @@ public void moveZeroes(int[] nums) {
     }
 }
 ```
+
+# 2021.1.26记录
 
 ## 有序(LeetCode[])
 
