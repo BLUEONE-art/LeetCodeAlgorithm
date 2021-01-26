@@ -27,11 +27,51 @@
             </LeetcodeEditor>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/DP/leetcode/editor/cn/[1561]你可以获得的最大硬币数目.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/DP/leetcode/editor/cn/[1561]你可以获得的最大硬币数目.java" />
+              <option name="questionId" value="1683" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/DP/leetcode/editor/cn/[322]零钱兑换.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/DP/leetcode/editor/cn/[322]零钱兑换.java" />
+              <option name="questionId" value="322" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/DP/leetcode/editor/cn/[441]排列硬币.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/DP/leetcode/editor/cn/[441]排列硬币.java" />
+              <option name="questionId" value="441" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/DP/leetcode/editor/cn/[509]斐波那契数.java">
           <value>
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/DP/leetcode/editor/cn/[509]斐波那契数.java" />
               <option name="questionId" value="1013" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/DP/leetcode/editor/cn/[LCP 06]拿硬币.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/DP/leetcode/editor/cn/[LCP 06]拿硬币.java" />
+              <option name="questionId" value="1000056" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/DP/leetcode/editor/cn/[面试题 08.11]硬币.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/DP/leetcode/editor/cn/[面试题 08.11]硬币.java" />
+              <option name="questionId" value="100231" />
             </LeetcodeEditor>
           </value>
         </entry>
