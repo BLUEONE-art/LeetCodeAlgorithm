@@ -56,12 +56,12 @@
 class Solution {
     /* 暴力解法 */
     public int coinChange(int[] coins, int amount) {
-        // coins = [3] amount = 2 || coins = [1] amount = 2
-        // || (coins.length == 1 && amount % coins[0] != 0)
+        return dp(coins, amount);
+    }
+    private int dp(int[] coins, int amount) {
         if (amount < 0) return -1;
         // base case：当 amount 为 0 时返回 0；
         if (amount == 0) return 0;
-
         // 求所需组合的最小值，初始化 res 为最大值
         int res = Integer.MAX_VALUE;
         // 暴力求解
@@ -80,7 +80,6 @@ class Solution {
         int[] memo = new int[amount + 1];
         return dp(memo, coins, amount);
     }
-
     /* 函数定义： 计算 amount 金额时需要的最小数量的零钱组合并将结果记录在 memo 中*/
     private int dp(int[] memo, int[] coins, int amount) {
         if (amount < 0) return -1;
