@@ -52,21 +52,20 @@
 // 👍 1036 👎 0
 
 
-//leetcode submit region begin(Prohibit modification and deletion)
+//leetcode submit region begin(Prohibit modification and deletion)ll
 class Solution {
     /* 暴力解法 */
     public int coinChange(int[] coins, int amount) {
         if (amount < 0) return -1;
         // base case：当 amount 为 0 时返回 0；
         if (amount == 0) return 0;
-//        if (amount == 1) return 1;
         // 求所需组合的最小值，初始化 res 为最大值
         int res = Integer.MAX_VALUE;
         // 暴力求解
         for (int coin : coins) {
-            res = Math.min(res, coinChange(coins, amount - coin));
+            res = Math.min(res, 1 + coinChange(coins, amount - coin));
         }
-        return res + 1;
+        return res;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
