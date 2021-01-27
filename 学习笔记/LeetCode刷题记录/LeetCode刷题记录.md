@@ -3995,7 +3995,7 @@ public void traverse(int[] nums) {
 
 # 2021.1.22记录
 
-#### 晃动窗口顺口溜
+#### 滑动窗口顺口溜
 
 ```markdown
 链表字串数组题，double指针快下笔
@@ -4956,15 +4956,133 @@ public int fib(int n) {
 
 ### 思路
 
-+ 暴力解法
+首先，这个问题是动态规划问题，因为它具有「最优子结构」。**要符合「最优子结构」，子问题间必须互相独立**。
 
-  
+比如说，你的原问题是考出最高的总成绩，那么你的子问题就是要把语文考到最高，数学考到最高…… 为了每门课考到最高，你要把每门课相应的选择题分数拿到最高，填空题分数拿到最高…… 当然，最终就是你每门课都是满分，这就是最高的总成绩。
+
+得到了正确的结果：最高的总成绩就是总分。因为这个过程符合最优子结构，“每门科目考到最高”这些子问题是互相独立，互不干扰的。
+
+但是，如果加一个条件：你的语文成绩和数学成绩会互相制约，此消彼长。这样的话，显然你能考到的最高总成绩就达不到总分了，按刚才那个思路就会得到错误的结果。因为子问题并不独立，语文数学成绩无法同时最优，所以最优子结构被破坏。
+
+回到凑零钱问题，为什么说它符合最优子结构呢？比如你想求`amount = 11`时的最少硬币数（原问题），如果你知道凑出`amount = 10`的最少硬币数（子问题），你只需要把子问题的答案加一（再选一枚面值为 1 的硬币）就是原问题的答案，因为硬币的数量是没有限制的，子问题之间没有相互制，是互相独立的。
+
++ **暴力递归解法**
+
+  + 明确递归解法中的变量：唯一会变的就是 amount
+  + 明确递归函数的定义：int dp(int[] coins, int amount) 表示输入金额 amount，返回最小的组合数
+  + 子问题：对于每个金额 amount，其子问题可以表示 dp(int[] coins, int amount - coin)，子问题 + 1就是原问题的答案，然后自顶向下不断分解，再触底反弹。
+  + base case：显然目标金额为 0 时，所需硬币数量为 0；当目标金额小于 0 时，无解，返回 -1。
+
+  比如`amount = 11, coins = {1,2,5}`时画出递归树
+
+  ![](LeetCode刷题记录.assets/凑金额递归树.png)
+
+  子问题总数为递归树节点个数，这个比较难看出来，是 O(k^n)，总之是指数级别的。每个子问题中含有一个 for 循环，复杂度为 O(k)。所以总时间复杂度为 O(k * k^n)，指数级别。
+
++ **带备忘录的递归**
+
+  考虑如何通过备忘录消除重复子问题。
+
+  很显然「备忘录」大大减小了子问题数目，完全消除了子问题的冗余，所以子问题总数不会超过金额数 n，即子问题数目为 O(n)。处理一个子问题的时间不变，仍是 O(k)，所以总的时间复杂度是 O(kn)。
+
++ **dp 数组的迭代解法**
+
+  既然知道了这是个动态规划问题，就要思考**如何列出正确的状态转移方程**。
+
+  + **先确定「状态」**：也就是原问题和子问题中变化的变量。由于硬币数量无限，所以唯一的状态就是目标金额`amount`。
+  + **然后确定`dp`函数的定义**：函数 dp(n)表示，当前的目标金额是`n`，至少需要`dp(n)`个硬币凑出该金额。
+  + **然后确定「选择」并择优**，也就是对于每个状态，可以做出什么选择改变当前状态。具体到这个问题，无论当的目标金额是多少，选择就是从面额列表`coins`中选择一个硬币，然后目标金额就会减少。
+  + **最后明确 base case**，显然目标金额为 0 时，所需硬币数量为 0；当目标金额小于 0 时，无解，返回 -1。
+
+  至此，状态转移方程其实已经完成了，以上算法已经是暴力解法了，以上代码的数学形式就是状态转移方程
+
+  ![](LeetCode刷题记录.assets/凑零钱状态方程.png)
+
+![](LeetCode刷题记录.assets/动态规划调用过程.png)
+
+为啥`dp`数组初始化为`amount + 1`呢，因为凑成`amount`金额的硬币数最多只可能等于`amount`（全用 1 元面值的硬币），所以初始化为`amount + 1`就相当于初始化为正无穷，便于后续取最小值。
 
 ### 代码实现
 
 ```java
-1
+/* 暴力解法 */
+public int coinChange(int[] coins, int amount) {
+    return dp(coins, amount);
+}
+private int dp(int[] coins, int amount) {
+    if (amount < 0) return -1;
+    // base case：当 amount 为 0 时返回 0；
+    if (amount == 0) return 0;
+    // 求所需组合的最小值，初始化 res 为最大值
+    int res = Integer.MAX_VALUE;
+    // 暴力求解
+    for (int coin : coins) {
+        // 如果 subProblem == -1，表示无解，不用再比较最小值
+        int subProblem = coinChange(coins, amount - coin);
+        if (subProblem == -1) continue;
+        res = Math.min(res, 1 + subProblem);
+    }
+    return res;
+}
+
+/* 利用备忘录简化时间复杂度 */
+public int coinChange(int[] coins, int amount) {
+    // 创建备忘录
+    int[] memo = new int[amount + 1];
+    return dp(memo, coins, amount);
+}
+/* 函数定义： 计算 amount 金额时需要的最小数量的零钱组合并将结果记录在 memo 中*/
+private int dp(int[] memo, int[] coins, int amount) {
+    if (amount < 0) return -1;
+    // base case：当 amount 为 0 时返回 0；
+    if (amount == 0) return 0;
+    // 求所需组合的最小值，初始化 res 为最大值
+    int res = Integer.MAX_VALUE;
+    // 如果备忘录里已经记下了 amount 的计算结果，直接返回
+    if (memo[amount] != 0) return memo[amount];
+
+    for (int coin : coins) {
+        // 如果 subProblem == -1，表示无解，不用再比较最小值
+        int subProblem = dp(memo, coins, amount - coin);
+        if (subProblem == -1) continue;
+        res = Math.min(res, 1 + subProblem);
+    }
+    if (res != Integer.MAX_VALUE) {
+        memo[amount] = res;
+    } else memo[amount] = -1;
+
+    return memo[amount];
+}
+
+/* dp 数组的迭代解法 */
+public int coinChange(int[] coins, int amount) {
+    // 创建 dp 数组
+    ArrayList<Integer> dp = new ArrayList<>(Collections.nCopies(amount + 1, amount + 1));
+    dp.set(0, 0);
+    // 自底向上求 dp 表
+    for (int i = 0; i < dp.size(); i++) {
+        // 从 0 开始，向上求 dp[1]、dp[2]...
+        for (int coin : coins) {
+            // 如果 dp[i - coin < 0]，负数金额不存在的，直接跳过
+            if (i - coin < 0) continue;
+            dp.set(i, Math.min(dp.get(i), 1 + dp.get(i - coin)));
+        }
+    }
+    return dp.get(amount) == amount + 1 ? -1 : dp.get(amount);
+}
 ```
+
+### 总结
+
+第一个斐波那契数列的问题，解释了如何通过「备忘录」或者「dp table」的方法来优化递归树，并且明确了这两种方法本质上是一样的，只是自顶向下和自底向上的不同而已。
+
+第二个凑零钱的问题，展示了如何流程化确定「状态转移方程」，只要通过状态转移方程写出暴力递归解，剩下的也就是优化递归树，消除重叠子问题而已。
+
+**计算机解决问题其实没有任何奇技淫巧，它唯一的解决办法就是穷举**，穷举所有可能性。算法设计无非就是先思考“如何穷举”，然后再追求“如何聪明地穷举”。
+
+列出动态转移方程，就是在解决“如何穷举”的问题。之所以说它难，一是因为很多穷举需要递归实现，二是因为有的问题本身的解空间复杂，不那么容易穷举完整。
+
+备忘录、DP table 就是在追求“如何聪明地穷举”。用**空间换时间的**思路，是降低时间复杂度的不二法门。
 
 ## 有序(LeetCode[])
 
