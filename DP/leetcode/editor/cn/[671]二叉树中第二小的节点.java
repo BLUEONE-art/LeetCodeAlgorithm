@@ -54,19 +54,23 @@
  */
 class Solution {
     public int findSecondMinimumValue(TreeNode root) {
-        // base case: 如果第二小的值不存在，返回 -1
+        // base case
         if (root == null) return -1;
-        return helper(root, root.val);
+        return helper(root, root.val); // 默认 root.val 是最小值
     }
     /* 函数定义：输入二叉树和当前最小值，找到二叉树的第二小的节点，返回该节点的值 */
     private int helper(TreeNode root, int min) {
-        // base case
+        // base case 1
         if (root == null) return -1;
+        // base case 2
         if (root.val > min) return root.val;
 
         int left = helper(root.left, min);
         int right = helper(root.right, min);
 
+        // 后序遍历的代码
+        // 如果 root.left || root.right 下无子树，返回另一半的结果
+        // 根本没考虑题目，默认左右子树可以有一个为空，题目是要么是 0 节点，要么有两个子节点
         if (left == -1) return right;
         if (right == -1) return left;
         return Math.min(left, right);
