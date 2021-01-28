@@ -48,8 +48,9 @@
 
 
 //leetcode submit region begin(Prohibit modification and deletion)
+/* 找到数组 nums 中最长的递增子序列 */
 class Solution {
-    /* 找到数组 nums 中最长的递增子序列 */
+    // 动态规划解法：O(n^2)
     public int lengthOfLIS(int[] nums) {
         // dp[] 数组定义：假设 nums = [1,2,3,7,5]
         // dp[1] = 1; dp[2] = 2; ... dp[5] = 4
