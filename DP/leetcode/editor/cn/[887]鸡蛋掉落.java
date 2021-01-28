@@ -119,53 +119,53 @@ class Solution {
             dp[1][j] = j;
         }
         // base case:
-        // dp[0][..] = 0
         // dp[1][..] = N
         // dp[..][0] = 0
         // Java 默认初始化数组都为 0
         int res = Integer.MAX_VALUE;
-        for (int k = 1; k <= K; k++) {
+        for (int k = 2; k <= K; k++) {
             for (int n = 1; n <= N; n++) {
                 // 状态转移方程
                 dp[k][n] = Math.max(dp[k][N - n], dp[k - 1][n - 1]) + 1;
+//                res = Math.min(res, (Math.max(dp[k][N - n], dp[k - 1][n - 1]) + 1));
             }
         }
-        int min = Integer.MAX_VALUE;
-        for (int i = 0; i < dp.length; i++) {
-            for (int j = 0; j < dp[i].length; j++) {
-                if (min > dp[i][j]) {
-                    min = dp[i][j];
-                }
-            }
-        }
-        return min;
+//        int min = Integer.MAX_VALUE;
+//        for (int i = 0; i < dp.length; i++) {
+//            for (int j = 0; j < dp[i].length; j++) {
+//                if (min > dp[i][j]) {
+//                    min = dp[i][j];
+//                }
+//            }
+//        }
+        return res;
     }
 
-    /* 动态规划：根据鸡蛋个数和楼层数求最坏情况下最少需要扔几次鸡蛋能确定楼层 F，F 从 0 开始计数 */
-    public int superEggDrop(int K, int N) {
-        // 思维改变 + 二维数组
-        int[][] dp = new int[K + 1][N + 1]; // 因为楼层从 0 ~ N
-        // base case:
-        // dp[0][..] = 0
-        // dp[..][0] = 0
-        // Java 默认初始化数组都为 0
-        int m = 0;
-        // 换思路：dp[K][m] = N
-        while (dp[K][m] < N) { // 结束条件：当 m = N 时
-            m++;
-            for (int k = 1; k <= K; k++) {
-                // 状态转移方程
-                dp[k][m] = dp[k][m - 1] + dp[k - 1][m - 1] + 1;
-            }
-        }
-        // while 循环也可以写成：
-//        for (int m = i; dp[K][m] < N; m++) {
+//    /* 动态规划：根据鸡蛋个数和楼层数求最坏情况下最少需要扔几次鸡蛋能确定楼层 F，F 从 0 开始计数 */
+//    public int superEggDrop(int K, int N) {
+//        // 思维改变 + 二维数组
+//        int[][] dp = new int[K + 1][N + 1]; // 因为楼层从 0 ~ N
+//        // base case:
+//        // dp[0][..] = 0
+//        // dp[..][0] = 0
+//        // Java 默认初始化数组都为 0
+//        int m = 0;
+//        // 换思路：dp[K][m] = N
+//        while (dp[K][m] < N) { // 结束条件：当 m = N 时
+//            m++;
 //            for (int k = 1; k <= K; k++) {
 //                // 状态转移方程
 //                dp[k][m] = dp[k][m - 1] + dp[k - 1][m - 1] + 1;
 //            }
 //        }
-        return m;
-    }
+//        // while 循环也可以写成：
+////        for (int m = i; dp[K][m] < N; m++) {
+////            for (int k = 1; k <= K; k++) {
+////                // 状态转移方程
+////                dp[k][m] = dp[k][m - 1] + dp[k - 1][m - 1] + 1;
+////            }
+////        }
+//        return m;
+//    }
 }
 //leetcode submit region end(Prohibit modification and deletion)
