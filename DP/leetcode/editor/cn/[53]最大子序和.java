@@ -16,8 +16,11 @@
 
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
+    /* 最大子序和问题 */
     public int maxSubArray(int[] nums) {
-
+        // dp[i] 数组：数组以 nums[i] 结尾的最大字序和
+        int n = nums
+        int[] dp = new int[]
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
