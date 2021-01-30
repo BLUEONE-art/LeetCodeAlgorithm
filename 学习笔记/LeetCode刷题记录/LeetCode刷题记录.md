@@ -5833,6 +5833,87 @@ public int findRepeatNumber(int[] nums) {
 }
 ```
 
+# 2021.1.30记录
+
+## 俄罗斯套娃信封问题(LeetCode[354])
+
+### 题目描述
+
+![](LeetCode刷题记录.assets/嵌套信封问题描述.jpg)
+
+### 思路
+
+这道题目其实是最长递增子序列（Longes Increasing Subsequence，简写为 LIS）的一个变种，因为很显然，每次合法的嵌套是大的套小的，相当于找一个最长递增的子序列，其长度就是最多能嵌套的信封个数。
+
+但是难点在于，标准的 LIS 算法只能在数组中寻找最长子序列，而我们的信封是由`(w,h)`这样的二维数对形式表示的，如何把 LIS 算法运用过来呢？
+
+![](LeetCode刷题记录.assets/最长递增子序列.png)
+
+**核心思想：**
+
+**先对宽度`w`进行升序排序，如果遇到`w`相同的情况，则按照高度`h`降序排序。之后把所有的`h`作为一个数组，在这个数组上计算 LIS 的长度就是答案。**
+
+画个图理解一下，先对这些数对进行排序：
+
+![](LeetCode刷题记录.assets/信封嵌套思路1.jpg)
+
+然后在`h`上寻找最长递增子序列：
+
+![](LeetCode刷题记录.assets/信封嵌套思路2.jpg)
+
+这个子序列 [2,3],[5,4],[6,7] 就是最优的嵌套方案。
+
+这个解法的关键在于，对于宽度`w`相同的数对，要对其高度`h`进行降序排序。因为两个宽度相同的信封不能相互包含的，而逆序排序保证在`w`相同的数对中最多只选取一个计入 LIS。
+
+### 代码实现
+
+```java
+/* 俄罗斯套娃信封问题 */
+public int maxEnvelopes(int[][] envelopes) {
+    // 核心思想：对于二维的信封，有宽度 W 和高度 H
+    // ①按宽度 W 进行升序排序：宽度越来越大才能进行嵌套
+    // ②当宽度 W 相同的时候，高度 H 降序排序：因为宽度相同的信封不能嵌套，只能从中选择一封
+    // ③求高度 H 的最长递增子序列就是可以嵌套的信封数量
+
+    int n = envelopes.length; // 获得二维数组的行数，就相当每一列有多少个数
+    Arrays.sort(envelopes, new Comparator<int[]>()
+                // 注意compare 排序中默认升序
+                // 返回 1 == true 代表降序，我想调整顺序
+                // 返回 -1 代表升序
+                {
+                    public int compare(int[] a, int[] b) {
+                        // 默认升序：a[0] - b[0] < 0 = -1，第 0 列按升序处理
+                        // b[1] - a[1] > 0 = 1，第 1 列按降序处理
+                        return a[0] == b[0] ?
+                            b[1] - a[1] : a[0] - b[0];
+                    }
+                });
+    // 获得排序好的 envelope 数组的第 2 列
+    int[] height = new int[n];
+    for (int i = 0; i < n; i++) {
+        height[i] = envelopes[i][1];
+    }
+    // 求 height 中的最长递增子序列
+    int[] dp = new int[height.length];
+    // base case
+    Arrays.fill(dp, 1);
+    for (int i = 0; i < height.length; i++) {
+        for (int j = 0; j < i; j++) {
+            if (height[i] > height[j]) {
+                int tmp = dp[j] + 1; //找到一个升序的了，先让 dp[j] + 1
+                dp[i] = Math.max(dp[i], tmp); // 再比较
+            }
+        }
+    }
+    // dp 数组中的最大值即为所求
+    int res = 0;
+    for (int i = 0; i < dp.length; i++) {
+        res = Math.max(res, dp[i]);
+    }
+    return res;
+}
+```
+
 ## 有序(LeetCode[])
 
 ### 题目描述
