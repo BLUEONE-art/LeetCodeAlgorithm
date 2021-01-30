@@ -59,11 +59,27 @@
             </LeetcodeEditor>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/DP/leetcode/editor/cn/[354]俄罗斯套娃信封问题.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/DP/leetcode/editor/cn/[354]俄罗斯套娃信封问题.java" />
+              <option name="questionId" value="354" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/DP/leetcode/editor/cn/[441]排列硬币.java">
           <value>
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/DP/leetcode/editor/cn/[441]排列硬币.java" />
               <option name="questionId" value="441" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/DP/leetcode/editor/cn/[494]目标和.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/DP/leetcode/editor/cn/[494]目标和.java" />
+              <option name="questionId" value="494" />
             </LeetcodeEditor>
           </value>
         </entry>
@@ -736,6 +752,14 @@
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/leetcode_binarytree/leetcode/editor/cn/[SerializeAndDeserializeBinaryTree.java" />
               <option name="questionId" value="297" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/剑指Offer/leetcode/editor/cn/[494]目标和.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/剑指Offer/leetcode/editor/cn/[494]目标和.java" />
+              <option name="questionId" value="494" />
             </LeetcodeEditor>
           </value>
         </entry>
