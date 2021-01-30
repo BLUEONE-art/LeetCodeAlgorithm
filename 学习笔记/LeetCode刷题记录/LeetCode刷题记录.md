@@ -5930,3 +5930,19 @@ public int maxEnvelopes(int[][] envelopes) {
 1
 ```
 
+## 有序(LeetCode[])
+
+### 题目描述
+
+
+
+### 思路
+
+
+
+### 代码实现
+
+```java
+1
+```
+
