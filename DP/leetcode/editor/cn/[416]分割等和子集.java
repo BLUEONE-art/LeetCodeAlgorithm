@@ -38,8 +38,7 @@ class Solution {
     // 可以等价的看出大的数组中有没有一个子数组的和等于大数组所有元素和的一半
     // 进一步看成 0-1 背包问题：子数组中的元素个数看成背包中的物品个数，其对应值的和应该是大数组元素和的一半
     public boolean canPartition(int[] nums) {
-        // dp[i]：表示数组 nums 中的 i 个元素，在当前背包的容量为 w(整个数组和的一半) 的情况下
-        // 这种情况下子数组对应的值的和是 dp[i]
+        // dp[i][w]：表示数组 nums[0,...i] 个元素，和为 w
         int N = nums.length;
         int W = 0;
         for (int i = 0; i < N; i++) {
@@ -58,10 +57,13 @@ class Solution {
                 if (w - nums[i] < 0) {
                     // ①背包容量不够了，不在背包中新增元素
                     dp[i][w] = dp[i - 1][w]; // 这个情况背包容量 w 不变
+                } else if (w - nums[i] == 0) {
+                    dp[i][j] = true;
+                    continue;
                 } else {
                     // ②容量够，可以塞也可以不塞东西
                     // 因为 i 从 1 开始，相对于 nums 就要 -1
-                    dp[i][w] = dp[i - 1][w - nums[i - 1]] + nums[i] ||
+                    dp[i][w] = dp[i - 1][w - nums[i - 1]] + nums[i] || dp[i - 1][w];
                 }
 
             }
