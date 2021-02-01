@@ -49,7 +49,7 @@ class Solution {
     // 思路：对于 coins[] 数组，找出总共有多少个子数组的组合方式，使之子数组的和等于 amount
     // ==> 背包容量为 amount，在 coins[0,...,i] 中选择若干个硬币，使得这些硬币的和恰好等于 amount
     public int change(int amount, int[] coins) {
-        // dp[i][w] 定义：在 coins[0,...,i] 中选择若干个硬币，使得这些硬币的和恰好等于 amount 的组合方式总数为 dp[i][w]
+        // dp[i][w] 定义：在 coins[0,...,i] 中选择若干个硬币，使得这些硬币的和恰好等于 amount 的组合方式总数为 dp[i][w] 种
         // ==> 原问题转换为求解 dp[coins.length, amount]
         int N = coins.length;
         int W = amount;
