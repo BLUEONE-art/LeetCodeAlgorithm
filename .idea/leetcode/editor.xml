@@ -163,6 +163,14 @@
             </LeetcodeEditor>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/DP/leetcode/editor/cn/[剑指 Offer 04]二维数组中的查找.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/DP/leetcode/editor/cn/[剑指 Offer 04]二维数组中的查找.java" />
+              <option name="questionId" value="100276" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/DP/leetcode/editor/cn/[面试题 08.11]硬币.java">
           <value>
             <LeetcodeEditor>
@@ -800,6 +808,22 @@
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/剑指Offer/leetcode/editor/cn/[剑指 Offer 03]数组中重复的数字.java" />
               <option name="questionId" value="100275" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/剑指Offer/leetcode/editor/cn/[剑指 Offer 04]二维数组中的查找.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/剑指Offer/leetcode/editor/cn/[剑指 Offer 04]二维数组中的查找.java" />
+              <option name="questionId" value="100276" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/剑指Offer/leetcode/editor/cn/[剑指 Offer 05]替换空格.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/剑指Offer/leetcode/editor/cn/[剑指 Offer 05]替换空格.java" />
+              <option name="questionId" value="100280" />
             </LeetcodeEditor>
           </value>
         </entry>
