@@ -38,37 +38,43 @@ class Solution {
     // 可以等价的看出大的数组中有没有一个子数组的和等于大数组所有元素和的一半
     // 进一步看成 0-1 背包问题：子数组中的元素个数看成背包中的物品个数，其对应值的和应该是大数组元素和的一半
     public boolean canPartition(int[] nums) {
-        // dp[i][w]：表示数组 nums[0,...i] 个元素，和为 w
+        // dp[i][w]：表示从数组 nums[0,...i] 挑选几个正整数的组合，使之和为 w
         int N = nums.length;
         int W = 0;
-        for (int i = 0; i < N; i++) {
-            W += nums[i];
+        for (int num : nums) {
+            W += num;
         }
-        // 定义背包的容量 w
-        W = W / 2;
         if (W % 2 != 0) return false;
-        boolean[][] dp = new int[N + 1][W + 1];
-        // base case：当背包中元素个数为 0 时，或者背包容量为 0 时，都不会有子数组满足条件的
-        // 初始化 dp 数组全为 0
-
+        // 定义背包的容量 w
+        int W_target = W / 2;
+        boolean[][] dp = new boolean[N][W + 1];
+        // base case：当背包中元素只有 nums[0] 时，满足 nums[0,...,i] 和为 w 的只有 dp[0][nums[0]]
+        // 如果 nums[0] 还在背包的容纳范围内
+        if (nums[0] < W) {
+            dp[0][nums[0]] = true;
+        }
         // 状态变化
-        for (int i = 1; i <= N; i++) {
-            for (int w = 1; w < W; w++) {
+        for (int i = 1; i < N; i++) {
+            for (int w = 0; w <= W_target; w++) {
                 if (w - nums[i] < 0) {
                     // ①背包容量不够了，不在背包中新增元素
-                    dp[i][w] = dp[i - 1][w]; // 这个情况背包容量 w 不变
+                    // 这个情况背包容量 w 不变，即等于 dp[i - 1] 时的背包容量
+                    // 并且此时 dp[i][w] 为真为假只取决于 dp[i - 1][w]
+                    dp[i][w] = dp[i - 1][w];
+                    // 如果背包容量 w 恰好等于 nums[i] 那么加上 nums[i] 后，至少有 nums[i] 这个组合的值等于 w，必为真
                 } else if (w - nums[i] == 0) {
-                    dp[i][j] = true;
+                    dp[i][w] = true;
                     continue;
                 } else {
                     // ②容量够，可以塞也可以不塞东西
-                    // 因为 i 从 1 开始，相对于 nums 就要 -1
-                    dp[i][w] = dp[i - 1][w - nums[i - 1]] + nums[i] || dp[i - 1][w];
+                    // 继续塞东西后可能就有子数组在索引 0 ~ i - 1 内的和等于 w - nums[i] 了，那再其基础上 + nums[i]，肯定有子数组的和等于 w
+                    // 也有可能不塞东西就有子数组在索引 0 ~ i - 1 内的和等于 w，dp[i][w] 的真假就直接取决于此，并且两者是 “或” 的关系
+                    dp[i][w] = dp[i - 1][w - nums[i]] || dp[i - 1][w];
                 }
-
             }
-
         }
+        // 返回 dp[N - 1][W]
+        return dp[N - 1][W_target];
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
