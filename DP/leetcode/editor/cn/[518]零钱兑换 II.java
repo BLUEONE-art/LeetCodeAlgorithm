@@ -71,7 +71,9 @@ class Solution {
                     dp[i][w] = dp[i - 1][w];
                 } else if (w - coins[i - 1] >= 0) {
                     // ②背包还能再放下 coins[i] 这枚硬币，有两种情况：
-                    // i)选择不放; ii)选择再放一个硬币
+                    // i)选择不放;
+                    // ii)选择再放一个硬币，dp[i][w] = dp[i][w - coins[i - 1]]：因为使用了这枚硬币，如果从 coins[0,...i] 中有 n 种方法可以凑成 mount = w - coins[i - 1]
+                    // 并且 coins[i - 1] 这枚硬币数量无限制，那么在 dp[i][w - coins[i - 1]] 基础上再 + coins[i - 1] 即可
                     // 那 dp[i][w] 就应该是这两种情况的和
                     dp[i][w] = dp[i][w - coins[i - 1]] + dp[i - 1][w];
                 }
