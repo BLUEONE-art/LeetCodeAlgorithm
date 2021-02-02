@@ -42,6 +42,8 @@ class Solution {
         int n = nums.length;
         // 初始化最远距离为 0
         int farthest = 0;
+        // 因为最后只要 farthest >= n - 1 即可
+        // 所以 i 取到 n - 2 的位置算出的 farthest 能跳到最后一格或者跳出去都满足条件
         for (int i = 0; i < n - 1; i++) {
             // 不断更新 farthest，每跳到一个新的位置，之前的 farthest 与当前的可以跳到的最远位置 i + nums[i] 进行比较
             // 两者取最优，就是最大的 farthest
