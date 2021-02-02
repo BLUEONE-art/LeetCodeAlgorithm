@@ -62,10 +62,16 @@ class Solution {
         int n = nums.length;
         int farthest = 0, end = 0;
         int jumps = 0;
+        // 遍历从 0 到 n - 2，也就是倒数第二个数为止
+        // ①如果跳到最后 end = i = n - 2 --> 只要 jumps++ 就肯定能到 n - 1 的位置
+        // ②如果跳到最后 end != n - 2 --> 在 n - 2 之前或之后都没关系，能保证 farthest >= n - 1 即可
         for (int i = 0; i < n - 1; i++) {
+            // 每次都跳到所有选择中最远的地方
             farthest = Math.max(farthest, i + nums[i]);
             if (end == i) {
                 jumps++;
+                // end = farthest 可能已经大于等于 n - 1 了，if (end == i) 已经不满足条件
+                // jumps 不会再加了
                 end = farthest;
             }
         }
