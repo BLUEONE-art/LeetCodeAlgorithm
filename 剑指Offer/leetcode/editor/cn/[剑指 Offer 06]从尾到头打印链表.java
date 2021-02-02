@@ -29,6 +29,7 @@ class Solution {
     // 思路：反转整个链表，打印
     public int[] reversePrint(ListNode head) {
         int length = 0;
+        // 不能直接用 head，会破坏结构
         ListNode curNode = head;
         while (curNode != null) {
             length++;
