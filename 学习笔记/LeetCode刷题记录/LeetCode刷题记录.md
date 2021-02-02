@@ -6321,7 +6321,94 @@ public int eraseOverlapIntervals(int[][] intervals) {
 }
 ```
 
+### 用最少的箭头射爆气球(区间调度，LeetCode[452])
+
+#### 题目描述
+
+![](LeetCode刷题记录.assets/用最少的箭头射爆气球描述.jpg)
+
+#### 思路
+
+其实稍微思考一下，这个问题和区间调度算法一模一样！如果最多有`n`个不重叠的区间，那么就至少需要`n`个箭头穿透所有区间：
+
+![](LeetCode刷题记录.assets/射气球过程.png)
+
+只是有一点不一样，在`intervalSchedule`算法中，如果两个区间的边界触碰，不算重叠；而按照这道题目的描述，箭头如果碰到气球的边界气球也会爆炸，所以说相当于区间的边界触碰也算重叠：
+
+![](LeetCode刷题记录.assets/与无重合区间的区别.png)
+
+#### 代码实现
+
+```java
+// 思路：将装有气球起始和结束坐标的二维数组按照结束坐标做一个升序排序，获得第一个气球的末尾坐标
+// 然后遍历二维数组，判断下一个气球的其实坐标是否大于第一个气球的末尾坐标，如果大于，计数器 +1
+public int findMinArrowShots(int[][] points) {
+    if (points.length == 0) return 0;
+    // 对每个子数组的 end 升序处理
+    // 注意compare 排序中默认升序
+    // 返回 1 == true 代表降序，我想调整顺序
+    // 返回 -1 代表升序
+    Arrays.sort(points, new Comparator<int[]>() {
+        public int compare(int[] point1, int[] point2) {
+            if (point1[1] > point2[1]) {
+                return 1; // 想要升序：如果 point1 第一列的值大于 point2 第一列的值，不符合升序，返回 1，调整两个数组位置
+            } else if (point1[1] < point2[1]) {
+                return -1; // 如果直接就是升序，就返回 -1 即可
+            } else {
+                return 0;
+            }
+        }
+    });
+    // 即使二维数组中子数组全部重合，不重合数组个数就为 1
+    int count = 1;
+    // 得到排序后第一个子数组的末尾索引
+    int pos = points[0][1];
+    // 遍历判断
+    for (int[] balloon: points) {
+        if (balloon[0] > pos) {
+            pos = balloon[1];
+            ++count;
+        }
+    }
+    return count;
+}
+```
+
+这么做的原因也不难理解，因为现在边界接触也算重叠，所以`start == x_end`时不能更新区间 x。
+
+**对于区间问题的处理，一般来说第一步都是排序，相当于预处理降低后续操作难度。**
+
 # 2021.2.2记录
+
+## 替换字符串空格(剑指Offer[05])
+
+### 题目描述
+
+```java
+// 请实现一个函数，把字符串 s 中的每个空格替换成"%20"。
+// 示例 1： 
+//
+// 输入：s = "We are happy."
+//输出："We%20are%20happy."
+```
+
+### 思路
+
+遍历字符串 s
+
+### 代码实现
+
+```java
+// 思路：遍历字符串 s
+public String replaceSpace(String s) {
+    StringBuilder sb = new StringBuilder();
+    for (char c : s.toCharArray()) {
+        if (c == ' ') sb.append("%20");
+        else sb.append(c);
+    }
+    return sb.toString();
+}
+```
 
 ## 分割(LeetCode[416])
 
