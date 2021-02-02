@@ -48,9 +48,10 @@ class Solution {
             // 不断更新 farthest，每跳到一个新的位置，之前的 farthest 与当前的可以跳到的最远位置 i + nums[i] 进行比较
             // 两者取最优，就是最大的 farthest
             farthest = Math.max(farthest, i + nums[i]);
-            // 如果最远距离就是 i 位置自己，那么就算 i + 1，自己也跳不过去
+            // 如果最远距离就是 i 位置自己，那么就算 i + 1，自己也跳不过去，[0,2,3] 的情况
             if (farthest - i <= 0) return false;
         }
+        // i 取到 n - 2 的位置算出的 farthest
         return farthest >= n - 1;
     }
 }
