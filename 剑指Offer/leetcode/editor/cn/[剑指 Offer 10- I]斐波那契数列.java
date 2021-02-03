@@ -38,15 +38,16 @@
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public int fib(int n) {
-        // base case:
         if (n < 1) return 0;
         if (n == 1 || n == 2) return 1;
-        int prev = 1;
-        int curr = 1;
+        // base case
+        int prev = 1, curr = 1;
         for (int i = 3; i <= n; i++) {
             int sum = prev + curr;
-            prev = curr;
-            curr = sum;
+            // 更新 prev(DP[n - 1]) 和 curr(DP[n - 2])
+            prev = curr; // 新的 prev 是以前的 curr
+            curr = sum; // 新的 curr 就是以前的 sum
+            curr %= 1000000007;
         }
         return curr;
     }
