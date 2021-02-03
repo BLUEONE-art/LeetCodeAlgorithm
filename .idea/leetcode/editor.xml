@@ -27,6 +27,14 @@
             </LeetcodeEditor>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/DP/leetcode/editor/cn/[10]正则表达式匹配.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/DP/leetcode/editor/cn/[10]正则表达式匹配.java" />
+              <option name="questionId" value="10" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/DP/leetcode/editor/cn/[1143]最长公共子序列.java">
           <value>
             <LeetcodeEditor>
@@ -824,6 +832,14 @@
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/leetcode_binarytree/leetcode/editor/cn/[SerializeAndDeserializeBinaryTree.java" />
               <option name="questionId" value="297" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/剑指Offer/leetcode/editor/cn/[10]正则表达式匹配.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/剑指Offer/leetcode/editor/cn/[10]正则表达式匹配.java" />
+              <option name="questionId" value="10" />
             </LeetcodeEditor>
           </value>
         </entry>
