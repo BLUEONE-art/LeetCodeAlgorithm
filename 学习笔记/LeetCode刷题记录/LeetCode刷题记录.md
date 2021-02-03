@@ -3037,7 +3037,7 @@ public int[] maxSlidingWindow(int[] nums, int k) {
 + **Object pollLast() : 此方法用于检索链表的最后一个元素或结尾元素，最后从列表中删除最后一个元素。如果列表为空，则它将返回null。**与 remove() 的区别是当没有特定元素的时候返回不一样，remove() 报异s常，pollLast() 返回 null。
 + **Collections.swap(数组nums, index1, index2)：**交换数组中的两个元素
 
-## 用栈实现队列(Leetcode[232])
+## 用栈实现队列(Leetcode[232] && 剑指Offer[09])
 
 队列是一种**先进先出**的数据结构，栈是一种**先进后出**的数据结构，形象一点就是这样：
 
@@ -3083,10 +3083,56 @@ class MyQueue {
 ### 代码实现
 
 ```java
+class MyQueue {
 
+    /** Initialize your data structure here. */
+    Stack<Integer> s1, s2;
+    public MyQueue() {
+
+        s1 = new Stack<>();
+        s2 = new Stack<>();
+    }
+
+    /** Push element x to the back of queue. */
+    public void push(int x) {
+
+        // s1 用来接收 s2 出栈的元素
+        // 所以入队的时候只需要操作 s2 即可
+        s2.push(x);
+    }
+
+    /** Removes the element from in front of queue and returns that element. */
+    public int pop() {
+
+        // 先调用 peek() 保证 s1 非空
+        peek();
+        return s1.pop();
+    }
+
+    /** Get the front element. */
+    public int peek() {
+
+        // 因为 s2 是入栈操作
+        // 要获得队列顶部的元素需要将 s2 元素出栈在入栈到 s1，就是顺着出栈了
+        // 当 s1 为空时执行 s2 出栈操作
+        if (s1.isEmpty()) {
+
+            while (!s2.isEmpty()) {
+
+                s1.push(s2.pop());
+            }
+        }
+        return s1.peek();
+    }
+
+    /** Returns whether the queue is empty. */
+    public boolean empty() {
+
+        // 要判断 s1 && s2 是不是非空即可
+        return s1.isEmpty() && s2.isEmpty();
+    }
+}
 ```
-
-
 
 ### 算法复杂度分析
 
@@ -6708,6 +6754,31 @@ public boolean isMatch(String s, String p) {
     }
 }
 ```
+
+**你怎么知道它就存在「重叠子问题」呢？**这似乎不容易看出来呀。
+
+解答这个问题，最直观的应该是随便假设一个输入，然后画递归树，肯定是可以发现相同节点的。这属于定量分析，其实不用这么麻烦，下面教你定性分析，一眼就能看出「重叠子问题」性质。
+
+先拿最简单的斐波那契数列举例，我们抽象出递归算法的框架：
+
+```
+def fib(n):
+    fib(n - 1) #1
+    fib(n - 2) #2
+```
+
+看着这个框架，请问原问题 f(n) 如何触达子问题 f(n - 2) ？有两种路径，一是 f(n) -> #1 -> #1, 二是f(n) -> #2。前者经过两次递归，后者经过一次递归而已。两条不同的计算路径都到达了同一个问题，这就是「重叠子问题」，而且可以肯定的是，只要你发现一条重复路径，这样的重复路径一定存在千万条，意味着巨量子问题重叠。
+
+同理，对于本问题，我们依然先抽出算法框架：
+
+```
+def dp(i, j):
+    dp(i, j + 2)     #1
+    dp(i + 1, j)     #2
+    dp(i + 1, j + 1) #3
+```
+
+提出类似的问题，请问如何从原问题 dp(i, j) 触达子问题 dp(i + 2, j + 2) ？至少有两种路径，一是dp(i, j) -> #3 -> #3，二是 dp(i, j) -> #1 -> #2 -> #2。因此，本问题一定存在重叠子问题，一定需要动态规划的优化技巧来处理。
 
 ## 分割(LeetCode[416])
 
