@@ -6615,6 +6615,100 @@ private ListNode reverse(ListNode head) {
 }
 ```
 
+# 2021.2.3.记录
+
+## 正则表达式匹配(LeetCode[10])
+
+### 题目描述
+
+![](LeetCode刷题记录.assets/正则表达式匹配描述.jpg)
+
+### 思路
+
+**一、处理点号「.」通配符**
+
+点号可以匹配任意一个字符，万金油嘛，其实是最简单的。
+
+```java
+// 判断第一个字符是否匹配 + 检测 '.' 符号
+boolean first = (!p.isEmpty() && (p.charAt(0) == s.charAt(0) || p.charAt(0) == '.'));
+```
+
+**二、处理星号「\*」通配符**
+
+星号通配符可以让前一个字符出现任意次数，包括零次。
+
+星号前面的那个字符到底要出现几次呢？这需要计算机暴力穷举的，假设出现 N 次吧。前文多次强调过，写递归的技巧是管好当下，之后的事抛给递归。具体到这里，不管 N 是多少，当前的选择只有两个：出现 0 次、出现 1 次。所以可以这样处理：
+
+```java
+if (p.length() >= 2 && p.charAt(1) == '*') { // 递归的时候我们只考虑当下的字母，其他的给递归
+    // ①假设 '*' 表示只重复 0 次前面的字母，让 s 和跳过 '*' 字符的 p 比较，此时也会重新比较 first
+    return isMatch(s, p.substring(2)) ||
+        // ②如果只考虑当下索引 i = 1 时，'*' 表示重复 1 次前面的字母，通过移动 s 来模拟 '*' 已经重复了前面的字母一次
+        (first && isMatch(s.substring(1), p));
+```
+
+配合一个图示就能理解这个逻辑了。假设 pattern = "a*", text = "aa"，画个图：
+
+![](LeetCode刷题记录.assets/正则匹配过程.jpg)
+
+可以看到，我们是通过保留 pattern 中的「\*」，同时向后推移 text，来实现「*」让字符出现多次的功能。
+
+### 代码实现
+
+```java
+// 给你一个字符串 s 和一个字符规律 p，请你来实现一个支持 '.' 和 '*' 的正则表达式匹配。
+public boolean isMatch(String s, String p) {
+    // 创建备忘录
+    HashMap<String, Boolean> memo = new HashMap<>();
+    int i = 0, j = 0;
+    return dp(memo, s, p, i, j);
+}
+// dp 递归函数定义：返回两个字符串分别从索引 i 和索引 j 比较的结果(true or false)
+private boolean dp(HashMap<String, Boolean> memo, String s, String p, int i, int j) {
+    // 如果子问题答案备忘录里有，直接取出
+    if (memo.containsKey(i + "&" + j)) return memo.get(i + "&" + j);
+    boolean ans;
+    // base case 1：因为用 i 和 j 记录子问题中比较到了哪个字符串
+    // 所以当 j 已经比较到了 p 的末尾，如果 i 没到末尾，说明不一样长，返回 false
+    if (j == p.length()) return i == s.length();
+    // 判断第一个字符是否匹配 + 检测 '.' 符号
+    boolean first = (i < s.length() && (p.charAt(j) == s.charAt(i)
+                                        || p.charAt(j) == '.'));
+    // 检测 '*'：因为 '*' 可以让字母出现 0 次和 N 次
+    if (j <= p.length() - 2 && p.charAt(j + 1) == '*') { // 递归的时候我们只考虑当下的字母，其他的给递归
+        // ①假设 '*' 表示重复 0 次前面的字母，让 s 和跳过 '*' 字符的 p 比较，此时也会重新比较 first
+        ans = dp(memo, s, p, i, j + 2) ||
+            // ②如果只考虑当下索引 i = 1 时，'*' 表示重复 1 次前面的字母，通过移动 s 来模拟 '*' 已经重复了前面的字母一次
+            (first && dp(memo, s, p, i + 1, j));
+    } else {
+        // 如果 '.' 和 '*' 都检测了，剩下就直接正常比较即可
+        ans = first && dp(memo, s, p, i + 1, j + 1);
+    }
+    memo.put(i + "&" + j, ans);
+    return ans;
+}
+
+// 暴力递归
+public boolean isMatch(String s, String p) {
+    // base case 1：如果有一个字符串为空，另一个不为空则 false
+    if (p.isEmpty()) return s.isEmpty();
+    // 判断第一个字符是否匹配 + 检测 '.' 符号
+    boolean first = (!p.isEmpty() && (p.charAt(0) == s.charAt(0)
+                                      || p.charAt(0) == '.'));
+    // 检测 '*'：因为 '*' 可以让字母出现 0 次和 N 次
+    if (p.length() >= 2 && p.charAt(1) == '*') { // 递归的时候我们只考虑当下的字母，其他的给递归
+        // ①假设 '*' 表示只重复 0 次前面的字母，让 s 和跳过 '*' 字符的 p 比较，此时也会重新比较 first
+        return isMatch(s, p.substring(2)) ||
+            // ②如果只考虑当下索引 i = 1 时，'*' 表示重复 1 次前面的字母，通过移动 s 来模拟 '*' 已经重复了前面的字母一次
+            (first && isMatch(s.substring(1), p));
+    } else {
+        // 如果 '.' 和 '*' 都检测了，剩下就直接正常比较即可
+        return first && isMatch(s.substring(1), p.substring(1));
+    }
+}
+```
+
 ## 分割(LeetCode[416])
 
 ### 题目描述
