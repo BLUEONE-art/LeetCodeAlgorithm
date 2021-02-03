@@ -95,23 +95,23 @@ class Solution {
         return ans;
     }
 
-//    // 暴力递归
-//    public boolean isMatch(String s, String p) {
-//        // base case 1：如果有一个字符串为空，另一个不为空则 false
-//        if (p.isEmpty()) return s.isEmpty();
-//        // 判断第一个字符是否匹配 + 检测 '.' 符号
-//        boolean first = (!p.isEmpty() && (p.charAt(0) == s.charAt(0)
-//                || p.charAt(0) == '.'));
-//        // 检测 '*'：因为 '*' 可以让字母出现 0 次和 N 次
-//        if (p.length() >= 2 && p.charAt(1) == '*') { // 递归的时候我们只考虑当下的字母，其他的给递归
-//            // ①假设 '*' 表示只重复 0 次前面的字母，让 s 和跳过 '*' 字符的 p 比较，此时也会重新比较 first
-//            return isMatch(s, p.substring(2)) ||
-//                    // ②如果只考虑当下索引 i = 1 时，'*' 只表示重复 1 次前面的字母
-//                    (first && isMatch(s.substring(1), p));
-//        } else {
-//            // 如果 '.' 和 '*' 都检测了，剩下就直接正常比较即可
-//            return first && isMatch(s.substring(1), p.substring(1));
-//        }
-//    }
+    // 暴力递归
+    public boolean isMatch(String s, String p) {
+        // base case 1：如果有一个字符串为空，另一个不为空则 false
+        if (p.isEmpty()) return s.isEmpty();
+        // 判断第一个字符是否匹配 + 检测 '.' 符号
+        boolean first = (!p.isEmpty() && (p.charAt(0) == s.charAt(0)
+                || p.charAt(0) == '.'));
+        // 检测 '*'：因为 '*' 可以让字母出现 0 次和 N 次
+        if (p.length() >= 2 && p.charAt(1) == '*') { // 递归的时候我们只考虑当下的字母，其他的给递归
+            // ①假设 '*' 表示只重复 0 次前面的字母，让 s 和跳过 '*' 字符的 p 比较，此时也会重新比较 first
+            return isMatch(s, p.substring(2)) ||
+                    // ②如果只考虑当下索引 i = 1 时，'*' 表示重复 1 次前面的字母，通过移动 s 来模拟 '*' 已经重复了前面的字母一次
+                    (first && isMatch(s.substring(1), p));
+        } else {
+            // 如果 '.' 和 '*' 都检测了，剩下就直接正常比较即可
+            return first && isMatch(s.substring(1), p.substring(1));
+        }
+    }
 }
 //leetcode submit region end(Prohibit modification and deletion)
