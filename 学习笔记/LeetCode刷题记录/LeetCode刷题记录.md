@@ -6818,7 +6818,7 @@ public int numWays(int n) {
 }
 ```
 
-## 旋转数组的最小数字(LeetCode[416])
+## 旋转数组的最小数字(剑指Offer[11])
 
 ### 题目描述
 
@@ -6850,20 +6850,30 @@ public int minArray(int[] numbers) {
 }
 ```
 
-## 分割(LeetCode[416])
+## 二进制中 1 的个数(剑指Offer[15])
 
 ### 题目描述
 
-
+请实现一个函数，输入一个整数（以二进制串形式），输出该数二进制表示中 1 的个数。例如，把 9 表示成二进制是 1001，有 2 位是 1。
 
 ### 思路
 
-
+二进制数最右一位一直跟 1 进行 "&" 的操作，循环移位二进制数即可。
 
 ### 代码实现
 
 ```java
-1
+// you need to treat n as an unsigned value
+public int hammingWeight(int n) {
+    int count = 0;
+    while (n != 0){
+        // 判断 n 的最右一位二进制数是否为 1：n & 1;
+        count = count + (n & 1);
+        // 无符号右移一位 n
+        n >>>= 1;
+    }
+    return count;
+}
 ```
 
 ## 分割(LeetCode[416])
