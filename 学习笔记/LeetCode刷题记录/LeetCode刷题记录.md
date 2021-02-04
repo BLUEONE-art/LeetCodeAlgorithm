@@ -6818,6 +6818,54 @@ public int numWays(int n) {
 }
 ```
 
+## 旋转数组的最小数字(LeetCode[416])
+
+### 题目描述
+
+把一个数组最开始的若干个元素搬到数组的末尾，我们称之为数组的旋转。输入一个递增排序的数组的一个旋转，输出旋转数组的最小元素。
+
+### 思路
+
+先判断数组前面有几个递增的数字 ---> 返回的最小值就是 nums[count]
+
+### 代码实现
+
+```java
+/* 旋转数组的最小值 --> 找数组的最小值 */
+public int minArray(int[] numbers) {
+    int count = 1;
+    for (int i = 1; i < numbers.length; i++) {
+        if (numbers[i] >= numbers[i - 1]) {
+            count++;
+        }
+        else {
+            break;
+        }
+    }
+    if (count == numbers.length) {
+        return numbers[0];
+    } else {
+        return numbers[count];
+    }
+}
+```
+
+## 分割(LeetCode[416])
+
+### 题目描述
+
+
+
+### 思路
+
+
+
+### 代码实现
+
+```java
+1
+```
+
 ## 分割(LeetCode[416])
 
 ### 题目描述
