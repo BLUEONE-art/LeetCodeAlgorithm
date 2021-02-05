@@ -15,12 +15,17 @@
 // n 为正整数 
 // 
 // Related Topics 数学 
+<<<<<<< HEAD
 // 👍 80 👎 0
+=======
+// 👍 78 👎 0
+>>>>>>> origin/main
 
 
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public int[] printNumbers(int n) {
+<<<<<<< HEAD
         int size = (int)Math.pow(10, n);
         int[] res = new int[size - 1];
         // 1：表示输出 [1, 10)
@@ -28,6 +33,9 @@ class Solution {
             res[i - 1] = i;
         }
         return res;
+=======
+
+>>>>>>> origin/main
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
