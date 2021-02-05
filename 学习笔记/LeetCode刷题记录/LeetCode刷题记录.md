@@ -6876,6 +6876,32 @@ public int hammingWeight(int n) {
 }
 ```
 
+# 2021.2.5记录
+
+## 分割(剑指Offer[15])
+
+### 题目描述
+
+输入一个正整数，输出所有小于 10^n 的正整数。
+
+### 思路
+
+遍历。
+
+### 代码实现
+
+```java
+public int[] printNumbers(int n) {
+    int size = (int)Math.pow(10, n);
+    int[] res = new int[size - 1];
+    // 1：表示输出 [1, 10)
+    for (int i = 1; i < size; i++) {
+        res[i - 1] = i;
+    }
+    return res;
+}
+```
+
 ## 分割(LeetCode[416])
 
 ### 题目描述
