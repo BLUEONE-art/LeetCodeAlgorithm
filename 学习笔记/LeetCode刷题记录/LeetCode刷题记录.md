@@ -6878,7 +6878,7 @@ public int hammingWeight(int n) {
 
 # 2021.2.5记录
 
-## 分割(剑指Offer[15])
+## 打印 1 到最大的 n 位数(剑指Offer[15])
 
 ### 题目描述
 
@@ -6899,6 +6899,52 @@ public int[] printNumbers(int n) {
         res[i - 1] = i;
     }
     return res;
+}
+```
+
+# 2021.2.6记录
+
+## 删除链表的节点(剑指Offer[18])
+
+### 题目描述
+
+给定单向链表的头指针和一个要删除的节点的值，定义一个函数删除该节点。返回删除后的链表的头节点。
+
+### 思路
+
+找到 val 值对应的节点和其前驱结点。
+
+### 代码实现
+
+```java
+public ListNode deleteNode(ListNode head, int val) {
+    if(head == null) return null;
+    // 如果要删节点就是头节点
+    if (head.val == val) {
+        head = head.next;
+        return head;
+    }
+    // 将该节点的前指针指向该节点的下一个
+    ListNode cur = head;
+    while (head != null) {
+        if (cur.val == val) {
+            break;
+        } else {
+            cur = cur.next;
+        }
+    }
+    // 找到要删除节点的前驱结点
+    ListNode pre = head;
+    while (pre != null) {
+        if (pre.next == cur) {
+            break;
+        } else {
+            pre = pre.next;
+        }
+    }
+    // 开删
+    pre.next = cur.next;
+    return head;
 }
 ```
 
