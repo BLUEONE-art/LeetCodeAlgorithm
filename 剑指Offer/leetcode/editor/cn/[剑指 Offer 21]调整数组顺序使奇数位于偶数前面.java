@@ -22,22 +22,35 @@
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public int[] exchange(int[] nums) {
-        ArrayList<Integer> res = new ArrayList<>();
-        for (int i = 0; i < nums.length; i++) {
-            if (nums[i] % 2 != 0) {
-                res.add(nums[i]);
-            }
-        }
+        ArrayList<Integer> enenIndex = new ArrayList<>();
         for (int i = 0; i < nums.length; i++) {
             if (nums[i] % 2 == 0) {
-                res.add(nums[i]);
+                enenIndex.add(i);
+            }
+            // 交换第一个出现的偶数和它之后最近的奇数
+            if (nums[enenIndex.get(i) % 2 == 0]) {
+                int tmp = nums[enenIndex];
+                nums[enenIndex] = nums[i];
+                nums[i] = tmp;
             }
         }
-        int[] res_arr = new int[res.size()];
-        for (int i = 0; i < res.size(); i++) {
-            res_arr[i] = res.get(i);
-        }
-        return res_arr;
+        return nums;
+//        ArrayList<Integer> res = new ArrayList<>();
+//        for (int i = 0; i < nums.length; i++) {
+//            if (nums[i] % 2 != 0) {
+//                res.add(nums[i]);
+//            }
+//        }
+//        for (int i = 0; i < nums.length; i++) {
+//            if (nums[i] % 2 == 0) {
+//                res.add(nums[i]);
+//            }
+//        }
+//        int[] res_arr = new int[res.size()];
+//        for (int i = 0; i < res.size(); i++) {
+//            res_arr[i] = res.get(i);
+//        }
+//        return res_arr;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
