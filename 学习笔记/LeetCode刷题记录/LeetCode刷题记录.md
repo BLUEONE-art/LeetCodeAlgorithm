@@ -2809,9 +2809,9 @@ public double findMedian() {
 
 # 2021.1.20记录
 
-## list<Integer> 与 int[] 互转
+## list< Integer > 与 int[] 互转
 
-### int[] 转 List<Integer>
+### int[] 转 List< Integer >
 
 ```java
 // int[] 转 List<Integer>
@@ -2822,7 +2822,7 @@ List<Integer> list1 = Arrays.stream(data).boxed().collect(Collectors.toList());
 // 3.使用Stream的collect()，将Stream<T>转换成List<T>，因此正是List<Integer>。
 ```
 
-### List<Integer> 转 int[]
+### List< Integer > 转 int[]
 
 ```java
 // List<Integer> 转 int[]
@@ -2857,7 +2857,7 @@ int[] arr2 = Arrays.stream(integers1).mapToInt(Integer::valueOf).toArray();
 // 思路同上。先将Integer[]转成Stream<Integer>，再转成IntStream。
 ```
 
-### List<Integer> 转 Integer[]
+### List< Integer > 转 Integer[]
 
 ```java
 // List<Integer> 转 Integer[]
@@ -2866,7 +2866,7 @@ Integer[] integers2 = list1.toArray(new Integer[0]);
 // List<String>转String[]也同理。
 ```
 
-### Integer[] 转 List<Integer>
+### Integer[] 转 List< Integer >
 
 ```java
 // Integer[] 转 List<Integer>
