@@ -3,6 +3,14 @@
   <component name="LeetcodeEditor">
     <option name="projectConfig">
       <map>
+        <entry key="$PROJECT_DIR$/剑指Offer/leetcode/editor/cn/[226]翻转二叉树.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/剑指Offer/leetcode/editor/cn/[226]翻转二叉树.java" />
+              <option name="questionId" value="226" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/剑指Offer/leetcode/editor/cn/[2]两数相加.java">
           <value>
             <LeetcodeEditor>
@@ -80,6 +88,14 @@
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/剑指Offer/leetcode/editor/cn/[剑指 Offer 25]合并两个排序的链表.java" />
               <option name="questionId" value="100286" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/剑指Offer/leetcode/editor/cn/[剑指 Offer 27]二叉树的镜像.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/剑指Offer/leetcode/editor/cn/[剑指 Offer 27]二叉树的镜像.java" />
+              <option name="questionId" value="100288" />
             </LeetcodeEditor>
           </value>
         </entry>
