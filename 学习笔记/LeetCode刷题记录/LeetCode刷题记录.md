@@ -6948,6 +6948,45 @@ public ListNode deleteNode(ListNode head, int val) {
 }
 ```
 
+# 2021.1.8记录
+
+## 合并两个排序的链表(剑指Offer[25])
+
+### 题目描述
+
+输入两个递增排序的链表，合并这两个链表并使新链表中的节点仍然是递增排序的。 
+
+### 思路
+
++ 两个链表，分别用两个指针指向头部，递增比较每个元素的大小，小的放在前，大的在后。
++ 如果短的链表遍历完了，让长链表剩下的元素放在排序的结果的后面。
++ 用到的技巧就是定义一个伪头节点，让这个节点去装排序好的结果。
+
+### 代码实现
+
+```java
+public ListNode mergeTwoLists(ListNode l1, ListNode l2) {
+    // 只需要借助一个伪头节点
+    ListNode dum = new ListNode(0), cur = dum;
+    while (l1 != null && l2 != null) {
+        // 如果 l1.val < l2.val，让 l1 排在前面
+        if (l1.val < l2.val) {
+            cur.next = l1;
+            l1 = l1.next;
+        } else {
+            // 如果 l1.val >= l2.val，让 l2 排在前面
+            cur.next = l2;
+            l2 = l2.next;
+        }
+        // cur +1
+        cur = cur.next;
+    }
+    // 如果 l1 或者 l2 先跑完了
+    cur.next = l1 != null ? l1 : l2;
+    return dum.next;
+}
+```
+
 ## 分割(LeetCode[416])
 
 ### 题目描述
