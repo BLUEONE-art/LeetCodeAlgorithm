@@ -6987,6 +6987,40 @@ public ListNode mergeTwoLists(ListNode l1, ListNode l2) {
 }
 ```
 
+# 2021.2.9记录
+
+## 对称的二叉树(剑指Offer[28])
+
+### 题目描述
+
+实现一个函数，用来判断一棵二叉树是不是对称的。如果一棵二叉树和它的镜像一样，那么它是对称的。 
+
+### 思路
+
+总的思想：递归
+
++ 处理 root 为 null 的情况
++ 定义 boolean recur(TreeNode left, TreeNode right)：能判断 root 下的两个左右子节点下的节点是否对称
++ 处理 base case + 递归
+
+### 代码实现
+
+```java
+public boolean isSymmetric(TreeNode root) {
+    // 如果 root 为 null
+    if (root == null) {
+        return true;
+    } else {
+        return recur(root.left, root.right);
+    }
+    // recur()：用来判断二叉树的两个左右子节点下的节点是否对称
+    public boolean recur(TreeNode left, TreeNode right) {
+        if (left == null && right == null) return true;
+        if (left == null || right == null || left.val != right.val) return false;
+        return recur(left.left, right.right) && recur(left.right, right.left);
+    }
+```
+
 ## 分割(LeetCode[416])
 
 ### 题目描述
