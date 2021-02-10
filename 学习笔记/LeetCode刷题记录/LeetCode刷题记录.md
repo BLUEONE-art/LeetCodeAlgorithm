@@ -7021,6 +7021,79 @@ public boolean isSymmetric(TreeNode root) {
     }
 ```
 
+# 2021.2.10记录
+
+## 顺时针打印矩阵(剑指Offer[29])
+
+### 题目描述
+
+输入一个矩阵，按照从外向里以顺时针的顺序依次打印出每一个数字。
+
+### 思路
+
++ 明确二维矩阵的四个边界，上下左右
++ 从左到右 ---> 最右边界从上到下 ---> 最下边界从右到左 ---> 最左边界从下到上
++ 判断每次遍历时边界的变化情况
++ 明确 i ++ 和 ++ i 的本质区别
+  + i++ <=> i = i + 1：假设 i = 1，先赋值 i++ 表达式为 1，然后 i 再自加 1 为 2；
+  + ++i：假设 i = 1，i 先自加 1 为 2，再赋值给表达式 ++i == 2。
+  + res[x++]：假设 x = 1，先计算 res[x]，x 再自加 1
+
+### 代码实现
+
+```java
+public int[] spiralOrder(int[][] matrix) {
+    // base case
+    if (matrix.length == 0) return new int[0];
+    // 定义二维矩阵的上下左右边界
+    // 上边界
+    int top = 0;
+    // 下边界
+    int bottom = matrix.length - 1; // 也就是行数
+    // 左边界
+    int left = 0;
+    // 右边界
+    int right = matrix[0].length - 1; // 列数
+    // 输出结果数组
+    int[] res = new int[(bottom + 1) * (right + 1)];
+    // 定义 res 中指针
+    int x = 0;
+    // 循环开始
+    while (true) {
+        // 从左边界遍历到有边界
+        for (int i = left; i <= right; i++) {
+            // res[x++]：先计算 res[x] 的值，再 x 自加
+            res[x++] = matrix[top][i];
+        }
+        // 如果 while 循环一直循环到 top > bottom，跳出 while
+        // ++top：先让 top 自加 1，然后把自加结果赋值给 ++top 这个表达式
+        if (++top > bottom) break;
+
+        // 从上边界到下边界
+        for (int i = top; i <= bottom; i++) {
+            res[x++] = matrix[i][right];
+        }
+        // 如果 while 循环一直循环到 right < left，跳出 while
+        if (--right < left) break;
+
+        // 从下边界的右边界到左边界
+        for (int i = right; i >= left; i--) {
+            res[x++] = matrix[bottom][i];
+        }
+        // 如果 while 循环一直循环到 bottom < top，跳出 while
+        if (--bottom < top) break;
+
+        // 从左边界的下边界到上边界
+        for (int i = bottom; i >= top; i--) {
+            res[x++] = matrix[i][left];
+        }
+        // 如果 while 循环一直循环到 left > right，跳出 while
+        if (++left > right) break;
+    }
+    return res;
+}
+```
+
 ## 分割(LeetCode[416])
 
 ### 题目描述
