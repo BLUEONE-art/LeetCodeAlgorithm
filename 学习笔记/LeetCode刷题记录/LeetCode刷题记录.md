@@ -7094,7 +7094,52 @@ public int[] spiralOrder(int[][] matrix) {
 }
 ```
 
-# 2021.2.11记录
+# 2021.2.12记录
+
+## 包含min函数的栈(剑指Offer[30])
+
+### 题目描述
+
+定义栈的数据结构，请在该类型中实现一个能够得到栈的最小元素的 min 函数在该栈中，调用 min、push 及 pop 的时间复杂度都是 O(1)。
+
+### 思路
+
+构建一个辅助栈，这个辅助栈是单调递减的，所以栈顶元素是整个栈中的最小值，从栈底到栈顶依次增大，记录着栈中加入第一个元素开始依次递减的结果。每次取最小值返回单调栈栈顶元素，如果 pop 元素与单调栈栈顶元素相同，记得同时 pop 单调栈中的元素。
+
+### 代码实现
+
+```java
+Stack<Integer> minStack;
+// 辅助单调栈：单调递减
+Stack<Integer> monotonousStack;
+/** initialize your data structure here. */
+public MinStack() {
+    this.minStack = new Stack<>();
+    this.monotonousStack = new Stack<>();
+}
+// 往栈中加入元素
+public void push(int x) {
+    minStack.add(x);
+    // 保证单调栈单调递减
+    if (monotonousStack.empty() || x <= monotonousStack.peek()) {
+        monotonousStack.add(x);
+    }
+}
+// 弹出栈顶元素
+public void pop() {
+    if (minStack.pop().equals(monotonousStack.peek())) {
+        monotonousStack.pop();
+    }
+}
+// 返回栈顶元素
+public int top() {
+    return minStack.peek();
+}
+// 求出栈中最小的元素
+public int min() {
+    return monotonousStack.peek();
+}
+```
 
 ## 分割(LeetCode[416])
 
