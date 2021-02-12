@@ -32,26 +32,81 @@
 //leetcode submit region begin(Prohibit modification and deletion)
 class MinStack {
 
+    Stack<Integer> minStack;
+    // 辅助单调栈：单调递减
+    Stack<Integer> monotonousStack;
     /** initialize your data structure here. */
     public MinStack() {
-
+        this.minStack = new Stack<>();
+        this.monotonousStack = new Stack<>();
     }
-    
+    // 往栈中加入元素
     public void push(int x) {
-
+        minStack.add(x);
+        // 保证单调栈单调递减
+        if (monotonousStack.empty() || x <= monotonousStack.peek()) {
+            monotonousStack.add(x);
+        }
     }
-    
+    // 弹出栈顶元素
     public void pop() {
-
+        if (minStack.pop().equals(monotonousStack.peek())) {
+            monotonousStack.pop();
+        }
     }
-    
+    // 返回栈顶元素
     public int top() {
-
+        return minStack.peek();
     }
-    
+    // 求出栈中最小的元素
     public int min() {
-
+        return monotonousStack.peek();
     }
+
+//    int minValue;
+//    int secondMinValue;
+//    // 记录最小值出现的次数
+//    HashMap<Integer, Integer> valToFreq;
+//    /** initialize your data structure here. */
+//    public MinStack() {
+//        this.minStack = new Stack<>();
+//        this.minValue = Integer.MAX_VALUE;
+//        this.secondMinValue = Integer.MAX_VALUE;
+//        this.valToFreq = new HashMap<>();
+//    }
+//    // 往栈中加入元素
+//    public void push(int x) {
+//        // 记录每个元素出现的频次
+//        valToFreq.put(x, valToFreq.getOrDefault(x, 0) + 1);
+//        // 如果此时加入的 x 比 minValue 小，记录第二小的值
+//        if (x < minValue) {
+//            secondMinValue = minValue;
+//        }
+//        // 每次加入元素都会跟栈顶元素进行比较，取较小值
+//        minValue = Math.min(x, minValue);
+//        minStack.push(x);
+//    }
+//    // 弹出栈顶元素
+//    public void pop() {
+//        if (minStack.peek() != minValue) {
+//            valToFreq.put(minStack.peek(), valToFreq.getOrDefault(minStack.peek(), 0) - 1);
+//            minStack.pop();
+//        } else if (minStack.peek() == minValue) {
+//            valToFreq.put(minStack.peek(), valToFreq.getOrDefault(minStack.peek(), 0) - 1);
+//            if (valToFreq.get(minStack.peek()) == 0) {
+//                minValue = secondMinValue;
+//            }
+//            minStack.pop();
+//        }
+//    }
+//    // 返回栈顶元素
+//    public int top() {
+//        return minStack.peek();
+//    }
+//    // 求出栈中最小的元素
+//    public int min() {
+//        return minValue;
+//    }
 }
 
 /**
