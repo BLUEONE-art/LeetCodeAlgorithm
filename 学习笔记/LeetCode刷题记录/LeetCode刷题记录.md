@@ -863,7 +863,6 @@ private String levelSerialize(TreeNode root) {
         }
         sb.append(cur.val).append(SEP);
         /* 层级遍历的代码位置 */
-
         q.offer(cur.left);
         q.offer(cur.right);
     }
