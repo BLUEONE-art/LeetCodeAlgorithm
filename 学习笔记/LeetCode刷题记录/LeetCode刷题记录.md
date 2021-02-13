@@ -7140,6 +7140,62 @@ public int min() {
 }
 ```
 
+# 2021.2.13记录
+
+## 从上到下打印二叉树 II(剑指Offer[32 - II])
+
+### 题目描述
+
+从上到下按层打印二叉树，同一层的节点按从左到右的顺序打印，每一层打印到一行。 
+
+### 思路
+
+最主要就是如何让实现层序遍历二叉树的时候，能准确把每一层节点的值全部存到一个数组中，为此需要使用到队列这种先进先出的数据结构。
+
+### 代码实现
+
+```java
+public List<List<Integer>> levelOrder(TreeNode root) {
+    List<List<Integer>> res = new ArrayList<List<Integer>>();
+    // 中序遍历取树中每一层节点放入队列中，保证先进先出
+    Queue<TreeNode> queue = new LinkedList<>();
+    // 先装入根节点
+    if (root != null) queue.offer(root);
+    while (!queue.isEmpty()) {
+        // 存放每层遍历的结果
+        List<Integer> levelRes = new ArrayList<>();
+        // 每次循环的次数就是每层不为 0 的元素个数
+        for(int i = queue.size(); i > 0; i--) {
+            // 取出队列中的值
+            TreeNode cur = queue.poll();
+            levelRes.add(cur.val);
+            // 装入下一层的节点
+            if (cur.left != null) queue.offer(cur.left);
+            if (cur.right != null) queue.offer(cur.right);
+        }
+        // 每层的结果放入了 levelRes，再将其装入 res
+        res.add(levelRes);
+    }
+    return res;
+}
+```
+
+## 分割(LeetCode[416])
+
+### 题目描述
+
+
+
+### 思路
+
+
+
+### 代码实现
+
+```java
+1
+```
+
 ## 分割(LeetCode[416])
 
 ### 题目描述
