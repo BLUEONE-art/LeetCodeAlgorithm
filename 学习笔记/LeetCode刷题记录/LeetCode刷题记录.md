@@ -7180,6 +7180,122 @@ public List<List<Integer>> levelOrder(TreeNode root) {
 }
 ```
 
+# 2021.2.14记录
+
+## 数组中出现次数超过一半的数字(剑指Offer [39])
+
+### 题目描述
+
+数组中有一个数字出现的次数超过数组长度的一半，请找出这个数字。 
+
+### 思路
+
+摩尔投票法：
+
+核心就是对拼消耗。玩一个诸侯争霸的游戏，假设你方人口超过总人口一半以上，并且能保证每个人口出去干仗都能一对一同归于尽。最后还有人活下来的国家就是胜利。那就大混战呗，最差所有人都联合起来对付你（对应你每次选择作为计数器的数都是众数），或者其他国家也会相互攻击（会选择其他数作为计数器的数），但是只要你们不要内斗，最后肯定你赢。最后能剩下的必定是自己人。
+
+### 代码实现
+
+```java
+// 核心思想：每次假设当前数字就是“众数”，记为 “+1”
+// 后面若有不同的数字，则记为“-1”
+// 因为众数超过整个数组的一半，所以让最后结果为 “+1” 的数字就是众数
+public int majorityElement(int[] nums) {
+    int votes = 0;
+    // 假设的众数
+    int x = 0;
+    for (int num : nums) {
+        if (votes == 0) x = num;
+        // 所以其实等价于
+        // votes = votes + ( num == x ? 1 : -1);
+        votes += (num == x) ? 1 : -1;
+    }
+    // 验证 x 是否真的为“众数”
+    int count = 0;
+    for (int num : nums) {
+        if (num == x) count++;
+    }
+    return count > nums.length / 2 ? x : 0;
+}
+```
+
+### 复杂度分析
+
+时间复杂度：O(N)
+
+空间复杂度：O(1)
+
+## 最小的 K 个数(剑指Offer[40])
+
+### 题目描述
+
+输入整数数组 arr ，找出其中最小的 k 个数。例如，输入4、5、1、6、2、7、3、8这8个数字，则最小的4个数字是1、2、3、4。 
+
+### 思路
+
+借助快排的思想：
+
++ 第一次在整个数组中挑出一个坐标 j，使得数组中小于 arr[j] 的数在其左边，大于其的数在其右边；
++ 比较返回的坐标 j 与要求的 k 的大小关系，如果 j > k，则在其小于 arr[j] 的区间继续寻找；
++ 否则在大于 arr[j] 的区间内继续寻找；
++ 直到找到 j == k 的时候，截取数组 arr 的 0 ~ k - 1 的部分作为输出。
+
+### 代码实现
+
+```java
+// 利用快排思想求解
+public int[] getLeastNumbers(int[] arr, int k) {
+    if (arr.length == 0 || k == 0) {
+        return new int[0];
+    }
+    // 构建快速排序方法
+    // 查找的是排序后前 K 个数，对应下标就是 k - 1
+    return quickSearch(arr, 0, arr.length - 1, k - 1);
+}
+
+public int[] quickSearch(int[] arr, int low, int high, int k) {
+    // 快速排序：每次都会返回一个下标 j，将 arr 中小于 arr[j] 的数排放在其左边，大于其的放在其右边
+    int j = partition(arr, low, high);
+    // 如果这个 j == k，直接返回数组前 k 个数
+    if (j == k) {
+        return Arrays.copyOf(arr, j + 1);
+    }
+    // 否则根据 j 与 k 的大小接着往 arr 中 j 左边和 j 右边元素中查找
+    return j > k ? quickSearch(arr, low, j - 1, k) : quickSearch(arr, j + 1, high, k);
+}
+
+// 快速分区：返回下标 j，让 arr 中小于 arr[j] 的数都在其左边，大于的在右边
+public int partition(int[] arr, int low, int high) {
+    // 数组中最左边的数
+    int leftmostNum = arr[low];
+    // 初始 i，j
+    int i = low, j = high + 1;
+    while (true) {
+        // 让 i 自加，并判断它后面的数是否比 leftmostNum 小,如果有比 leftmostNum 大的，跳出 while
+        while (++i < high && arr[i] < leftmostNum);
+        // 让 j 自减，并判断它前面的数是否比 leftmostNum 大,如果有比它的小的，跳出 while
+        while (--j > low && arr[j] > leftmostNum);
+        if (i >= j) {
+            break;
+        }
+        // 此时找到了 low < i < j < high 情况下，arr[i] 比 leftmostNum 大，arr[j] 比 leftmostNum 小，需要交换它们的位置
+        int tmp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = tmp;
+    }
+    // 循环结束后 i >= j && arr[j] < arr[low]，所以要交换 j 和 low 的位置，返回 j
+    arr[low] = arr[j];
+    arr[j] = leftmostNum;
+    return j;
+}
+```
+
+### 复杂度分析
+
+时间复杂度：因为我们是要找下标为k的元素，第一次切分的时候需要遍历整个数组 (0 ~ n) 找到了下标是 j 的元素，假如 k 比 j 小的话，那么我们下次切分只要遍历数组 (0~k-1)的元素就行啦，反之如果 k 比 j 大的话，那下次切分只要遍历数组 (k+1～n) 的元素就行啦，总之可以看作每次调用 partition 遍历的元素数目都是上一次遍历的 1/2，因此时间复杂度是 N + N/2 + N/4 + ... + N/N = 2N, 因此时间复杂度是 O(N)。
+
+空间复杂度：期望为 O(logn)
+
 ## 分割(LeetCode[416])
 
 ### 题目描述
@@ -7196,19 +7312,8 @@ public List<List<Integer>> levelOrder(TreeNode root) {
 1
 ```
 
-## 分割(LeetCode[416])
+### 复杂度分析
 
-### 题目描述
+时间复杂度：
 
-
-
-### 思路
-
-
-
-### 代码实现
-
-```java
-1
-```
-
+空间复杂度：
