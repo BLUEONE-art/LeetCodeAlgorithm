@@ -37,9 +37,16 @@ class Solution {
         int x = 0;
         for (int num : nums) {
             if (votes == 0) x = num;
-            votes += num == x ? 1 : -1;
+            // 所以其实等价于
+            // votes = votes + ( num == x ? 1 : -1);
+            votes += (num == x) ? 1 : -1;
         }
-        return x;
+        // 验证 x 是否真的为“众数”
+        int count = 0;
+        for (int num : nums) {
+            if (num == x) count++;
+        }
+        return count > nums.length / 2 ? x : 0;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
