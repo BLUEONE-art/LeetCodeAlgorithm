@@ -7440,6 +7440,49 @@ public int listNodeLength(ListNode head) {
 
 空间复杂度：O(1)
 
+## 在排序数组中查找数字 I(剑指Offer [53 - I])
+
+### 题目描述
+
+统计一个数字在排序数组中出现的次数。
+
+### 思路
+
++ 在有序数组中找到 target 的右边界
++ 在有序数组中找到 target - 1 的右边界
++ 两个边界相减即为所求
+
+![](LeetCode刷题记录.assets/查找有序数组数字出现次数.png)
+
+### 代码实现
+
+```java
+public int search(int[] nums, int target) {
+    return rightBoundary(nums, target) - rightBoundary(nums, target - 1);
+}
+
+// 辅助函数：求 target 的右边界
+private int rightBoundary(int[] nums, int target) {
+    // 找到 target 的右边界，和 target - 1 的右边界，两者相减，即为 target 的数量
+    int left = 0, right = nums.length - 1; // 搜索空间：[left, right]
+    while (left <= right) {
+        int mid = (left + right) / 2;
+        if (nums[mid] <= target) {
+            left = mid + 1;
+        } else {
+            right = mid - 1;
+        }
+    }
+    return left;
+}
+```
+
+### 复杂度分析
+
+时间复杂度：O(logN) ，二分法为对数级别复杂度。
+
+空间复杂度：O(1) ，几个变量使用常数大小的额外空间。
+
 ## 分割(LeetCode[416])
 
 ### 题目描述
