@@ -7296,6 +7296,52 @@ public int partition(int[] arr, int low, int high) {
 
 空间复杂度：期望为 O(logn)
 
+# 2021.2.17记录
+
+## 连续子数组的最大和(剑指Offer[42])
+
+### 题目描述
+
+输入一个整型数组，数组中的一个或连续多个整数组成一个子数组。求所有子数组的和的最大值。本题与主站 53 题相同
+
+### 思路
+
+dp[i] 数组：数组以 nums[i] 结尾的最大字序和
+
+dp[i] 表示 dp[i - 1] 如果跟 nums[i] 相加形成一个更大的子数组的话，就返回这个合并数组
+
+如果合并数组还没有自己本身 nums[i] 的数值大，直接返回 nums[i] 即可
+
+### 代码实现
+
+```java
+/* 最大子序和问题 */
+public int maxSubArray(int[] nums) {
+    // dp[i] 数组：数组以 nums[i] 结尾的最大字序和
+    int n = nums.length;
+    if (n == 0) return 0;
+    int[] dp = new int[n];
+    // base case：数组第一位 nums[0] = dp[0]
+    dp[0] = nums[0];
+    for (int i = 1; i < n; i++) {
+        // dp[i] 表示 dp[i - 1] 如果跟 nums[i] 相加形成一个更大的子数组的话，就返回这个合并数组
+        // 如果合并数组还没有自己本身 nums[i] 的数值大，直接返回 nums[i] 即可
+        dp[i] = Math.max(nums[i], dp[i - 1] + nums[i]);
+    }
+    int res = Integer.MIN_VALUE;
+    for (int i = 0; i < n; i++) {
+        res = Math.max(res, dp[i]);
+    }
+    return res;
+}
+```
+
+### 复杂度分析
+
+时间复杂度：O(N)
+
+空间复杂度：O(1)
+
 ## 分割(LeetCode[416])
 
 ### 题目描述
