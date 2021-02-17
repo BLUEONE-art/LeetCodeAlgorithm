@@ -7342,6 +7342,42 @@ public int maxSubArray(int[] nums) {
 
 空间复杂度：O(1)
 
+## 第一个只出现一次的字符(剑指Offer[50])
+
+### 题目描述
+
+在字符串 s 中找出第一个只出现一次的字符。如果没有，返回一个单空格。 s 只包含小写字母。
+
+### 思路
+
+两次循环 + 哈希表
+
+### 代码实现
+
+```java
+/* 在字符串 s 中找出第一个只出现一次的字符 */
+public char firstUniqChar(String s) {
+    HashMap<Character, Integer> charToFreq = new HashMap<>();
+    for (int i = 0; i < s.length(); i++) {
+        charToFreq.put(s.charAt(i), charToFreq.getOrDefault(s.charAt(i), 0) + 1);
+    }
+    char res = ' ';
+    for (int i = 0; i < s.length(); i++) {
+        if (charToFreq.get(s.charAt(i)) == 1) {
+            res = s.charAt(i);
+            break;
+        }
+    }
+    return res;
+}
+```
+
+### 复杂度分析
+
+时间复杂度：O(N)
+
+空间复杂度：O(1)
+
 ## 分割(LeetCode[416])
 
 ### 题目描述
