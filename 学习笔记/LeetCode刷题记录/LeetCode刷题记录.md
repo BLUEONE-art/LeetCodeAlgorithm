@@ -7378,6 +7378,68 @@ public char firstUniqChar(String s) {
 
 空间复杂度：O(1)
 
+## 两个链表的第一个公共节点(剑指Offer[52])
+
+### 题目描述
+
+输入两个链表，找出它们的第一个公共节点。
+
+如果两个链表没有交点，返回 null. 
+
+在返回结果后，两个链表仍须保持原有的结构。
+
+可假定整个链表结构中没有循环。
+
+程序尽量满足 O(n) 时间复杂度，且仅用 O(1) 内存。
+
+### 思路
+
++ 如果两个链表长度不一致，将长的链表转换成与短的链表长度一致的链表。因为公共节点至少是短链表的头节点。
++ 长度一致后，再进行节点比较，相同位置下节点相等，则为第一个相交的节点。
+
+### 代码实现
+
+```java
+/* 两个链表的第一个公共节点 */
+public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+    // 先把长的链表缩短至与短的链表一样长
+    int headALength = listNodeLength(headA);
+    int headBLength = listNodeLength(headB);
+    ListNode a = headA, b = headB;
+    if (headALength > headBLength) {
+        for (int i = 0; i < headALength - headBLength; i++) {
+            a = a.next;
+        }
+    } else if (headALength < headBLength) {
+        for (int i = 0; i < headBLength - headALength; i++) {
+            b = b.next;
+        }
+    }
+    // 在同样的长度下一个个元素的比较
+    while (a != b) {
+        a = a.next;
+        b = b.next;
+    }
+    return a;
+}
+
+// 辅助函数：求链表的长度
+public int listNodeLength(ListNode head) {
+    int count = 0;
+    while (head != null) {
+        count += 1;
+        head = head.next;
+    }
+    return count;
+}
+```
+
+### 复杂度分析
+
+时间复杂度：O(N)
+
+空间复杂度：O(1)
+
 ## 分割(LeetCode[416])
 
 ### 题目描述
