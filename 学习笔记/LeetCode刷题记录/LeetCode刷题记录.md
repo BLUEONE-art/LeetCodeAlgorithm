@@ -7731,9 +7731,70 @@ public int[] twoSum(int[] nums, int target) {
 
 ### 复杂度分析
 
-时间复杂度：**O(N) **， N*N 为数组 nums 的长度；双指针共同线性遍历整个数组。
+时间复杂度：**O(N) **， N 为数组 nums 的长度；双指针共同线性遍历整个数组。
 
 空间复杂度： **O(1) ** ，变量 i, j 使用常数大小的额外空间。
+
+## 和为s的连续正数序列(剑指Offer [57 - II])
+
+### 题目描述
+
+输入一个正整数 target ，输出所有和为 target 的连续正整数序列（至少含有两个数）。
+
+序列内的数字由小到大排列，不同序列按照首个数字从小到大排列。
+
+### 思路
+
+明确数组是有 1 开始每次递增 1，即：[1, 2, 3, 4, 5, 6 ... ]
+
+设连续正整数序列的左边界 i 和右边界 j，则可构建滑动窗口从左向右滑动。循环中，每轮判断滑动窗口内元素和与目标值 target 的大小关系，若相等则记录结果，若大于 target 则移动左边界 i（以减小窗口内的元素和），若小于 target 则移动右边界 j（以增大窗口内的元素和）。
+
++ **初始化：** 左边界 i = 1，右边界 j = 2，元素和 s = 3，结果列表 res；
++ **循环：** 当 i ≥ j 时跳出；
+  + 当 s > target 时： 向右移动左边界 i = i + 1，并更新元素和 s；
+  + 当 s < target 时： 向右移动右边界 j = j + 1，并更新元素和 s；
+  + 当 s = target 时： 记录连续整数序列，并向右移动左边界 i = i + 1；
++ **返回值：** 返回结果列表 res；
+
+![](LeetCode刷题记录.assets/剑指Offer-57解题思路.png)
+
+### 代码实现
+
+```java
+// 有序数组(单调递增，默认从 1，2，3，4... 开始递增) ---> 双指针
+public int[][] findContinuousSequence(int target) {
+    // 数组元素从 1 开始，没有 0 元素
+    int left = 1, right = 2;
+    List<int[]> res = new ArrayList<>();
+    // 初始化 sum = left + right
+    int sum = 3;
+    while (left < right) {
+        if (sum == target) {
+            // 局部变量存放每一个可行解
+            int[] ans = new int[right - left + 1];
+            // 截取凑成 target 的元素放入数组
+            for (int i = left; i <= right; i++) {
+                ans[i - left] = i;
+            }
+            res.add(ans);
+        }
+        if (sum < target) {
+            // nums[left] + nums[left + 1] + ... + nums[right] < target, 所以要增大 right，继续求和
+            right++;
+            sum += right;
+        } else {
+            // nums[left] + nums[left + 1] + ... + nums[right] >= target, 所以要增大 left，继续求和
+            sum -= left;
+            left++;
+        }
+    }
+    return res.toArray(new int[0][]);
+}
+```
+
+### 复杂度分析
+
+<img src="LeetCode刷题记录.assets/剑指Offer-57复杂度分析.png" style="zoom: 200%;" />
 
 ## 分割(LeetCode[416])
 
