@@ -37,6 +37,29 @@
  * }
  */
 class Solution {
+    // 核心思路：层序遍历的层数就是数的深度
+    public int maxDepth(TreeNode root) {
+        // base case
+        if (root == null) return 0;
+        // 构建队列 queue 用于循环
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.offer(root);
+        // 构建队列(局部变量)存放每一层的节点
+        Queue<TreeNode> tmp;
+        int res = 0;
+        while (!queue.isEmpty()) {
+            tmp = new LinkedList<>();
+            // tmp 记录每一层的节点
+            for (TreeNode treeNode : queue) {
+                if (treeNode.left != null) tmp.offer(treeNode.left);
+                if (treeNode.right != null) tmp.offer(treeNode.right);
+            }
+            queue = tmp;
+            res++;
+        }
+        return res;
+    }
+
     // 函数定义：可以求解二叉树的最大深度
     public int maxDepth(TreeNode root) {
         // base case
