@@ -7687,6 +7687,54 @@ public int recur(TreeNode root) {
 
 空间复杂度：**O(N)** ，最差情况下（树退化为链表时），系统递归需要使用 O(N) 的栈空间。
 
+## 和为 s 的两个数字(剑指Offer[57])
+
+### 题目描述
+
+输入一个**递增排序**的数组和一个数字s，在数组中查找两个数，使得它们的和正好是s。如果有多对数字的和等于s，则输出任意一对即可。
+
+### 思路
+
+利用 HashMap 可以通过遍历数组找到数字组合，时间和空间复杂度均为 O(N) ；
+
+注意本题的 nums 是 排序数组 ，因此可使用 双指针法 将空间复杂度降低至 O(1)
+
++ 初始化： 双指针 i , j 分别指向数组 nums 的左右两端 （俗称对撞双指针）
++ 循环搜索： 当双指针相遇时跳出；
++ 计算和 s = nums[i] + nums[j]；
+  + 若 s > targets，则指针 j 向左移动，即执行 j = j - 1；
+  + 若 s < target ，则指针 i 向右移动，即执行 i = i + 1；
+  + 若 s = target ，立即返回数组 [nums[i], nums[j]] ；
++ 返回空数组，代表无和为 targettarget 的数字组合。
+
+![](LeetCode刷题记录.assets/两数之和解法.png)
+
+### 代码实现
+
+```java
+// 有序(单调递增)数组 ---> 双指针
+public int[] twoSum(int[] nums, int target) {
+    int left = 0, right = nums.length - 1;
+    while (left <= right) {
+        if (nums[left] + nums[right] > target) {
+            right--;
+        } else if (nums[left] + nums[right] < target) {
+            left++;
+        } else {
+            // left + right == target
+            return new int[] { nums[left], nums[right] };
+        }
+    }
+    return new int[0];
+}
+```
+
+### 复杂度分析
+
+时间复杂度：**O(N) **， N*N 为数组 nums 的长度；双指针共同线性遍历整个数组。
+
+空间复杂度： **O(1) ** ，变量 i, j 使用常数大小的额外空间。
+
 ## 分割(LeetCode[416])
 
 ### 题目描述
