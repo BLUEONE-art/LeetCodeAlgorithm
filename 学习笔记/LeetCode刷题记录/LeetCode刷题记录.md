@@ -7523,6 +7523,51 @@ public int missingNumber(int[] nums) {
 
 空间复杂度：O(1) ，几个变量使用常数大小的额外空间。
 
+## 二叉树的第K大节点(剑指Offer[54])
+
+### 题目描述
+
+给定一棵二叉搜索树，请找出其中第k大的节点。
+
+### 思路
+
++ 二叉搜索树的中序遍历为 **递增序列** 。易得二叉搜索树的 **中序遍历倒序** 为 **递减序列** 
++ 因此，求 “二叉搜索树第 k*k* 大的节点可转化为求此树的中序遍历倒序的第 k 个节点。
+
+![](LeetCode刷题记录.assets/二叉树的第K大节点思路.png)
+
+求解过程为：
+
+![](LeetCode刷题记录.assets/二叉树第K大节点过程.png)
+
+### 代码实现
+
+```java
+// 核心思想：中序遍历的倒序为递减序列
+int res, k;
+public int kthLargest(TreeNode root, int k) {
+    this.k = k;
+    dfs(root);
+    return res;
+}
+public void dfs(TreeNode root) {
+    // base case
+    if (root == null) return;
+    // 中序遍历倒序
+    dfs(root.right);
+    // 在这进行中序遍历的操作
+    if (k == 0) return;
+    if (--k == 0) res = root.val;
+    dfs(root.left);
+}
+```
+
+### 复杂度分析
+
+时间复杂度：**O(N) ** 当树退化为链表时（全部为右子节点），无论 k*k* 的值大小，递归深度都为 N*N* ，占用 O(N)*O*(*N*) 时间。
+
+空间复杂度：**O(N)** 当树退化为链表时（全部为右子节点），系统使用 O(N)*O*(*N*) 大小的栈空间。
+
 ## 分割(LeetCode[416])
 
 ### 题目描述
