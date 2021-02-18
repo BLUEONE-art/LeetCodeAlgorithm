@@ -7483,20 +7483,38 @@ private int rightBoundary(int[] nums, int target) {
 
 空间复杂度：O(1) ，几个变量使用常数大小的额外空间。
 
-## 分割(LeetCode[416])
+# 2021.2.18记录
+
+## 0～n-1中缺失的数字(剑指Offer [53 - II])
 
 ### 题目描述
 
-
+一个长度为n-1的递增排序数组中的所有数字都是唯一的，并且每个数字都在范围0～n-1之内。在范围0～n-1内的n个数字中有且只有一个数字不在该数组中，请找出这个数字
 
 ### 思路
 
++ 明确这个数组都是从 0 开始，每次 +1 递增的，只是会有某个数字缺失
++ 既然是 +1 递增，那么它的索引与其对应的值是**相等的**
++ 所以根据二分查找，nums[mid] == mid 应该成立。
 
+![](LeetCode刷题记录.assets/缺失数字解题思路.png)
 
 ### 代码实现
 
 ```java
-1
+public int missingNumber(int[] nums) {
+    int left = 0, right = nums.length - 1;
+    while (left <= right) {
+        int mid = (left + right) / 2;
+        if (nums[mid] == mid) {
+            left = mid + 1;
+        } else {
+            // 为了跳出 while 循环
+            right = mid - 1;
+        }
+    }
+    return left;
+}
 ```
 
 ### 复杂度分析
