@@ -36,9 +36,10 @@ class Solution {
         }
         return res.toString();
 
-//        StringBuilder res = new StringBuilder();
-//        res.append(s, n, s.length()).append(s, 0, n);
-//        return res.toString();
+        // 时间效率高的解法
+        StringBuilder res = new StringBuilder();
+        res.append(s, n, s.length()).append(s, 0, n);
+        return res.toString();
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
