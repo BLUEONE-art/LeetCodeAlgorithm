@@ -29,9 +29,16 @@
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public String reverseLeftWords(String s, int n) {
+        // 若不能用下面简单的方法，则：
         StringBuilder res = new StringBuilder();
-        res.append(s, n, s.length()).append(s, 0, n);
+        for (int i = n; i < (n + s.length()); i++) {
+            res.append(s.charAt(i % s.length()));
+        }
         return res.toString();
+
+//        StringBuilder res = new StringBuilder();
+//        res.append(s, n, s.length()).append(s, 0, n);
+//        return res.toString();
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
