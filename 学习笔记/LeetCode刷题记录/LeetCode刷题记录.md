@@ -7847,6 +7847,46 @@ public String reverseWords(String s) {
 
 空间复杂度**O(N)** ：新建的 StringBuilder 中的字符串总长度 ≤ *N* ，占用 O(N) 大小的额外空间。
 
+## 左旋转字符串(剑指Offer [58 - II])
+
+### 题目描述
+
+字符串的左旋转操作是把字符串前面的若干个字符转移到字符串的尾部。请定义一个函数实现字符串左旋转操作的功能。比如，输入字符串"abcdefg"和数字2，该函数将返回左旋转两位得到的结果"cdefgab"。
+
+### 思路1
+
+字符串切片，分割字符串再拼接即可。
+
+### 思路2
+
+若不能使用切片函数，则遍历字符串依次添加即可。
+
+![](LeetCode刷题记录.assets/剑指Offer58.png)
+
+### 代码实现
+
+```java
+public String reverseLeftWords(String s, int n) {
+    // 若不能用下面简单的方法，则：
+    StringBuilder res = new StringBuilder();
+    for (int i = n; i < (n + s.length()); i++) {
+        res.append(s.charAt(i % s.length()));
+    }
+    return res.toString();
+
+    // 时间效率高的解法
+    StringBuilder res = new StringBuilder();
+    res.append(s, n, s.length()).append(s, 0, n);
+    return res.toString();
+}
+```
+
+### 复杂度分析
+
+时间复杂度：O(N)
+
+空间复杂度：O(N)
+
 ## 分割(LeetCode[416])
 
 ### 题目描述
