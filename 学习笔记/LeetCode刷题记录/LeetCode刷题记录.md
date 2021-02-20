@@ -924,7 +924,7 @@ private TreeNode deLevelSerialize(String data) {
 }
 ```
 
-## Git原理之二叉树最近公共祖先(leetcode [236])
+## Git原理之二叉树最近公共祖先(leetcode [236] && 剑指Offer [68 - II])
 
 使用 Git 的时候，比如
 
