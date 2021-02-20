@@ -8059,6 +8059,50 @@ public int add(int a, int b) {
 
 空间复杂度**O(1) ：** 使用常数大小的额外空间。
 
+## 二叉搜索树的最近公共祖先(剑指Offer [68 - I])
+
+### 题目描述
+
+给定一个二叉搜索树, 找到该树中两个指定节点的最近公共祖先。
+
+所有节点的值都是唯一的。 
+
+p、q 为不同节点且均存在于给定的二叉搜索树中。
+
+### 思路
+
+![](LeetCode刷题记录.assets/最近公共祖先定义.png)
+
+![](LeetCode刷题记录.assets/二叉搜索树最近公共.png)
+
+![](LeetCode刷题记录.assets/二叉搜索树最近祖先解法.png)
+
+### 代码实现
+
+```java
+public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+    while (root != null) {
+        // 如果 p，q 都在左子树中
+        if (p.val < root.val && q.val < root.val) {
+            root = root.left;
+            // 均在右边
+        } else if (p.val > root.val && q.val > root.val) {
+            root = root.right;
+        } else {
+            // 在 root 两侧，则 root 就为公共祖先
+            break;
+        }
+    }
+    return root;
+}
+```
+
+### 复杂度分析
+
+时间复杂度**O(N) ：** 其中 N 为二叉树节点数；每循环一轮排除一层，二叉搜索树的层数最小为 log*N*（满二叉树），最大为 N（退化为链表）。
+
+空间复杂度**O(1) ：** 使用常数大小的额外空间。
+
 ## 分割(LeetCode[416])
 
 ### 题目描述
