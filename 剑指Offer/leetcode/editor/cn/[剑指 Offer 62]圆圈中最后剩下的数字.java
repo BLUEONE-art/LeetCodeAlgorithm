@@ -54,6 +54,8 @@ class Solution {
     }
 
     // 递归公式：f(n) = (f(n - 1) + m) % n
+    // 时间复杂度：O(n)
+    // 空间复杂度：O(n)
     public int lastRemaining(int n, int m) {
         if (n == 1) return 0;
         return (lastRemaining(n - 1, m) + m) % n;
