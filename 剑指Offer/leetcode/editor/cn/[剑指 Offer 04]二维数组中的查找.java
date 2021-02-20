@@ -38,6 +38,7 @@
 
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
+
     public boolean findNumberIn2DArray(int[][] matrix, int target) {
         // 二维矩阵左下角设为 flag
         // 根据矩阵递增的性质，如果 target < flag --> 消除 flag 这一行，并更新 flag
@@ -53,6 +54,17 @@ class Solution {
             } else return true;
         }
         return false;
+    }
+
+    public boolean findNumberIn2DArray(int[][] matrix, int target) {
+        // 暴力遍历：O(MN)
+        int flag = 0;
+        for (int[] ints : matrix) {
+            for (int anInt : ints) {
+                if (anInt == target) flag++;
+            }
+        }
+        return flag != 0;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
