@@ -8103,6 +8103,68 @@ public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
 
 空间复杂度**O(1) ：** 使用常数大小的额外空间。
 
+## 二维数组中的查找(剑指Offer[04])
+
+### 题目描述
+
+在一个 n * m 的二维数组中，每一行都按照从左到右递增的顺序排序，每一列都按照从上到下递增的顺序排序。请完成一个高效的函数，输入这样的一个二维数组和一个整数，判断数组中是否含有该整数。
+
+### 思路
+
+![](LeetCode刷题记录.assets/二维数组查找的解法.png)
+
+**算法实现过程：**
+
+![](LeetCode刷题记录.assets/二维数组查找1.png)
+
+![](LeetCode刷题记录.assets/二维数组查找2.png)
+
+![](LeetCode刷题记录.assets/二维数组查找3.png)
+
+![](LeetCode刷题记录.assets/二维数组查找4.png)
+
+![](LeetCode刷题记录.assets/二维数组查找5.png)
+
+![](LeetCode刷题记录.assets/二维数组查找6.png)
+
+### 代码实现
+
+```java
+public boolean findNumberIn2DArray(int[][] matrix, int target) {
+    // 二维矩阵左下角设为 flag
+    // 根据矩阵递增的性质，如果 target < flag --> 消除 flag 这一行，并更新 flag
+    // 如果 target > flag --> 删除 flag 所在列
+    int i = matrix.length - 1;
+    int j = 0;
+    while (i >= 0 && j < matrix[0].length) {
+        // matrix[i][j] = flag
+        if (target < matrix[i][j]) {
+            i--;
+        } else if (target > matrix[i][j]) {
+            j++;
+        } else return true;
+    }
+    return false;
+}
+
+public boolean findNumberIn2DArray(int[][] matrix, int target) {
+    // 暴力遍历：O(MN)
+    int flag = 0;
+    for (int[] ints : matrix) {
+        for (int anInt : ints) {
+            if (anInt == target) flag++;
+        }
+    }
+    return flag != 0;
+}
+```
+
+### 复杂度分析
+
+时间复杂度O(M+N) ：其中，N 和 M 分别为矩阵行数和列数，此算法最多循环 M+N 次。
+
+空间复杂度O(1) : i, j 指针使用常数大小额外空间
+
 ## 分割(LeetCode[416])
 
 ### 题目描述
