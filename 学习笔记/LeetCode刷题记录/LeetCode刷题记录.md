@@ -7921,6 +7921,95 @@ public boolean isStraight(int[] nums) {
 
 空间复杂度O(N)=O(5)=O(1) ： 用于判重的辅助 Set 使用 O(N) 额外空间。
 
+# 2021.2.20 记录
+
+## 圆圈中最后剩下的数字(剑指Offer[62])
+
+### 题目描述
+
+0,1,···,n-1这n个数字排成一个圆圈，从数字0开始，每次从这个圆圈里删除第m个数字（删除后从下一个数字开始计数）。求出这个圆圈里剩下的最后一个数字。
+
+### 思路
+
+实际上，本题是著名的 “约瑟夫环” 问题，可使用 动态规划 解决。
+
+输入 n, m，记此约瑟夫环问题为 「n, m 问题」，设解（即最后留下的数字）为 f(n)，则有：
+
++ 「n, m 问题」：数字环为 0, 1, 2, ..., n - 1，解为 f(n)；
++ 「n-1, m 问题」：数字环为 0, 1, 2, ..., n - 2，解为 f(n-1)；
++ 以此类推……
+
+**递归解析：**
+
+递归公式为：f(n) = (f(n - 1) + m) % n
+
+![](LeetCode刷题记录.assets/约瑟夫环递归解.png)
+
+**动态规划解析：**
+
++ **状态定义**： 设「i, m 问题」的解为 dp[i]；
++ **状态转移方程**： 通过以下公式可从 dp[i - 1] 递推得到 dp[i]；
+  **dp[i] = (dp[i−1] + m) % i**
++ **初始状态**：「1, m 问题」的解恒为 0，即 dp[1] = 0；
++ **返回值**： 返回「n, m 问题」的解 dp[n]；
+
+![](LeetCode刷题记录.assets/约瑟夫环问题.png)
+
+### 代码实现
+
+```java
+// i = 1 开始递推
+// 递推公式：f(i) = (f(i - 1) + m) % i
+public int lastRemaining(int n, int m) {
+    // 相当于 dp[0] == 0，后面要求 dp[1]，dp[2]，dp[3]，dp[4]
+    int x = 0;
+    for (int i = 2; i <= n; i++) {
+        x = (x + m) % i;
+    }
+    return x;
+}
+
+public int lastRemaining(int n, int m) {
+    // 迭代，动态规划
+    int[] dp = new int[n];
+    if (n == 1) dp[0] = 0;
+    for (int i = 2; i <= n; i++) {
+        dp[i - 1] = (dp[i - 2] + m) % i;
+    }
+    return dp[n - 1];
+}
+
+// 递归公式：f(n) = (f(n - 1) + m) % n
+// 时间复杂度：O(n)
+// 空间复杂度：O(n)
+public int lastRemaining(int n, int m) {
+    if (n == 1) return 0;
+    return (lastRemaining(n - 1, m) + m) % n;
+}
+
+// 没有分支，其实没有降低时间复杂度
+public int lastRemaining(int n, int m) {
+    // 备忘录
+    ArrayList<Integer> memo = new ArrayList<>(Collections.nCopies(n + 1, -1));
+    return dp(memo, n, m);
+}
+private int dp(ArrayList<Integer> memo, int n, int m) {
+    // base case
+    if (n == 1) return 0;
+    // 如果备忘录中有，直接返回
+    if (memo.get(n) >= 0) return memo.get(n);
+    // 若没有，再计算
+    memo.set(n, (dp(memo, n - 1, m) + m) % n);
+    return memo.get(n);
+}
+```
+
+### 复杂度分析
+
+时间复杂度**O(n) ：** 状态转移循环 n - 1 次使用 O(n) 时间，状态转移方程计算使用 O(1) 时间；
+
+空间复杂度**O(1) ：** 使用常数大小的额外空间；
+
 ## 分割(LeetCode[416])
 
 ### 题目描述
@@ -7942,4 +8031,3 @@ public boolean isStraight(int[] nums) {
 时间复杂度：
 
 空间复杂度：
-
