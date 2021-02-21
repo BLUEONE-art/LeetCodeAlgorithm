@@ -8165,6 +8165,63 @@ public boolean findNumberIn2DArray(int[][] matrix, int target) {
 
 空间复杂度O(1) : i, j 指针使用常数大小额外空间
 
+# 2021.2.21记录
+
+## 矩阵中的路径(剑指Offer[12])
+
+### 题目描述
+
+请设计一个函数，用来判断在一个矩阵中是否存在一条包含某字符串所有字符的路径。路径**可以从矩阵中的任意一格开始**，每一步可以在矩阵中向左、右、上、下移动一格。如果一条路径经过了矩阵的某一格，那么该路径不能再次进入该格子。
+
+### 思路
+
+![](C:\Users\dell\Desktop\GithubProject\LeetCodeAlgorithm\学习笔记\LeetCode刷题记录\LeetCode刷题记录.assets\剑指Offer12思路.png)
+
+![](C:\Users\dell\Desktop\GithubProject\LeetCodeAlgorithm\学习笔记\LeetCode刷题记录\LeetCode刷题记录.assets\剑指Offer12示意图.png)
+
+![](C:\Users\dell\Desktop\GithubProject\LeetCodeAlgorithm\学习笔记\LeetCode刷题记录\LeetCode刷题记录.assets\剑指Offer12递归函数解析.png)
+
+### 代码实现
+
+```java
+public boolean exist(char[][] board, String word) {
+    char[] words = word.toCharArray();
+    // 在 board 中从左到右，从上到下依次查找
+    for (int i = 0; i < board.length; i++) {
+        for (int j = 0; j < board[0].length; j++) {
+            if (dfs(board, words, i, j, 0)) return true;
+        }
+    }
+    return false;
+}
+// dfs()：帮我们递归找到索引 board[i][j] 是否与 words[k] 匹配
+private boolean dfs(char[][] board, char[] words, int i, int j, int k) {
+    // base case
+    // 超出索引边界以及不匹配的情况均返回 false
+    if (i < 0 || i > board.length - 1 || j < 0 || j > board[0].length - 1 || board[i][j] != words[k]) return false;
+    // 如果 k 运动到 words 最后一个字符，表示全部匹配
+    if (k == words.length - 1) return true;
+    // 定义空字符，代表此元素已访问过，防止之后搜索时重复访问。
+    board[i][j] = '\0';
+    // 递归：下 --> 上 --> 右 --> 左
+    boolean res = dfs(board, words, i, j + 1, k + 1) || dfs(board, words, i, j - 1, k + 1)
+        || dfs(board, words, i + 1, j, k + 1) || dfs(board, words, i - 1, j, k + 1);
+    // 还原
+    board[i][j] = words[k];
+    return res;
+}
+```
+
+### 复杂度分析
+
+> *M*,*N* 分别为矩阵行列大小， K 为字符串 `word` 长度。
+
+时间复杂度O(3^K*MN) ： 最差情况下，需要遍历矩阵中长度为 K 字符串的所有方案，时间复杂度为 O(3^K)；矩阵中共有 MN 个起点，时间复杂度为 O(MN)。
+
+​	方案数计算： 设字符串长度为 K，搜索中每个字符有上、下、左、右四个方向可以选择，舍弃回头（上个字符）的方向，剩下 3 种选择，因此方案数的复杂度为 O(3^K)
+
+空间复杂度O(K) ： 搜索过程中的递归深度不超过 K ，因此系统因函数调用累计使用的栈空间占用 O(K) 
+
 ## 分割(LeetCode[416])
 
 ### 题目描述
