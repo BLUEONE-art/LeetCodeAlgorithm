@@ -1993,7 +1993,7 @@ public TreeNode build(int[] nums, int low, int high) {
 }
 ```
 
-## 通过前序和中序遍历结果构造二叉树(leetcode [105])
+## 通过前序和中序遍历结果构造二叉树(leetcode [105] && 剑指Offer[07])
 
 **要求：**
 
@@ -2042,7 +2042,7 @@ TreeNode buildTree(int[] preorder, int[] inorder);
 
 ```java
 public TreeNode buildTree(int[] preorder, int[] inorder) {
-
+	// 相当于初始化 preStart、preEnd、inStart、inEnd 的取值范围
     return build(preorder, 0, preorder.length - 1,
                  inorder, 0, inorder.length - 1);
 }
@@ -2051,7 +2051,7 @@ public TreeNode buildTree(int[] preorder, int[] inorder) {
 public TreeNode build(int[] preorder, int preStart, int preEnd,
                       int[] inorder, int inStart, int inEnd) {
 
-    // base case
+    // base case：当 leftSize == 0 时，preStart > preEnd
     if (preEnd < preStart) return null;
 
     // ①根据前序遍历的结果可以得出原二叉树的 root 节点的值
