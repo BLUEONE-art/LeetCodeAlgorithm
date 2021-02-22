@@ -8388,6 +8388,51 @@ public int cuttingRope(int n) {
 
 空间复杂度：**O(1) ：** 变量 `count` 和 `b` 使用常数大小额外空间。
 
+## 数值的整数次方(LeetCode[16])
+
+### 题目描述
+
+实现函数 double Power(double base, int exponent)，求 base 的 exponent 次方。不得使用库函数，同时不需要考虑大数
+
+### 思路
+
+![](LeetCode刷题记录.assets/剑指Offer16思路.png)
+
+![](LeetCode刷题记录.assets/剑指Offer16解题过程.png)
+
+![](LeetCode刷题记录.assets/剑指Offer16算法流程.png)
+
+### 代码实现
+
+```java
+// 快速幂(二分查找)
+public double myPow(double x, int n) {
+    if (n == 0) return 1.0;
+    // 因为 n 可能会超过 int 的最大范围
+    long b = n;
+    double res = 1.0;
+    // 如果是负数幂，转换
+    if (n < 0) {
+        x = 1 / x;
+        b = -b;
+    }
+    // 求幂 --> 转换成按位操作
+    while (b > 0) {
+        // 只要二进制位数上有 1
+        if ((b & 1) == 1) res = res * x;
+        x *= x;
+        b >>= 1;
+    }
+    return res;
+}
+```
+
+### 复杂度分析
+
+时间复杂度**O(logn) ：** 二分的时间复杂度为对数级别。
+
+空间复杂度**O(1)**
+
 ## 分割(LeetCode[416])
 
 ### 题目描述
