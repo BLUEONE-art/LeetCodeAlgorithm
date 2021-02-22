@@ -8303,6 +8303,46 @@ public int dfs(int i, int j, int si, int sj) {
 
 空间复杂度**O(MN)：** 最差情况下， `visited` 内存储矩阵所有单元格的索引，使用 O(MN) 的额外空间。
 
+## 剪绳子(剑指Offer [14- I])
+
+### 题目描述
+
+给你一根长度为 n 的绳子，请把绳子剪成整数长度的 m 段（m、n都是整数，n>1并且m>1），每段绳子的长度记为 k[0],k[1]...k[m-1] 。请问 k[0]k[1]*...*k[m-1] 可能的最大乘积是多少？例如，当绳子的长度是8时，我们把它剪成长度分别为2、3、3的三段，此时得到的最大乘积是18
+
+### 思路
+
+![](LeetCode刷题记录.assets/剪绳子I解题思路1.png)
+
+![](LeetCode刷题记录.assets/剪绳子I解题思路2.png)
+
+![](LeetCode刷题记录.assets/剪绳子I解题思路3.png)
+
+![](LeetCode刷题记录.assets/剪绳子算法过程.png)
+
+### 代码实现
+
+```java
+public int cuttingRope(int n) {
+    // 根据数学推导，驻点 x = e 约等于 2.7，但是 x 要求是整数，所以取 3 是最优解，2 是次优解
+    // 尽可能多分成长度为 3 的段
+    // base case
+    if (n <= 3) return n - 1;
+    int count = 0, b = 0, res = 0;
+    count = n / 3;
+    b = n % 3;
+    if (b == 0) res = (int)Math.pow(3, count);
+    if (b == 1) res = (int)Math.pow(3, count - 1) * 4;
+    if (b == 2) res = (int)Math.pow(3, count) * 2;
+    return res;
+}
+```
+
+### 复杂度分析
+
+时间复杂度**O(1) ：** 仅有求整、求余、次方运算。
+
+空间复杂度**O(1) ：** 变量 `count` 和 `b` 使用常数大小额外空间。
+
 ## 分割(LeetCode[416])
 
 ### 题目描述
