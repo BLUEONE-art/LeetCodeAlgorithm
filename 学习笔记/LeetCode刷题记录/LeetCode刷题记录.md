@@ -8175,11 +8175,11 @@ public boolean findNumberIn2DArray(int[][] matrix, int target) {
 
 ### 思路
 
-![](C:\Users\dell\Desktop\GithubProject\LeetCodeAlgorithm\学习笔记\LeetCode刷题记录\LeetCode刷题记录.assets\剑指Offer12思路.png)
+![](LeetCode刷题记录.assets\剑指Offer12思路.png)
 
-![](C:\Users\dell\Desktop\GithubProject\LeetCodeAlgorithm\学习笔记\LeetCode刷题记录\LeetCode刷题记录.assets\剑指Offer12示意图.png)
+![](LeetCode刷题记录.assets\剑指Offer12示意图.png)
 
-![](C:\Users\dell\Desktop\GithubProject\LeetCodeAlgorithm\学习笔记\LeetCode刷题记录\LeetCode刷题记录.assets\剑指Offer12递归函数解析.png)
+![](LeetCode刷题记录.assets\剑指Offer12递归函数解析.png)
 
 ### 代码实现
 
