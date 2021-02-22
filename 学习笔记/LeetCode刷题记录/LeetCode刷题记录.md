@@ -8222,6 +8222,87 @@ private boolean dfs(char[][] board, char[] words, int i, int j, int k) {
 
 空间复杂度O(K) ： 搜索过程中的递归深度不超过 K ，因此系统因函数调用累计使用的栈空间占用 O(K) 
 
+# 2021.1.22记录
+
+## 机器人的运动范围(剑指Offer[13])
+
+### 题目描述
+
+地上有一个m行n列的方格，从坐标 [0,0] 到坐标 [m-1,n-1] 。一个机器人从坐标 [0, 0] 的格子开始移动，它每次可以向左、右、上、下移动一格（不能移动到方格外），也不能进入行坐标和列坐标的数位之和大于k的格子。例如，当k为18时，机器人能够进入方格 [35, 37] ，因为3+5+3+7=18。但它不能进入方格 [35, 38]，因为3+5+3+8=19。请问该机器人能够到达多少个格子？ 
+
+### 思路
+
+![](LeetCode刷题记录.assets/剑指Offer13计算位数和.png)
+
+```java
+int sums(int x)
+    int s = 0;
+    while(x != 0) {
+        s += x % 10;
+        x = x / 10;
+    }
+    return s;
+```
+
+![](LeetCode刷题记录.assets/剑指Offer13增量和.png)
+
+![](LeetCode刷题记录.assets/剑指Offer13深度优先搜索.png)
+
+**递归搜索过程**
+
+![](LeetCode刷题记录.assets/剑指Offer13_1.png)
+
+![](LeetCode刷题记录.assets/剑指Offer13_2.png)
+
+![](LeetCode刷题记录.assets/剑指Offer13_3.png)
+
+![](LeetCode刷题记录.assets/剑指Offer13_4.png)
+
+![](LeetCode刷题记录.assets/剑指Offer13_5.png)
+
+![](LeetCode刷题记录.assets/剑指Offer13_6.png)
+
+![](LeetCode刷题记录.assets/剑指Offer13_7.png)
+
+![](LeetCode刷题记录.assets/剑指Offer13_8.png)
+
+![](LeetCode刷题记录.assets/剑指Offer13_9.png)
+
+![](LeetCode刷题记录.assets/剑指Offer13_10.png)
+
+![](LeetCode刷题记录.assets/剑指Offer13_11.png)
+
+![](LeetCode刷题记录.assets/剑指Offer13_12.png)
+
+### 代码实现
+
+```java
+int m, n, k;
+boolean[][] visited;
+public int movingCount(int m, int n, int k) {
+    this.m = m;
+    this.n = n;
+    this.k = k;
+    this.visited = new boolean[m][n];
+    return dfs(0, 0, 0, 0);
+}
+// 深度优先函数 dfs()：根据二维矩阵索引 i、j 以及其对应的位数和 si 和 sj 返回所有的可行解
+public int dfs(int i, int j, int si, int sj) {
+    // base case：当 i、j 超出索引范围、si、sj 的和大于 k、visited[i][j] 中元素已经被访问过了，返回 0
+    if (i >= m || j >= n || si + sj > k || visited[i][j]) return 0;
+    visited[i][j] = true;
+    // 往下搜 + 往右搜(往上和往左回溯结果)
+    // (i + 1) % 10 == 0: 比如 i = 19 ==> i + 1 = 20 位数和为 2 == 1 + 9 = 10 - 8 = 2
+    return 1 + dfs(i + 1, j, (i + 1) % 10 == 0 ? si - 8 : si + 1, sj) + dfs(i, j + 1, si, (j + 1) % 10 == 0 ? sj - 8 : sj + 1);
+}
+```
+
+### 复杂度分析
+
+时间复杂度**O(MN) ：** 最差情况下，机器人遍历矩阵所有单元格，此时时间复杂度为 O(MN) 。
+
+空间复杂度**O(MN)：** 最差情况下， `visited` 内存储矩阵所有单元格的索引，使用 O(MN) 的额外空间。
+
 ## 分割(LeetCode[416])
 
 ### 题目描述
