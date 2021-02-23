@@ -8694,22 +8694,48 @@ public List<Integer> sort(List<Integer> levelRes) {
 
 空间复杂度：O(N)
 
-## 表示(剑指Offer[20])
+## 二叉搜索树的后序遍历序列(剑指Offer[33])
 
 ### 题目描述
 
-
+输入一个整数数组，判断该数组是不是某二叉搜索树的后序遍历结果。如果是则返回 true，否则返回 false。假设输入的数组的任意两个数字都互不相同。 
 
 ### 思路
+
+**递归分治**
+根据二叉搜索树的定义，可以通过递归，判断所有子树的 正确性 （即其后序遍历是否满足二叉搜索树的定义） ，若所有子树都正确，则此序列为二叉搜索树的后序遍历。
+
+![](LeetCode刷题记录.assets/剑指Offer33递归解析.png)
 
 ### 代码实现
 
 ```java
-
+public boolean verifyPostorder(int[] postorder) {
+    // 二叉搜索树的后序遍历特点：
+    // 1、根节点 root 为数组最后一个元素
+    // 2、左子树的范围应该是从数组起始位置到第一个大于根节点的元素之前
+    // 3、右子树的范围是第一个大于根节点的元素到根节点之前的元素
+    return isBST(postorder, 0, postorder.length - 1);
+}
+// isBST()：定义是根据后序遍历结果中的左子树范围和右子树范围判断该结果是不是二叉搜索树的后序遍历
+public boolean isBST(int[] postorder, int i, int j) {
+    // base case：只剩下一个节点时，左子树和右子树元素均为 “无”
+    if (i >= j) return true;
+    // 求左子树范围：i ~ m - 1
+    int p = i;
+    while (postorder[p] < postorder[j]) p++;
+    int m = p;
+    // 右子树范围：m ~ j - 1
+    for (int t = m; t < j; t++) {
+        if (postorder[t] < postorder[j]) return false;
+    }
+    // 递归判断左子树和右子树中是否为二叉搜索树
+    return isBST(postorder, i, m - 1) && isBST(postorder, m, j - 1);
+}
 ```
 
 ### 复杂度分析
 
-时间复杂度：O(N)
+时间复杂度：O(N^2)，每次调用 recur(i,j) 减去一个根节点，因此递归占用 O(N)；最差情况下（即当树退化为链表），每轮递归都需遍历树所有节点，占用 O(N)。
 
-空间复杂度：O(1)
+空间复杂度：O(N)，最差情况下（即当树退化为链表），递归深度将达到 N。
