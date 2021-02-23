@@ -8491,6 +8491,70 @@ public boolean isNumber(String s) {
 
 # 2021.2.23记录
 
+## 树的子结构(剑指Offer[26])
+
+### 题目描述
+
+输入两棵二叉树A和B，判断B是不是A的子结构。(约定空树不是任意一个树的子结构) 
+B是A的子结构， 即 A中有出现和B相同的结构和节点值。 
+
+### 思路
+
+若树 B 是树 A 的子结构，则子结构的根节点可能为树 A 的任意一个节点。因此，判断树 B 是否是树 A 的子结构，需完成以下两步工作：
+
++ 先序遍历树 A 中的每个节点 n_A；（对应函数 `isSubStructure(A, B)`）
++ 判断树 A 中 **以 n_A 为根节点的子树** 是否包含树 B 。（对应函数 `recur(A, B)`）
+
+![](LeetCode刷题记录.assets/剑指Offer26解题过程.png)
+
+### 代码实现
+
+```java
+public boolean isSubStructure(TreeNode A, TreeNode B) {
+    // base case1
+    if (A == null || B == null) return false;
+    // base case2
+    if (A.val == B.val && recur(A.left, B.left) && recur(A.right, B.right)) return true;
+    return (isSubStructure(A.left, B) || isSubStructure(A.right, B));
+}
+// recur()：用于判断树 A、B 中每个节点是否相同
+public boolean recur(TreeNode A, TreeNode B) {
+    // B 为空了，说明 A.left == B.left && A.right == B.right 直到 B 为空都是正确的，B 一定要在前面
+    if (B == null) return true;
+    // base case：大的树 A 为空了，说明 A 还比 B 小，肯定不包括 B
+    if (A == null) return false;
+    if (A.val == B.val) {
+        return recur(A.left, B.left) && recur(A.right, B.right);
+    } else return false;
+}
+```
+
+### 复杂度分析
+
+时间复杂度O(MN)： 其中 M,N 分别为树 A 和 树 B 的节点数量；先序遍历树 A 占用 O(M)，每次调用 recur(A, B) 判断占用 O(N)。
+
+空间复杂度O(M)： 当树 A 和树 B 都退化为链表时，递归调用深度最大。当 M≤N 时，遍历树 A 与递归判断的总递归深度为 M；当 M>N 时，最差情况为遍历至树 A 叶子节点，此时总递归深度为 M。
+
+## 表示数值的字符串(剑指Offer[20])
+
+### 题目描述
+
+
+
+### 思路
+
+### 代码实现
+
+```java
+
+```
+
+### 复杂度分析
+
+时间复杂度：O(N)
+
+空间复杂度：O(1)
+
 ## 表示数值的字符串(剑指Offer[20])
 
 ### 题目描述
