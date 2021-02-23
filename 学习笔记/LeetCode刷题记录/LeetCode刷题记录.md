@@ -8631,25 +8631,68 @@ public int[] levelOrder(TreeNode root) {
 时间复杂度 O(N)： N 为二叉树的节点数量，即 BFS 需循环 N 次。
 空间复杂度 O(N) ： 最差情况下，即当树为平衡二叉树时，最多有 N/2 个树节点同时在 queue 中，使用 O(N) 大小的额外空间。
 
-## 表示(剑指Offer[20])
+## 从上到下打印二叉树(剑指Offer [32 - III])
 
 ### 题目描述
 
-
+请实现一个函数按照之字形顺序打印二叉树，即第一行按照从左到右的顺序打印，第二层按照从右到左的顺序打印，第三行再按照从左到右的顺序打印，其他行以此类推。 
 
 ### 思路
+
+总体还是中序遍历，但是要设置一个标志位判断奇偶数
+
++ 奇数：从左到右打印
++ 偶数：从右到左打印
 
 ### 代码实现
 
 ```java
-
+public List<List<Integer>> levelOrder(TreeNode root) {
+    List<List<Integer>> res = new ArrayList<List<Integer>>();
+    Queue<TreeNode> queue = new LinkedList<>();
+    if (root != null) queue.offer(root);
+    // 判别奇偶数
+    int count = 0;
+    while (!queue.isEmpty()) {
+        // 每循环一次，count + 1
+        count++;
+        // 存放每一层的结果
+        List<Integer> levelRes = new ArrayList<>();
+        // 根据每一层的节点数循环几次
+        for (int i = queue.size() - 1; i >= 0; i--) {
+            TreeNode cur = queue.poll();
+            levelRes.add(cur.val);
+            if (cur.left != null) queue.offer(cur.left);
+            if (cur.right != null) queue.offer(cur.right);
+        }
+        // 当 count 为奇数的时候，从左到右，为偶数时，从右到左
+        if (count % 2 != 0) {
+            res.add(levelRes);
+        } else {
+            sort(levelRes);
+            res.add(levelRes);
+        }
+    }
+    return res;
+}
+public List<Integer> sort(List<Integer> levelRes) {
+    int left = 0, right = levelRes.size() - 1;
+    while (left < right) {
+        int tmp = levelRes.get(left);
+        levelRes.set(left, levelRes.get(right));
+        levelRes.set(right, tmp);
+        left++;
+        right--;
+    }
+    return levelRes;
+}
 ```
 
 ### 复杂度分析
 
 时间复杂度：O(N)
 
-空间复杂度：O(1)
+空间复杂度：O(N)
 
 ## 表示(剑指Offer[20])
 
