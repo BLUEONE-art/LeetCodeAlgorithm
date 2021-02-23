@@ -7168,6 +7168,11 @@ public List<List<Integer>> levelOrder(TreeNode root) {
 }
 ```
 
+### 复杂度分析
+
+时间复杂度 O(N) ： N 为二叉树的节点数量，即 BFS 需循环 N 次。
+空间复杂度 O(N) ： 最差情况下，即当树为平衡二叉树时，最多有 N/2 个树节点同时在 queue 中，使用 O(N) 大小的额外空间。
+
 # 2021.2.14记录
 
 ## 数组中出现次数超过一半的数字(剑指Offer [39])
@@ -8580,6 +8585,51 @@ public boolean validateStackSequences(int[] pushed, int[] popped) {
 时间复杂度：O(N)，其中 N 为列表 pushed 的长度；每个元素最多入栈与出栈一次，即最多共 2N 次出入栈操作。
 
 空间复杂度：O(N)，辅助栈 stack 最多同时存储 N 个元素。
+
+## 从上到下打印二叉树(剑指Offer [32 - I])
+
+### 题目描述
+
+从上到下打印出二叉树的每个节点，同一层的节点按照从左到右的顺序打印。
+
+给定二叉树: [3,9,20,null,null,15,7], 返回： [3,9,20,15,7]
+
+### 思路
+
+借助队列这种数据结构实现二叉树的层序遍历。
+
+### 代码实现
+
+```java
+public int[] levelOrder(TreeNode root) {
+    // 创建队列
+    Queue<TreeNode> queue = new LinkedList<>();
+    List<Integer> res = new ArrayList<>();
+    // 装入 root
+    if (root != null) {
+        queue.offer(root);
+    }
+    while (!queue.isEmpty()) {
+        for (int i = queue.size(); i > 0; i--) {
+            TreeNode cur = queue.poll();
+            res.add(cur.val);
+            if (cur.left != null) queue.offer(cur.left);
+            if (cur.right != null) queue.offer(cur.right);
+        }
+    }
+    int size = res.size();
+    int[] res_arr = new int[size];
+    for (int i = 0; i < size; i++) {
+        res_arr[i] = res.get(i);
+    }
+    return res_arr;
+}
+```
+
+### 复杂度分析
+
+时间复杂度 O(N)： N 为二叉树的节点数量，即 BFS 需循环 N 次。
+空间复杂度 O(N) ： 最差情况下，即当树为平衡二叉树时，最多有 N/2 个树节点同时在 queue 中，使用 O(N) 大小的额外空间。
 
 ## 表示(剑指Offer[20])
 
