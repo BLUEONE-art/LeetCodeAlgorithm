@@ -8797,6 +8797,71 @@ public void recur(TreeNode root, int tar) {
 
 空间复杂度：O(N)，最差情况下（即当树退化为链表），`path` 存储所有树节点，使用 O(N) 额外空间。
 
+## 复杂链表的复制(剑指Offer[35])
+
+### 题目描述
+
+请实现 copyRandomList 函数，复制一个复杂链表。在复杂链表中，每个节点除了有一个 next 指针指向下一个节点，还有一个 random 指针指向链表中的任意节点或者 null。
+
+### 思路
+
+给定链表的头节点 head ，复制普通链表很简单，只需遍历链表，每轮建立新节点 + 构建前驱节点 pre 和当前节点 node 的引用指向即可。
+
+本题链表的节点新增了 random 指针，指向链表中的 任意节点 或者 null 。这个 random 指针意味着在复制过程中，除了构建前驱节点和当前节点的引用指向 pre.next ，还要构建前驱节点和其随机节点的引用指向 pre.random 。
+
+本题难点： 在复制链表的过程中构建新链表各节点的 random 引用指向。
+![](LeetCode刷题记录.assets/剑指Offer35问题描述.png)
+
+```java
+class Solution {
+    public Node copyRandomList(Node head) {
+        Node cur = head;
+        Node dum = new Node(0), pre = dum;
+        while(cur != null) {
+            Node node = new Node(cur.val); // 复制节点 cur
+            pre.next = node;               // 新链表的 前驱节点 -> 当前节点
+            // pre.random = "???";         // 新链表的 「 前驱节点 -> 当前节点 」 无法确定
+            cur = cur.next;                // 遍历下一节点
+            pre = node;                    // 保存当前新节点
+        }
+        return dum.next;
+    }
+}
+```
+
+![](LeetCode刷题记录.assets/剑指Offer35思路.png)
+
+### 代码实现
+
+```java
+// 深拷贝原来的链表，而不是只是复制其引用
+public Node copyRandomList(Node head) {
+    if (head == null) return null;
+    // 创建原始链表和新链表节点之间的映射
+    HashMap<Node, Node> map = new HashMap<>();
+    Node cur = head;
+    // map 中 key 存放的是 head 中各个节点的引用，所以包含其 next 和 random
+    while (cur != null) {
+        map.put(cur, new Node(cur.val));
+        cur = cur.next;
+    }
+    // 重来一遍来
+    cur = head;
+    while (cur != null) {
+        map.get(cur).next = map.get(cur.next);
+        map.get(cur).random = map.get(cur.random);
+        cur = cur.next;
+    }
+    return map.get(head);
+}
+```
+
+### 复杂度分析
+
+时间复杂度：O(N)，两轮遍历链表，使用 O(N) 时间。
+
+空间复杂度：O(N)，哈希表 `dic` 使用线性大小的额外空间。
+
 ## 序列(剑指Offer[33])
 
 ### 题目描述
