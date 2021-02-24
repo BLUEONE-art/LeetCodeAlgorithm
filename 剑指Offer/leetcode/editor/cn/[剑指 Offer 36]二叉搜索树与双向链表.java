@@ -55,32 +55,33 @@ class Node {
 };
 */
 class Solution {
-    Node tail, head;
+    Node pre, head;
     public Node treeToDoublyList(Node root) {
         if (root == null) return null;
         // 中序遍历函数
         inorder(root);
         // 对遍历的结果头尾相接形成循环链表
-        tail.right = head;
-        head.left = tail;
+        pre.right = head;
+        head.left = pre;
         return head;
     }
-    public void inorder(Node root) {
+    public void inorder(Node cur) {
         // base case
-        if (root == null) return;
+        if (cur == null) return;
         // 中序遍历的位置
-        inorder(root.left);
+        inorder(cur.left);
         /* 中序遍历代码位置 */
-        // 如果碰到尾巴节点为 null 的情况
-        if (tail != null) {
-            tail.right = root;
+        // 第一次递归的时候拿到的是头结点，其左侧没有节点，即 cur 节点左侧没有 pre 节点
+        if (pre != null) {
+            cur.right = cur;
         } else {
-            head = root;
+            head = cur;
         }
-        root.left = tail;
-        tail = root;
+        cur.left = pre;
+        // 记录当前的 cur，因为下次递归 cur 就会递增成下一个节点
+        pre = cur;
         /* 中序遍历代码位置 */
-        inorder(root.right);
+        inorder(cur.right);
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
