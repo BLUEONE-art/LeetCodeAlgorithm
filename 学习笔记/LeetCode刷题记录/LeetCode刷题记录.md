@@ -8862,6 +8862,63 @@ public Node copyRandomList(Node head) {
 
 空间复杂度：O(N)，哈希表 `dic` 使用线性大小的额外空间。
 
+## 二叉搜索树与双向链表(剑指Offer[36])
+
+### 题目描述
+
+将 二叉搜索树 转换成一个 “排序的循环双向链表” ，其中包含三个要素：
+
++ 排序链表： 节点应从小到大排序，因此应使用 中序遍历 “从小到大”访问树的节点；
++ 双向链表： 在构建相邻节点（设前驱节点 pre，当前节点 cur）关系时，不仅应 pre.right = cur，也应 cur.left = pre 。
++ 循环链表： 设链表头节点 head 和尾节点 tail ，则应构建 head.left = tail 和 tail.right = head。
+
+![](LeetCode刷题记录.assets/剑指Offer36问题描述.png)
+
+### 思路
+
+根据以上分析，考虑使用中序遍历访问树的各节点 cur；并在访问每个节点时构建 cur 和前驱节点 pre 的引用指向；中序遍历完成后，最后构建头节点和尾节点的引用指向即可。
+
+![](LeetCode刷题记录.assets/剑指Offer36思路.png)
+
+### 代码实现
+
+```java
+Node pre, head;
+public Node treeToDoublyList(Node root) {
+    if (root == null) return null;
+    // 中序遍历函数
+    inorder(root);
+    // 对遍历的结果头尾相接形成循环链表
+    pre.right = head;
+    head.left = pre;
+    return head;
+}
+public void inorder(Node cur) {
+    // base case
+    if (cur == null) return;
+    // 中序遍历的位置
+    inorder(cur.left);
+    /* 中序遍历代码位置 */
+    // 第一次递归的时候拿到的是头结点，其左侧没有节点，即 cur 节点左侧没有 pre 节点
+    if (pre != null) {
+        cur.right = cur;
+    } else {
+        head = cur;
+    }
+    cur.left = pre;
+    // 记录当前的 cur，因为下次递归 cur 就会递增成下一个节点
+    pre = cur;
+    /* 中序遍历代码位置 */
+    inorder(cur.right);
+}
+```
+
+### 复杂度分析
+
+时间复杂度：O(N)，*N* 为二叉树的节点数，中序遍历需要访问所有节点。
+
+空间复杂度：O(N)，最差情况下，即树退化为链表时，递归深度达到 N，系统使用 O(N) 栈空间。
+
 ## 序列(剑指Offer[33])
 
 ### 题目描述
