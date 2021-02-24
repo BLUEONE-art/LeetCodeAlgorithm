@@ -8739,3 +8739,82 @@ public boolean isBST(int[] postorder, int i, int j) {
 时间复杂度：O(N^2)，每次调用 recur(i,j) 减去一个根节点，因此递归占用 O(N)；最差情况下（即当树退化为链表），每轮递归都需遍历树所有节点，占用 O(N)。
 
 空间复杂度：O(N)，最差情况下（即当树退化为链表），递归深度将达到 N。
+
+# 2021.2.24记录
+
+## 二叉树中和为某一值的路径(剑指Offer[34])
+
+### 题目描述
+
+输入一棵二叉树和一个整数，打印出二叉树中节点值的和为输入整数的所有路径。从树的根节点开始往下一直到叶节点所经过的节点形成一条路径。 
+
+![](LeetCode刷题记录.assets/剑指Offer34题目描述.png)
+
+### 思路
+
+> 本问题是典型的二叉树方案搜索问题，使用回溯法解决，其包含 **先序遍历 + 路径记录** 两部分。
+
++ 先序遍历： 按照 “根、左、右” 的顺序，遍历树的所有节点。
++ 路径记录： 在先序遍历中，记录从根节点到当前节点的路径。当路径为 ① 根节点到叶节点形成的路径 且 ② 各节点值的和等于目标值 sum 时，将此路径加入结果列表。
+
+![](LeetCode刷题记录.assets/剑指Offer34算法流程.png)
+
+### 代码实现
+
+```java
+LinkedList<List<Integer>> res = new LinkedList<>();
+// 某单条可行的路径
+LinkedList<Integer> path = new LinkedList<>();
+// pathSum()：能找到树 root 中和为 Sum 的路径
+public List<List<Integer>> pathSum(TreeNode root, int sum) {
+    recur(root, sum);
+    return res;
+}
+public void recur(TreeNode root, int tar) {
+    // base case
+    if (root == null) return;
+    // 前序遍历代码位置
+    // 记录路径经过的节点值
+    path.add(root.val);
+    // 更新 tar 目标值
+    tar -= root.val;
+    // 如果找到了一条路径
+    if (tar == 0 && root.left == null && root.right == null) {
+        res.add(new LinkedList<>(path));
+    }
+    // 前序遍历框架
+    recur(root.left, tar);
+    recur(root.right, tar);
+    // 后序遍历代码位置
+    // 每次执行到叶子节点，先到左叶子结点的路径，不管满不满足条件，都该换成右叶子节点试试了
+    path.removeLast();
+}
+```
+
+### 复杂度分析
+
+时间复杂度：O(N)，*N* 为二叉树的节点数，先序遍历需要遍历所有节点。
+
+空间复杂度：O(N)，最差情况下（即当树退化为链表），`path` 存储所有树节点，使用 O(N) 额外空间。
+
+## 序列(剑指Offer[33])
+
+### 题目描述
+
+
+
+### 思路
+
+
+
+### 代码实现
+
+```java
+
+```
+
+### 复杂度分析
+
+时间复杂度：O(N^2)，每次调用 recur(i,j) 减去一个根节点，因此递归占用 O(N)；最差情况下（即当树退化为链表），每轮递归都需遍历树所有节点，占用 O(N)。
+
+空间复杂度：O(N)，最差情况下（即当树退化为链表），递归深度将达到 N。
