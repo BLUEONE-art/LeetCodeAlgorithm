@@ -8919,7 +8919,203 @@ public void inorder(Node cur) {
 
 空间复杂度：O(N)，最差情况下，即树退化为链表时，递归深度达到 N，系统使用 O(N) 栈空间。
 
-## 序列(剑指Offer[33])
+# 2021.2.25记录
+
+## 字符串的排列(剑指Offer[38])
+
+### 题目描述
+
+输入一个字符串，打印出该字符串中字符的所有排列。 你可以以任意顺序返回这个字符串数组，但里面不能有重复元素。 
+
++ 排列方案数量： 对于一个长度为 n 的字符串（假设字符互不重复），其排列共有n×(n−1)×(n−2)…×2×1 种方案。
+
++ 排列方案的生成方法： 根据字符串排列的特点，考虑深度优先搜索所有排列方案。即通过字符交换，先固定第 1 位字符（ n 种情况）、再固定第 2 位字符（ n-1 种情况）、... 、最后固定第 n 位字符（ 1 种情况）。 
+
+![](LeetCode刷题记录.assets/剑指Offer38问题描述1.png)
+
++ 重复方案与剪枝： 当字符串存在重复字符时，排列方案中也存在重复方案。为排除重复方案，需在固定某位字符时，保证 “每种字符只在此位固定一次” ，即遇到重复字符时不交换，直接跳过。从 DFS 角度看，此操作称为 “剪枝” 。
+
+![](LeetCode刷题记录.assets/剑指Offre38问题描述2.png)
+
+### 思路
+
+灵活套用回溯问题模板。
+
+**解决一个回溯问题，实际上就是一个决策树的遍历过程**。你只需要思考 3 个问题：
+
+**1、路径**：也就是已经做出的选择。
+
+**2、选择列表**：也就是你当前可以做的选择。
+
+**3、结束条件**：也就是到达决策树底层，无法再做选择的条件。
+
+代码方面，回溯算法的框架：
+
+```c++
+result = []
+def backtrack(路径, 选择列表):
+    if 满足结束条件:
+        result.add(路径)
+        return
+
+    for 选择 in 选择列表:
+        做选择
+        backtrack(路径, 选择列表)
+        撤销选择
+```
+
+**其核心就是 for 循环里面的递归，在递归调用之前「做选择」，在递归调用之后「撤销选择」**，特别简单。
+
+我们在高中的时候就做过排列组合的数学题，我们也知道`n`个不重复的数，全排列共有 n! 个。
+
+那么我们当时是怎么穷举全排列的呢？比方说给三个数`[1,2,3]`，你肯定不会无规律地乱穷举，一般是这样：
+
+先固定第一位为 1，然后第二位可以是 2，那么第三位只能是 3；然后可以把第二位变成 3，第三位就只能是 2 了；然后就只能变化第一位，变成 2，然后再穷举后两位……
+
+其实这就是回溯算法，我们高中无师自通就会用，或者有的同学直接画出如下这棵回溯树：
+
+![](LeetCode刷题记录.assets/剑指Offer38回溯树.jpg)
+
+只要从根遍历这棵树，记录路径上的数字，其实就是所有的全排列。**我们不妨把这棵树称为回溯算法的「决策树」**。
+
+**为啥说这是决策树呢，因为你在每个节点上其实都在做决策**。比如说你站在下图的红色节点上：
+
+![](LeetCode刷题记录.assets/剑指Offer38决策树.jpg)
+
+你现在就在做决策，可以选择 1 那条树枝，也可以选择 3 那条树枝。为啥只能在 1 和 3 之中选择呢？因为 2 这个树枝在你身后，这个选择你之前做过了，而全排列是不允许重复使用数字的。
+
+**几个名词：`[2]`就是「路径」，记录你已经做过的选择；`[1,3]`就是「选择列表」，表示你当前可以做出的选择；「结束条件」就是遍历到树的底层，在这里就是选择列表为空的时候**。
+
+如果明白了这几个名词，**可以把「路径」和「选择列表」作为决策树上每个节点的属性**，比如下图列出了几个节点的属性：
+
+![](LeetCode刷题记录.assets/剑指Offer38选择列表和路径.jpg)
+
+**我们定义的`backtrack`函数其实就像一个指针，在这棵树上游走，同时要正确维护每个节点的属性，每当走到树的底层，其「路径」就是一个全排列**。
+
+再进一步，如何遍历一棵树？这个应该不难吧。回忆一下之前学习数据结构的框架思维写过，各种搜索问题其实都是树的遍历问题，而多叉树的遍历框架就是这样：
+
+```java
+void traverse(TreeNode root) {
+    for (TreeNode child : root.childern)
+        // 前序遍历需要的操作
+        traverse(child);
+        // 后序遍历需要的操作
+}
+```
+
+而所谓的前序遍历和后序遍历，他们只是两个很有用的时间点，我给你画张图你就明白了：
+
+![](LeetCode刷题记录.assets/剑指Offer38前序遍历和后续遍历的含义.jpg)
+
+**前序遍历的代码在进入某一个节点之前的那个时间点执行，后序遍历代码在离开某个节点之后的那个时间点执行**。
+
+回想我们刚才说的，「路径」和「选择」是每个节点的属性，函数在树上游走要正确维护节点的属性，那么就要在这两个特殊时间点搞点动作：
+
+![](LeetCode刷题记录.assets/剑指Offer38前后序遍历的含义.jpg)
+
+**我们只要在递归之前做出选择，在递归之后撤销刚才的选择**，就能正确得到每个节点的选择列表和路径。
+
+![](LeetCode刷题记录.assets/剑指Offer38全排列过程.jpg)
+
+不管怎么优化，都符合回溯框架，而且时间复杂度都不可能低于 O(N!)，因为穷举整棵决策树是无法避免的。**这也是回溯算法的一个特点，不像动态规划存在重叠子问题可以优化，回溯算法就是纯暴力穷举，复杂度一般都很高**。
+
+### 代码实现
+
+```java
+// 定义结果，求含有重复字母的全排列
+List<String> res = new LinkedList<>();
+char[] chars;
+public String[] permutation(String s) {
+    // 将字符串转成字符数组
+    chars = s.toCharArray();
+    //        // 存放每一个可行的结果
+    //        LinkedList<Character> track = new LinkedList<>();
+    backtrack(0);
+    return res.toArray(new String[res.size()]);
+}
+// 回溯算法，i 表示字符串 s 中的下标为 x 的字符
+public void backtrack(int x) {
+    // 判断重复字符
+    HashSet<Character> repeat = new HashSet<>();
+    // 结束条件
+    if (x == chars.length - 1) {
+        res.add(charToString(chars));
+        return;
+    }
+    // 选择列表
+    for (int i = x; i < chars.length; i++) {
+        // 重复元素-->剪枝
+        if (repeat.contains(chars[i])) continue;
+        repeat.add(chars[i]);
+        // 做选择
+        swap(i, x);
+        // 递归下一次做选择
+        backtrack(x + 1);
+        // 撤销选择
+        swap(i, x);
+    }
+}
+// 交换字符数组中字符的位置
+public void swap(int i, int x) {
+    char tmp = chars[i];
+    chars[i] = chars[x];
+    chars[x] = tmp;
+}
+// 字符数组转字符串
+public String charToString(char[] chars) {
+    StringBuilder sb = new StringBuilder();
+    for (char aChar : chars) {
+        sb.append(aChar);
+    }
+    return sb.toString();
+}
+
+// 定义结果，求不含有重复字母的全排列
+List<String> res = new LinkedList<>();
+char[] chars;
+public String[] permutation(String s) {
+    // 将字符串转成字符数组
+    chars = s.toCharArray();
+    // 存放每一个可行的结果
+    LinkedList<Character> track = new LinkedList<>();
+    backtrack(chars, track);
+    return res.toArray(new String[res.size()]);
+}
+// 回溯算法
+public void backtrack(char[] chars, LinkedList<Character> track) {
+    // 结束条件
+    if (track.size() == chars.length) {
+        res.add(charListToStr(track));
+        return;
+    }
+    // 选择列表
+    for (int i = 0; i < chars.length; i++) {
+        if (track.contains(chars[i])) continue;
+        // 做选择
+        track.add(chars[i]);
+        // 递归下一次做选择
+        backtrack(chars, track);
+        // 撤销选择
+        track.removeLast();
+    }
+}
+// 字符链表转字符串
+public String charListToStr(LinkedList<Character> track) {
+    StringBuilder sb = new StringBuilder();
+    for (Character character : track) {
+        sb.append(character);
+    }
+    return sb.toString();
+}
+```
+
+### 复杂度分析
+
+时间复杂度：O(N!) ： N 为字符串 s 的长度；时间复杂度和字符串排列的方案数成线性关系，方案数为 N×(N−1)×(N−2)…×2×1 ，因此复杂度为 O(N!) 。
+
+空间复杂度：O(N^2)，全排列的递归深度为 N，系统累计使用栈空间大小为 O(N)；递归中辅助 Set 累计存储的字符数量最多为 N + (N-1) + ... + 2 + 1 = (N+1)N/2，即占用 O(N^2)的额外空间。
+
+## 字符串的排列(剑指Offer[38])
 
 ### 题目描述
 
