@@ -9115,6 +9115,64 @@ public String charListToStr(LinkedList<Character> track) {
 
 空间复杂度：O(N^2)，全排列的递归深度为 N，系统累计使用栈空间大小为 O(N)；递归中辅助 Set 累计存储的字符数量最多为 N + (N-1) + ... + 2 + 1 = (N+1)N/2，即占用 O(N^2)的额外空间。
 
+## 数字序列中某一位的数字(剑指Offer[44])
+
+### 题目描述
+
+数字以0123456789101112131415…的格式序列化到一个字符序列中。在这个序列中，第5位（从下标0开始计数）是5，第13位是1，第19位是4，等等。 
+请写一个函数，求任意第n位对应的数字。 
+
+### 思路
+
++ 将 101112⋯ 中的每一位称为 数位 ，记为 n；
++ 将 10,11,12,⋯ 称为 数字 ，记为 num；
++ 数字 10 是一个两位数，称此数字的 位数 为 2，记为 digit；
++ 每 digit 位数的起始数字（即：1,10,100,⋯），记为 start。
+
+根据以上分析，可将求解分为三步：
+
++ 确定 n 所在 数字 的 位数 ，记为 digit；
++ 确定 n 所在的 数字 ，记为 num；
++ 确定 n 是 num 中的哪一数位，并返回结果。
+
+![](LeetCode刷题记录.assets/剑指Offer44思路1.png)
+
+![剑指Offer44思路2](LeetCode刷题记录.assets/剑指Offer44思路2.png)
+
+![剑指Offer44思路3](LeetCode刷题记录.assets/剑指Offer44思路3.png)
+
+### 代码实现
+
+```java
+public int findNthDigit(int n) {
+    // 输入的是 0 1 2 3 4 5 6 7 8 9 | 10 11 12 ... 99 | 100 101 102 ... 混在一起的字符序列
+    // 初始化确定是一个 几位数(个位数、十位数。。。)
+    int digit = 1;
+    // 这个 几位数 的初始值是什么
+    long start = 1;
+    // 这个 几位数 有多少个
+    long count = 9;
+    // 将第 n 位数转换成求 确定是几位数 的 第几位
+    while (n > count) {
+        // 更新
+        n -= count;
+        digit += 1;
+        start *= 10;
+        count = 9 * digit * start;
+    }
+    // 更新的 digit 数值就表示是几位数，转换成求这个 digit 位数的 第几位 --> 公式：goal = (n - 1) % digit
+    long goalNum = start + (n - 1) / digit;
+    // 实际上是目标位数的 ASCII 码和 '0' 的 ASCII 码相减
+    return Long.toString(goalNum).charAt((n - 1) % digit) - '0';
+}
+```
+
+### 复杂度分析
+
+时间复杂度O(logn) ： 所求数位 n 对应数字 num 的位数 digit 最大为 O(logn) ；第一步最多循环 O(logn) 次；第三步中将 num 转化为字符串使用 O(logn) 时间；因此总体为 O(logn) 。
+
+空间复杂度O(logn) ： 将数字 num 转化为字符串 str(num) ，占用 O(logn) 的额外空间。
+
 ## 字符串的排列(剑指Offer[38])
 
 ### 题目描述
