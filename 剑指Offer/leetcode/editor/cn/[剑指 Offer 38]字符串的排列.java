@@ -23,7 +23,7 @@
 
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
-    // 定义结果
+    // 定义结果，求含有重复字母的全排列
     List<String> res = new LinkedList<>();
     char[] chars;
     public String[] permutation(String s) {
@@ -71,42 +71,42 @@ class Solution {
         return sb.toString();
     }
 
-//    // 定义结果
-//    List<String> res = new LinkedList<>();
-//    char[] chars;
-//    public String[] permutation(String s) {
-//        // 将字符串转成字符数组
-//        chars = s.toCharArray();
-//        // 存放每一个可行的结果
-//        LinkedList<Character> track = new LinkedList<>();
-//        backtrack(chars, track);
-//        return res.toArray(new String[res.size()]);
-//    }
-//    // 回溯算法
-//    public void backtrack(char[] chars, LinkedList<Character> track) {
-//        // 结束条件
-//        if (track.size() == chars.length) {
-//            res.add(charListToStr(track));
-//            return;
-//        }
-//        // 选择列表
-//        for (int i = 0; i < chars.length; i++) {
-//            if (track.contains(chars[i])) continue;
-//            // 做选择
-//            track.add(chars[i]);
-//            // 递归下一次做选择
-//            backtrack(chars, track);
-//            // 撤销选择
-//            track.removeLast();
-//        }
-//    }
-//    // 字符链表转字符串
-//    public String charListToStr(LinkedList<Character> track) {
-//        StringBuilder sb = new StringBuilder();
-//        for (Character character : track) {
-//            sb.append(character);
-//        }
-//        return sb.toString();
-//    }
+    // 定义结果，求不含有重复字母的全排列
+    List<String> res = new LinkedList<>();
+    char[] chars;
+    public String[] permutation(String s) {
+        // 将字符串转成字符数组
+        chars = s.toCharArray();
+        // 存放每一个可行的结果
+        LinkedList<Character> track = new LinkedList<>();
+        backtrack(chars, track);
+        return res.toArray(new String[res.size()]);
+    }
+    // 回溯算法
+    public void backtrack(char[] chars, LinkedList<Character> track) {
+        // 结束条件
+        if (track.size() == chars.length) {
+            res.add(charListToStr(track));
+            return;
+        }
+        // 选择列表
+        for (int i = 0; i < chars.length; i++) {
+            if (track.contains(chars[i])) continue;
+            // 做选择
+            track.add(chars[i]);
+            // 递归下一次做选择
+            backtrack(chars, track);
+            // 撤销选择
+            track.removeLast();
+        }
+    }
+    // 字符链表转字符串
+    public String charListToStr(LinkedList<Character> track) {
+        StringBuilder sb = new StringBuilder();
+        for (Character character : track) {
+            sb.append(character);
+        }
+        return sb.toString();
+    }
 }
 //leetcode submit region end(Prohibit modification and deletion)
