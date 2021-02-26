@@ -9173,7 +9173,80 @@ public int findNthDigit(int n) {
 
 空间复杂度O(logn) ： 将数字 num 转化为字符串 str(num) ，占用 O(logn) 的额外空间。
 
-## 字符串的排列(剑指Offer[38])
+# 2021.2.26记录
+
+## 把数组排成最小的数(剑指Offer[45])
+
+### 题目描述
+
+输入一个非负整数数组，把数组里所有数字拼接起来排成一个数，打印能拼接出的所有数字中最小的一个。 输出结果可能非常大，所以你需要返回一个字符串而不是整数拼接起来的数字可能会有前导 0，最后结果不需要去掉前导 0 
+
+### 思路
+
+此题求拼接起来的 “最小数字” ，**本质上是一个排序问题。**
+
++ 排序判断规则： 设 numsnums 任意两数字的字符串格式 xx 和 yy ，则
++ 若拼接字符串 x + y > y + x，则 m > n；
++ 反之，若 x + y < y + x，则 n < m；
+  根据以上规则，套用任何排序方法对 nums 执行排序即可。
+
+![](LeetCode刷题记录.assets/剑指Offer45思路.png)
+
+### 代码实现
+
+```java
+public String minNumber(int[] nums) {
+    String[] strs = new String[nums.length];
+    // 把 nums 中的数字转换成字符串
+    for (int i = 0; i < nums.length; i++) {
+        strs[i] = String.valueOf(nums[i]);
+    }
+    // k 等于数组长度
+    quickSort(strs, 0, strs.length - 1);
+    StringBuilder res = new StringBuilder();
+    for (String str : strs) {
+        res.append(str);
+    }
+    return res.toString();
+}
+// 快速排序函数
+public void quickSort(String[] strs, int low, int high) {
+    if (low < high) {
+        int j = partition(strs, low, high);
+        quickSort(strs, low, j - 1);
+        quickSort(strs, j + 1, high);
+        //        if (j == k) return strs;
+        //        return j > k ? quickSort(strs, low, j - 1, k) : quickSort(strs, j + 1, high, k);
+    }
+}
+public int partition(String[] strs, int low, int high) {
+    // 最左边的字符串
+    String leftmostStr = strs[low];
+    int i = low, j = high + 1;
+    while (true) {
+        // 找到比 leftmostNum 大的数，因为 strs[i] + leftmostStr 与 leftmostStr + strs[i] 相比来说要小，所以 strs[i] < leftmostNum
+        while (++i < high && (strs[i] + leftmostStr).compareTo(leftmostStr + strs[i]) < 0);
+        // 找到比 leftmostNum 小的数
+        while (--j > low && (strs[j] + leftmostStr).compareTo(leftmostStr + strs[j]) > 0);
+        if (i >= j) break;
+        String tmp = strs[i];
+        strs[i] = strs[j];
+        strs[j] = tmp;
+    }
+    // 交换 low 和 j 的位置
+    strs[low] = strs[j];
+    strs[j] = leftmostStr;
+    return j;
+}
+```
+
+### 复杂度分析
+
+时间复杂度O(NlogN) ： N 为最终返回值的字符数量（ strs 列表的长度≤N ）；使用快排或内置函数的平均时间复杂度为 O(NlogN) ，最差为 O(N^2)。
+
+空间复杂度 O(N)： 字符串列表 strs 占用线性大小的额外空间。
+
+## 排列(剑指Offer[38])
 
 ### 题目描述
 
