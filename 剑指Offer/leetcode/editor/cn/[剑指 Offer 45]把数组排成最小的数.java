@@ -61,7 +61,7 @@ class Solution {
         String leftmostStr = strs[low];
         int i = low, j = high + 1;
         while (true) {
-            // 找到比 leftmostNum 大的数
+            // 找到比 leftmostNum 大的数，因为 strs[i] + leftmostStr 与 leftmostStr + strs[i] 相比来说要小，所以 strs[i] < leftmostNum
             while (++i < high && (strs[i] + leftmostStr).compareTo(leftmostStr + strs[i]) < 0);
             // 找到比 leftmostNum 小的数
             while (--j > low && (strs[j] + leftmostStr).compareTo(leftmostStr + strs[j]) > 0);
