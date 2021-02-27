@@ -9500,6 +9500,67 @@ public int singleNumber(int[] nums) {
 
 空间复杂度：O(1)，数组 counts 长度恒为 32 ，占用常数大小的额外空间。
 
+## 队列的最大值(剑指Offer [59 - II])
+
+### 题目描述
+
+请定义一个队列并实现函数 max_value 得到队列里的最大值，要求函数max_value、push_back 和 pop_front 的均摊时间复杂度都是O(1)。 
+
+### 思路
+
++ 定义一个普通的队列和一个双向的队列
++ 普通队列用来进行常规的入队出队操作
++ 双向队列维护其单调递减的特性，求最大值即返回双向队列的队头元素
+
+### 代码实现
+
+```java
+// 维护两个队列，一个是正常的，一个是单调递减的队列
+class MaxQueue {
+    Queue<Integer> queue;
+    // 双向队列：介意在对头和队尾加入元素
+    Deque<Integer> deque;
+    public MaxQueue() {
+        queue = new LinkedList<>();
+        deque = new LinkedList<>();
+    }
+
+    public int max_value() {
+        // deque 第一位放着最大值，不出队，只获取元素即可
+        return deque.isEmpty() ? -1 : deque.peekFirst();
+    }
+
+    // 入队操作
+    public void push_back(int value) {
+        // 对于队列而言直接加入即可
+        queue.offer(value);
+        // 对于双向队列而言，需要维护其单调 递减 特性
+        while (!deque.isEmpty() && deque.peekLast() < value) {
+            deque.pollLast();
+        }
+        // 双向队列中加入元素
+        deque.offerLast(value);
+    }
+
+    // 出队操作
+    public int pop_front() {
+        // 对于队列来说，如果为 0，返回 -1，如果不为 0，返回对头元素
+        if (queue.isEmpty()) return -1;
+        // 对于双向队列而言，只有当队列 pop 的元素与对头元素相同时才出队
+        if (queue.peek().equals(deque.peekFirst())) {
+            deque.pollFirst();
+        }
+        return queue.poll();
+    }
+}
+```
+
+### 复杂度分析
+
+时间复杂度：O(1)，`max_value()`, `push_back()`, `pop_front()` 方法的均摊时间复杂度均为 O(1)；
+
+空间复杂度：O(N)，当元素个数为 N 时，最差情况下`deque` 中保存 N 个元素，使用 O(N) 的额外空间；
+
 ## 排列(剑指Offer[38])
 
 ### 题目描述
