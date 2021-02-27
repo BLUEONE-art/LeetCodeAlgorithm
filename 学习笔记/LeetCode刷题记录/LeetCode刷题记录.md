@@ -9440,6 +9440,66 @@ public int[] singleNumbers(int[] nums) {
 
 空间复杂度：O(1)
 
+## 数组中数字出现的次数(剑指Offer [56 - II])
+
+### 题目描述
+
+在一个数组 nums 中除一个数字只出现一次之外，其他数字都出现了三次。请找出那个只出现一次的数字。
+
+1 <= nums.length <= 10000 
+1 <= nums[i] < 2^31 
+
+### 思路
+
++ 直接思路：HashMap 求每个元素的出现频次
++ 考虑数字中每一位的位数中 1 的个数
+
+![](LeetCode刷题记录.assets/剑指Offer56思路.png)
+
+### 代码实现
+
+```java
+public int singleNumber(int[] nums) {
+    // 定义数组存放 nums 数组中每一位上 “1” 的个数和
+    int[] count_1 = new int[32];
+    for (int num : nums) {
+        for (int i = 0; i < 32; i++) {
+            // 对于每一个数字 num 每一遍都求一次 "&1" 的结果，使用 "+=" 来累加所有 num 中每一位对应的 1 的个数
+            count_1[i] = count_1[i] + (num & 1);
+            // num 无符号右移一位
+            num >>>= 1;
+        }
+    }
+    // 因为数组中重复数字出现 3 次，所以其位数和 % 3 == 0
+    // 位数和 % 3 != 0 的位数用 2^j 求和起来就是出现一次的数
+    int res = 0;
+    for (int i = 0; i < 32; i++) {
+        if (count_1[i] % 3 != 0) {
+            res += Math.pow(2, i);
+        }
+    }
+    return res;
+
+    // 直接思路的解法
+    HashMap<Integer, Integer> numToFreq = new HashMap<>();
+    int left = 0;
+    while (left <= nums.length - 1) {
+        numToFreq.put(nums[left], numToFreq.get(nums[left]) == null ? 1 : -1);
+        left++;
+    }
+    for (Integer key : numToFreq.keySet()) {
+        if (numToFreq.get(key) == 1) return key;
+    }
+    return -1;
+}
+```
+
+### 复杂度分析
+
+时间复杂度：O(N)，其中 N 位数组 nums 的长度；遍历数组占用 O(N)，每轮中的常数个位运算操作占用 O(1)。
+
+空间复杂度：O(1)，数组 counts 长度恒为 32 ，占用常数大小的额外空间。
+
 ## 排列(剑指Offer[38])
 
 ### 题目描述
