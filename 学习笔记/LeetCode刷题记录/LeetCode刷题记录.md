@@ -4313,7 +4313,7 @@ public List<Integer> findAnagrams(String s, String p) {
 
 跟寻找字符串的排列一样，只是找到一个合法异位词（排列）之后将起始索引加入`res`即可。
 
-### 最长无重复字串(LeetCode[3])
+### 最长无重复字串(LeetCode[3]&&剑指Offer[48])
 
 #### 问题描述
 
@@ -4336,7 +4336,8 @@ public int lengthOfLongestSubstring(String s) {
         right++;
         window.put(c, window.getOrDefault(c, 0) + 1);
 
-        // 收缩窗口
+        // 收缩窗口 
+        // 此时 window.get(c) 元素重复，对应的一定是 nums[left] 元素重复了 
         while (window.get(c) > 1) { // 此时有重复元素了
             char d = s_arr[left];
             left++;
