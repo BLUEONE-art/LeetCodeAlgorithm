@@ -9595,6 +9595,67 @@ public int sumNums(int n) {
 
 空间复杂度：O(N)，递归深度达到 n，系统使用 O(n) 大小的额外空间。
 
+## 构建乘积数组(剑指Offer[66])
+
+### 题目描述
+
+给定一个数组 A[0,1,…,n-1]，请构建一个数组 B[0,1,…,n-1]，其中 B[i] 的值是数组 A 中除了下标 i 以外的元素的积, 即 B[i]=A[0]×A[1]×…×A[i-1]×A[i+1]×…×A[n-1]。不能使用除法。
+
+### 思路
+
+本题的难点在于 不能使用除法 ，即需要 只用乘法 生成数组 B 。根据题目对 B[i] 的定义，可列表格，如下图所示。
+
+据表格的主对角线（全为 1 ），可将表格分为 **上三角** 和 **下三角** 两部分。分别迭代计算下三角和上三角两部分的乘积，即可 **不使用除法** 就获得结果。
+
+![](LeetCode刷题记录.assets/剑指Offer66思路.png)
+
+**算法流程：**
+
++ 初始化：数组 B ，其中 B[0] = 1；辅助变量 tmp = 1；
++ 计算 B[i] 的 下三角 各元素的乘积，直接乘入 B[i]；
++ 计算 B[i] 的 上三角 各元素的乘积，记为 tmp，并乘入 B[i]；
++ 返回 B。
+
+### 代码实现
+
+```java
+public int[] constructArr(int[] a) {
+    if (a.length == 0) return new int[0];
+    // 先计算 i != j 时左下角的积的和
+    int[] res = new int[a.length];
+    res[0] = 1;
+    for (int i = 1; i < a.length; i++) {
+        res[i] = res[i - 1] * a[i - 1];
+    }
+    // 计算 i != j 时右上角的积的和
+    int tmp = 1;
+    for (int j = a.length - 2; j >= 0; j--) {
+        tmp = tmp * a[j + 1];
+        res[j] = res[j] * tmp;
+    }
+    return res;
+
+    // 暴力解法
+    int size = a.length;
+    int[] res_arr = new int[size];
+    int res = 1;
+    for (int i = 0; i < size; i++) {
+        for (int j = 0; j < size; j++) {
+            res = res * (i == j ? 1 : a[j]);
+        }
+        res_arr[i] = res;
+        res = 1;
+    }
+    return res_arr;
+}
+```
+
+### 复杂度分析
+
+时间复杂度：O(N)，其中 N 为数组长度，两轮遍历数组 a，使用 O(N) 时间。
+
+空间复杂度：O(1)，变量 tmp 使用常数大小额外空间（数组 b 作为返回值，不计入复杂度考虑）。
+
 ## 点数(剑指Offer[60])
 
 ### 题目描述
