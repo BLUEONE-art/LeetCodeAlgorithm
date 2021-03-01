@@ -37,6 +37,19 @@ class Solution {
             res[j] = res[j] * tmp;
         }
         return res;
+
+        // 暴力解法
+        int size = a.length;
+        int[] res_arr = new int[size];
+        int res = 1;
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                res = res * (i == j ? 1 : a[j]);
+            }
+            res_arr[i] = res;
+            res = 1;
+        }
+        return res_arr;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
