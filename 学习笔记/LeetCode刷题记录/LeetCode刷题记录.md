@@ -9519,12 +9519,12 @@ public int singleNumber(int[] nums) {
 + **状态定义：** 设动态规划列表 dp，dp[i] 代表以 prices[i] 为结尾的子数组的最大利润（以下简称为 前 i 日的最大利润 ）。
 + **转移方程：** 由于题目限定 “买卖该股票一次” ，因此前 i 日最大利润 dp[i] 等于前 i - 1 日最大利润 dp[i-1] 和第 i 日卖出的最大利润中的最大值。
 
-![](C:\Users\DH\Desktop\GitHubCode\LeetCodeAlgorithm\学习笔记\LeetCode刷题记录\LeetCode刷题记录.assets\剑指Offer63转移方程.png)
+![](LeetCode刷题记录.assets\剑指Offer63转移方程.png)
 
 - **初始状态：** dp[0] = 0 ，即首日利润为 00 ；
 - **返回值：** dp[n - 1]，其中 n*n* 为 dp 列表长度。
 
-![](C:\Users\DH\Desktop\GitHubCode\LeetCodeAlgorithm\学习笔记\LeetCode刷题记录\LeetCode刷题记录.assets\剑指Offer63过程图.png)
+![](LeetCode刷题记录.assets\剑指Offer63过程图.png)
 
 ### 代码实现
 
@@ -9554,6 +9554,46 @@ public int maxProfit(int[] prices) {
 时间复杂度：O(N)，其中 N 为 prices 列表长度，动态规划需遍历 prices。
 
 空间复杂度：O(1)，变量 cost 和 profit 使用常数大小的额外空间。
+
+# 2021.3.1记录
+
+## 求1+2+…+n(剑指Offer[64])
+
+### 题目描述
+
+求 1+2+...+n ，要求不能使用乘除法、for、while、if、else、switch、case等关键字及条件判断语句（A?B:C）。 
+
+### 思路
+
+本题在简单问题上做了许多限制，需要使用排除法一步步导向答案。
+1+2+...+(n-1)+n 的计算方法主要有三种：平均计算、迭代、递归。
+
+**逻辑运算符的短路效应：**
+常见的逻辑运算符有三种，即 “与 \&\& ”，“或 || ”，“非 ! ” ；而其有重要的短路效应，如下所示：
+
+> if(A && B)  // 若 A 为 false ，则 B 的判断不会执行（即短路），直接判定 A && B 为 false
+>
+> if(A || B)   // 若 A 为 true ，则 B 的判断不会执行（即短路），直接判定 A || B 为 true
+
+本题需要实现 “当 n = 1 时终止递归” 的需求，可通过短路效应实现。
+
+> n > 1 && sumNums(n - 1)  // 当 n = 1 时 n > 1 不成立 ，此时 “短路” ，终止后续递归
+
+### 代码实现
+
+```java
+public int sumNums(int n) {
+    // n == 1 的情况下是 base case，"与" 运算前半部分如果为 false，则后边部分不会被执行。
+    boolean x = n > 1 && (n += sumNums(n - 1)) > 0;
+    return n;
+}
+```
+
+### 复杂度分析
+
+时间复杂度：O(N)，计算 n + (n-1) + ... + 2 + 1 需要开启 n 个递归函数。
+
+空间复杂度：O(N)，递归深度达到 n，系统使用 O(n) 大小的额外空间。
 
 ## 点数(剑指Offer[60])
 
