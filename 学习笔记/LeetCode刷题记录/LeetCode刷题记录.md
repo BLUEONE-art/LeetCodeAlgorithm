@@ -9656,6 +9656,97 @@ public int[] constructArr(int[] a) {
 
 空间复杂度：O(1)，变量 tmp 使用常数大小额外空间（数组 b 作为返回值，不计入复杂度考虑）。
 
+## 把字符串转换成整数(剑指Offer[67])
+
+### 题目描述
+
+写一个函数 StrToInt，实现把字符串转换成整数这个功能。不能使用 atoi 或者其他类似的库函数。 
+
++ 首先，该函数会根据需要丢弃无用的开头空格字符，直到寻找到第一个非空格的字符为止。 
++ 当我们寻找到的第一个非空字符为正或者负号时，则将该符号与之后面尽可能多的连续数字组合起来，作为该整数的正负号；假如第一个非空字符是数字，则直接将其与之后连续的数字字符组合起来，形成整数。 
++ 该字符串除了有效的整数部分之后也可能会存在多余的字符，这些字符可以被忽略，它们对于函数不应该造成影响。 
++ 注意：假如该字符串中的第一个非空格字符不是一个有效整数字符、字符串为空或字符串仅包含空白字符时，则你的函数不需要进行转换。 
++ 在任何情况下，若函数不能进行有效的转换时，请返回 0。 
++ 说明：假设我们的环境只能存储 32 位大小的有符号整数，那么其数值范围为 [−231, 231 − 1]。如果数值超过这个范围，请返回 INT_MAX (231 − 1) 或 INT_MIN (−231) 。 
+
+### 思路
+
++ 首部空格： 删除之即可；
++ 符号位： 三种情况，即 ''+'' , ''−'' , ''无符号" ；新建一个变量保存符号位，返回前判断正负即可。
++ 非数字字符： 遇到首个非数字的字符时，应立即返回。
++ 数字字符：
+  + 字符转数字： “此数字的 ASCII 码” 与 “ 00 的 ASCII 码” 相减即可；
+  + 数字拼接： 若从左向右遍历数字，设当前位字符为 cc ，当前位数字为 xx ，数字结果为 resres ，则数字拼接公式为：
+
+![](LeetCode刷题记录.assets/剑指Offer67思路.png)
+
+**数字越界处理：**
+
+题目要求返回的数值范围应在 [−2^31, 2^31 −1]，因此需要考虑数字越界问题。而由于题目指出 环境只能存储 32 位大小的有符号整数，因此判断数字越界时，要始终保持 resres 在 int 类型的取值范围内。
+
+![](LeetCode刷题记录.assets/剑指Offer67越界处理.png)
+
+### 代码实现
+
+```java
+public int strToInt(String str) {
+    int i = 0, res = 0, sign = 1, boundary = Integer.MAX_VALUE / 10;
+    // 去除字符串前的空格
+    str = str.trim();
+    if (str.length() == 0) return 0;
+    // 如果不全部为空格 --> 判断有没有符号位
+    if (str.charAt(i) == '-') sign = -1;
+    // 跳过符号位
+    if (str.charAt(i) == '-' || str.charAt(i) == '+') i++;
+    // 判断符号位之后的字符
+    for (int j = i; j <= str.length() - 1; j++) {
+        // 如果字符超过数字的范围
+        if (str.charAt(j) < '0' || str.charAt(j) > '9') break;
+
+        // 最后再判断：如果字符超过大数边界
+        if (res > boundary || (res == boundary && str.charAt(j) > '7')) {
+            return sign == 1 ? Integer.MAX_VALUE : Integer.MIN_VALUE;
+        }
+
+        // 结果计算
+        res = (res * 10) + (str.charAt(j) - '0');
+    }
+    return sign * res;
+
+    int i = 0, res = 0, sign = 1, boundary = Integer.MAX_VALUE / 10;
+    if (str.length() == 0) return 0;
+    // 去除字符串前的空格
+    while (str.charAt(i) == ' ') {
+        // ++i 的表达式比 i 大 1
+        if (++i == str.length()) break;
+    }
+    // 如果不全部为空格 --> 判断有没有符号位
+    if (str.charAt(i) == '-') sign = -1;
+    // 跳过符号位
+    if (str.charAt(i) == '-' || str.charAt(i) == '+') i++;
+    // 判断符号位之后的字符
+    for (int j = i; j < str.length() - 1; j++) {
+        // 如果字符超过数字的范围
+        if (str.charAt(j) < '0' || str.charAt(j) > '9') break;
+
+        // 最后再判断：如果字符超过大数边界
+        if (res > boundary || (res == boundary && str.charAt(j) > '7')) {
+            return sign == 1 ? Integer.MAX_VALUE : Integer.MIN_VALUE;
+        }
+
+        // 结果计算
+        res = (res * 10) + (str.charAt(j) - '0');
+    }
+    return sign * res;
+}
+```
+
+### 复杂度分析
+
+时间复杂度：O(N)，其中 N 为字符串长度，线性遍历字符串占用 O(N) 时间。
+
+空间复杂度：O(N)，删除首尾空格后需建立新字符串，最差情况下占用 O(N) 额外空间。
+
 ## 点数(剑指Offer[60])
 
 ### 题目描述
