@@ -2684,7 +2684,7 @@ public boolean hasNext() {
 
 # 2021.1.19记录
 
-## 数据流的中位数(LeetCode[295])
+## 数据流的中位数(LeetCode[295] && 剑指Offer[41])
 
 ### 题目描述
 
