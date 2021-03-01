@@ -9500,68 +9500,62 @@ public int singleNumber(int[] nums) {
 
 空间复杂度：O(1)，数组 counts 长度恒为 32 ，占用常数大小的额外空间。
 
-## 队列的最大值(剑指Offer [59 - II])
+## 排列(剑指Offer[38])
 
 ### 题目描述
 
-请定义一个队列并实现函数 max_value 得到队列里的最大值，要求函数max_value、push_back 和 pop_front 的均摊时间复杂度都是O(1)。 
+假设把某股票的价格按照时间先后顺序存储在数组中，请问买卖该股票一次可能获得的最大利润是多少？ 
+示例 1: 
+输入: [7,1,5,3,6,4]
+输出: 5
+解释: 在第 2 天（股票价格 = 1）的时候买入，在第 5 天（股票价格 = 6）的时候卖出，最大利润 = 6-1 = 5 。     
+
+注意利润不能是 7-1 = 6, 因为卖出价格需要大于买入价格。
 
 ### 思路
 
-+ 定义一个普通的队列和一个双向的队列
-+ 普通队列用来进行常规的入队出队操作
-+ 双向队列维护其单调递减的特性，求最大值即返回双向队列的队头元素
+动态规划解析：
+
++ **状态定义：** 设动态规划列表 dp，dp[i] 代表以 prices[i] 为结尾的子数组的最大利润（以下简称为 前 i 日的最大利润 ）。
++ **转移方程：** 由于题目限定 “买卖该股票一次” ，因此前 i 日最大利润 dp[i] 等于前 i - 1 日最大利润 dp[i-1] 和第 i 日卖出的最大利润中的最大值。
+
+![](C:\Users\DH\Desktop\GitHubCode\LeetCodeAlgorithm\学习笔记\LeetCode刷题记录\LeetCode刷题记录.assets\剑指Offer63转移方程.png)
+
+- **初始状态：** dp[0] = 0 ，即首日利润为 00 ；
+- **返回值：** dp[n - 1]，其中 n*n* 为 dp 列表长度。
+
+![](C:\Users\DH\Desktop\GitHubCode\LeetCodeAlgorithm\学习笔记\LeetCode刷题记录\LeetCode刷题记录.assets\剑指Offer63过程图.png)
 
 ### 代码实现
 
 ```java
-// 维护两个队列，一个是正常的，一个是单调递减的队列
-class MaxQueue {
-    Queue<Integer> queue;
-    // 双向队列：介意在对头和队尾加入元素
-    Deque<Integer> deque;
-    public MaxQueue() {
-        queue = new LinkedList<>();
-        deque = new LinkedList<>();
+public int maxProfit(int[] prices) {
+    // dp[i]：以 prices[i] 结尾的子数组的最大利润 --> dp[n] = Max(dp[n - 1], prices[i] - min(price[0 : i]))
+    int cost = Integer.MAX_VALUE, profit = 0;
+    for (int price : prices) {
+        cost = Math.min(cost, price);
+        profit = Math.max(profit, price - cost);
     }
+    return profit;
 
-    public int max_value() {
-        // deque 第一位放着最大值，不出队，只获取元素即可
-        return deque.isEmpty() ? -1 : deque.peekFirst();
-    }
-
-    // 入队操作
-    public void push_back(int value) {
-        // 对于队列而言直接加入即可
-        queue.offer(value);
-        // 对于双向队列而言，需要维护其单调 递减 特性
-        while (!deque.isEmpty() && deque.peekLast() < value) {
-            deque.pollLast();
+    // 暴力解法
+    int res = Integer.MIN_VALUE;
+    for (int i = 0; i < prices.length; i++) {
+        for (int j = i + 1; j < prices.length; j++) {
+            res = Math.max(res, prices[j] - prices[i]);
         }
-        // 双向队列中加入元素
-        deque.offerLast(value);
     }
-
-    // 出队操作
-    public int pop_front() {
-        // 对于队列来说，如果为 0，返回 -1，如果不为 0，返回对头元素
-        if (queue.isEmpty()) return -1;
-        // 对于双向队列而言，只有当队列 pop 的元素与对头元素相同时才出队
-        if (queue.peek().equals(deque.peekFirst())) {
-            deque.pollFirst();
-        }
-        return queue.poll();
-    }
+    return res < 0 ? 0 : res;
 }
 ```
 
 ### 复杂度分析
 
-时间复杂度：O(1)，`max_value()`, `push_back()`, `pop_front()` 方法的均摊时间复杂度均为 O(1)；
+时间复杂度：O(N)，其中 N 为 prices 列表长度，动态规划需遍历 prices。
 
-空间复杂度：O(N)，当元素个数为 N 时，最差情况下`deque` 中保存 N 个元素，使用 O(N) 的额外空间；
+空间复杂度：O(1)，变量 cost 和 profit 使用常数大小的额外空间。
 
-## 排列(剑指Offer[38])
+## 点数(剑指Offer[60])
 
 ### 题目描述
 
@@ -9579,6 +9573,6 @@ class MaxQueue {
 
 ### 复杂度分析
 
-时间复杂度：O(N^2)，每次调用 recur(i,j) 减去一个根节点，因此递归占用 O(N)；最差情况下（即当树退化为链表），每轮递归都需遍历树所有节点，占用 O(N)。
+时间复杂度：O(N^2)
 
-空间复杂度：O(N)，最差情况下（即当树退化为链表），递归深度将达到 N。
+空间复杂度：O(N)。
