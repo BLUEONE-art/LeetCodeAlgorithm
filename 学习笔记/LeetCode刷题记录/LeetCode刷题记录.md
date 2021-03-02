@@ -622,7 +622,7 @@ return 1 + countCompleteTree(root.left) + countCompleteTree(root.right);
 
 # 2020.12.25 & 26记录
 
-## 序列化和反序列化二叉树(LeetCode297)
+## 序列化和反序列化二叉树(LeetCode297 && 剑指Offer[37])
 
 ### 序列化和反序列化的意义
 
