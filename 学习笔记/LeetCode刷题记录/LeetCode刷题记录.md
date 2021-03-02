@@ -9747,6 +9747,87 @@ public int strToInt(String str) {
 
 空间复杂度：O(N)，删除首尾空格后需建立新字符串，最差情况下占用 O(N) 额外空间。
 
+# 2021.3.2记录
+
+## 1～n 整数中 1 出现的次数(剑指Offer[43])
+
+### 题目描述
+
+输入一个整数 n ，求1～n这n个整数的十进制表示中1出现的次数。 
+例如，输入12，1～12这些整数中包含1 的数字有1、10、11和12，1一共出现了5次。
+
+### 思路
+
+**将 1 ~ n 的个位、十位、百位、...的 1 出现次数相加，即为 1 出现的总次数**。
+
+![](LeetCode刷题记录.assets/剑指Offer43思路1.png)
+根据当前位 curcur 值的不同，分为以下三种情况：
+
+1. 当 **cur = 0 时：** 此位 1 的出现次数只由高位 high 决定，计算公式为：
+
+   ​														high * digit
+
+> 如下图所示，以 n = 2304 为例，求 digit = 10（即十位）的 1 出现次数。
+
+![](LeetCode刷题记录.assets/剑指Offer43思路2.png)
+
+2. 当 **cur = 1 时：** 此位 1 的出现次数由高位 high 和低位 low 决定，计算公式为：
+
+   ​													high * digit + low + 1
+
+> 如下图所示，以 n = 2314 为例，求 digit = 10（即十位）的 1 出现次数。
+
+![](LeetCode刷题记录.assets/剑指Offer43思路3.png)
+
+3. 当 **cur = 2, 3,⋯,9 时：** 此位 1 的出现次数只由高位 high 决定，计算公式为：
+
+   ​													(high + 1) * digit
+
+> 如下图所示，以 n = 2324 为例，求 digit = 10（即十位）的 1 出现次数。
+
+![](LeetCode刷题记录.assets/剑指Offer43思路4.png)
+
+### 代码实现
+
+```java
+// 找 “1” 的个数和整体的 n 的关系
+public int countDigitOne(int n) {
+    int high = n / 10, cur = n % 10, low = 0;
+    // 标记当前是 “几位” (个位、十位还是百位。。。)
+    int digit = 1;
+    int res = 0;
+    // 或:如果前一个条件为真，后面的条件就被短路了
+    // 当 high 和 cur 同时为 0 时，说明已经越过最高位，因此跳出
+    while (high != 0 || cur != 0) {
+        // ①如果 cur == 0 公式为：high * digit
+        if (cur == 0) {
+            res += high * digit;
+        }
+        // 当 cur == 1 公式为：high * digit + low + 1
+        else if (cur == 1) {
+            res += high * digit + low + 1;
+        }
+        // cur == 2,3,4,...,9 公式为：(high + 1) * digit
+        else {
+            res += (high + 1) * digit;
+        }
+        // 更新
+        low = cur * digit + low; // low += cur * digit
+        cur = high % 10;
+        high = high / 10;
+        digit *= 10;
+    }
+    return res;
+}
+```
+
+### 复杂度分析
+
+时间复杂度：O(logn)，循环内的计算操作使用 O(1) 时间；循环次数为数字 n 的位数，即 log 
+10n ，因此循环使用 O(logn) 时间。
+
+空间复杂度：O(1)，几个变量使用常数大小的额外空间。
+
 ## 点数(剑指Offer[60])
 
 ### 题目描述
