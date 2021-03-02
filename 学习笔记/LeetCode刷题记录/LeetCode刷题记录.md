@@ -9828,6 +9828,89 @@ public int countDigitOne(int n) {
 
 空间复杂度：O(1)，几个变量使用常数大小的额外空间。
 
+## 数组中的逆序对(剑指Offer[51])
+
+### 题目描述
+
+在数组中的两个数字，如果前面一个数字大于后面的数字，则这两个数字组成一个逆序对。输入一个数组，求出这个数组中的逆序对的总数。 
+
+### 思路
+
+「归并排序」与「逆序对」是息息相关的。归并排序体现了 “分而治之” 的算法思想，具体为：
+
++ 分： 不断将数组从中点位置划分开（即二分法），将整个数组的排序问题转化为子数组的排序问题；
++ 治： 划分到子数组长度为 1 时，开始向上合并，不断将 **较短排序数组** 合并为 **较长排序数组**，直至合并至原数组时完成排序；
+
+**合并阶段** 本质上是 **合并两个排序数组** 的过程，而每当遇到 左子数组当前元素 > 右子数组当前元素 时，意味着 「左子数组当前元素 至 末尾元素」 与 「右子数组当前元素」 构成了若干 「逆序对」 。
+
+**算法流程：**
+
+1. **终止条件：** 当 l ≥ *r* 时，代表子数组长度为 1，此时终止划分；
+2. **递归划分：** 计算数组中点 m，递归划分左子数组 `merge_sort(l, m)` 和右子数组 `merge_sort(m + 1, r)` 
+3. **合并与逆序对统计：**
+   1. 暂存数组 nums 闭区间 [i, r] 内的元素至辅助数组 tmp；
+   2. **循环合并：** 设置双指针 i, j 分别指向左 / 右子数组的首元素；
+      + **当 i = m + 1 时：** 代表左子数组已合并完，因此添加右子数组当前元素 tmp[j]，并执行 j = j + 1；
+      + **否则，当 j = r + 1 时： **代表右子数组已合并完，因此添加左子数组当前元素 tmp[i]，并执行 i = i + 1
+      + **否则，当 tmp[i] ≤ tmp[j] 时：** 添加左子数组当前元素 tmp[i]，并执行 i = i + 1；
+      + **否则（即 tmp[i] > tmp[j]）时：** 添加右子数组当前元素 tmp[j]，并执行 j = j + 1；此时构成 m - i + 1 个「逆序对」，统计添加至 res；
+4. **返回值：** 返回直至目前的逆序对总数 res；
+
+> 如下图所示，为数组 [7, 3, 2, 6, 0, 1, 5, 4] 的归并排序与逆序对统计过程。
+
+![](C:\Users\DH\Desktop\GitHubCode\LeetCodeAlgorithm\学习笔记\LeetCode刷题记录\LeetCode刷题记录.assets\剑指Offer51思路.png)
+
+### 代码实现
+
+```java
+int[] nums, tmp;
+public int reversePairs(int[] nums) {
+    this.nums = nums;
+    tmp = new int[nums.length];
+    return mergeSort(0, nums.length - 1);
+}
+public int mergeSort(int left, int right) {
+    // base case：当划分得只剩下一个元素时，没有逆序数
+    if (left >= right) return 0;
+    // 划分区间
+    int m = (left + right) / 2;
+    // 递归
+    int res = mergeSort(left, m) + mergeSort(m + 1, right);
+    // 后序遍历代码位置
+    // 确定划分后两个数组分别的左指针是多少
+    int subLeft1 = left;
+    int subLeft2 = m + 1;
+    // 只考虑递归函数的定义：mergeSort() 会帮我们排序好 nums 的 [left, m - 1] 和 [m + 1, right] 部分，nums 此时是递归一次后排序了一次的结果
+    // 复制一次递归了一次的结果用作两个数组比较的时候用
+    for (int k = left; k <= right; k++) {
+        tmp[k] = nums[k];
+    }
+    // 开始比较
+    for (int k = left; k <= right; k++) {
+        // 此时左边的数组全部遍历完，只能添加右边数组的元素
+        if (subLeft1 == m + 1) {
+            nums[k] = tmp[subLeft2++];
+        }
+        // 如果右边的数组全部遍历完，只能添加左边数组的元素，或者左边元素小于右边元素
+        else if (subLeft2 == right + 1 || tmp[subLeft1] <= tmp[subLeft2]) {
+            nums[k] = tmp[subLeft1++];
+        }
+        // 否则遇到逆序数
+        else {
+            nums[k] = tmp[subLeft2++];
+            res += m - subLeft1 + 1;
+        }
+    }
+    return res;
+}
+```
+
+### 复杂度分析
+
+时间复杂度：**O(NlogN) **， 其中 N 为数组长度；归并排序使用 O*(*N*log*N) 时间；
+
+空间复杂度：**O(N)**，辅助数组 tmp 占用 O(N) 大小的额外空间；
+
 ## 点数(剑指Offer[60])
 
 ### 题目描述
