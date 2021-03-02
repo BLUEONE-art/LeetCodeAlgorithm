@@ -34,7 +34,7 @@ class Solution {
         // 确定划分后两个数组分别的左指针是多少
         int subLeft1 = left;
         int subLeft2 = m + 1;
-        // 只考虑递归函数的定义：mergeSort() 会帮我们排序好 nums 的 [left, m - 1] 和 [m + 1, right] 部分，nums 此时是递归一次后排序了一次的结果
+        // 只考虑递归函数的定义：mergeSort() 会帮我们排序好 nums 的 [left, m] 和 [m + 1, right] 部分，nums 此时是递归一次后排序了一次的结果
         // 复制一次递归了一次的结果用作两个数组比较的时候用
         for (int k = left; k <= right; k++) {
             tmp[k] = nums[k];
