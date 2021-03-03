@@ -12,7 +12,7 @@
 // 限制： 
 //
 // 0 <= 数组长度 <= 50000 
-// 👍 327 👎 0
+// 👍 329 👎 0
 
 
 //leetcode submit region begin(Prohibit modification and deletion)
@@ -29,7 +29,7 @@ class Solution {
         // 划分区间
         int m = (left + right) / 2;
         // 递归
-        int res = mergeSort(left, m - 1) + mergeSort(m + 1, right);
+        int res = mergeSort(left, m) + mergeSort(m + 1, right);
         // 后序遍历代码位置
         // 确定划分后两个数组分别的左指针是多少
         int subLeft1 = left;
@@ -40,7 +40,7 @@ class Solution {
             tmp[k] = nums[k];
         }
         // 开始比较
-        for (int k = 0; k <= right; k++) {
+        for (int k = left; k <= right; k++) {
             // 此时左边的数组全部遍历完，只能添加右边数组的元素
             if (subLeft1 == m + 1) {
                 nums[k] = tmp[subLeft2++];
