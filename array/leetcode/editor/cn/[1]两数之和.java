@@ -64,46 +64,46 @@ class Solution {
         return new int[]{-1, -1};
     }
 
-//    /* 先排序再使用左右指针 */
-//    // 有序数组就要想到左右指针的方法
-//    public int[] twoSum(int[] nums, int target) {
-//        int left = 0; // 左侧最小索引
-//        int right = nums.length - 1; // 搜索空间：[left, right]
-//        int[] arr = Arrays.copyOfRange(nums, 0, nums.length);
-//        Arrays.sort(arr);
-//        while (left <= right) {
-//            int sum = arr[left] + arr[right];
-//            if (sum == target) {
-//                int a = findIndex(left, arr, nums);
-//                int b = findIndex(right, arr, nums);
-//                if (a == b) {
-//                    // 找到一个不在 nums 数组中的数
-//                    // 此时 arr 为有序数组，arr[arr.length - 1] 表示 arr 和 nums 数组的最大值
-//                    // arr[arr.length - 1] + 1 在 nums 中一定不存在
-//                    nums[b] = arr[arr.length - 1] + 1;
-//                    b = findIndex(right, arr, nums);
-//                }
-//                return new int[]{a, b};
-//            } else if (sum < target) {
-//                left++; // 让 left 大一点再搜索
-//            } else if (sum > target) {
-//                right--; // right 小一点再搜索
-//            }
-//        }
-//        return new int[]{-1, -1};
-//    }
-//
-//    // 找到 left 和 right 在 nums 数组中的索引
-//    private int findIndex(int afterIndex, int[] arr, int[] nums) {
-//        int orignalIndex = 0, i = 0;
-//        while (i < nums.length) {
-//            if (arr[afterIndex] == nums[i]) {
-//                orignalIndex = i;
-//                break;
-//            }
-//            i++;
-//        }
-//        return orignalIndex;
-//    }
+    /* 先排序再使用左右指针 */
+    // 有序数组就要想到左右指针的方法
+    public int[] twoSum(int[] nums, int target) {
+        int left = 0; // 左侧最小索引
+        int right = nums.length - 1; // 搜索空间：[left, right]
+        int[] arr = Arrays.copyOfRange(nums, 0, nums.length);
+        Arrays.sort(arr);
+        while (left <= right) {
+            int sum = arr[left] + arr[right];
+            if (sum == target) {
+                int a = findIndex(left, arr, nums);
+                int b = findIndex(right, arr, nums);
+                if (a == b) {
+                    // 找到一个不在 nums 数组中的数
+                    // 此时 arr 为有序数组，arr[arr.length - 1] 表示 arr 和 nums 数组的最大值
+                    // arr[arr.length - 1] + 1 在 nums 中一定不存在
+                    nums[b] = arr[arr.length - 1] + 1;
+                    b = findIndex(right, arr, nums);
+                }
+                return new int[]{a, b};
+            } else if (sum < target) {
+                left++; // 让 left 大一点再搜索
+            } else if (sum > target) {
+                right--; // right 小一点再搜索
+            }
+        }
+        return new int[]{-1, -1};
+    }
+
+    // 找到 left 和 right 在 nums 数组中的索引
+    private int findIndex(int afterIndex, int[] arr, int[] nums) {
+        int orignalIndex = 0, i = 0;
+        while (i < nums.length) {
+            if (arr[afterIndex] == nums[i]) {
+                orignalIndex = i;
+                break;
+            }
+            i++;
+        }
+        return orignalIndex;
+    }
 }
 //leetcode submit region end(Prohibit modification and deletion)
