@@ -6938,7 +6938,7 @@ public ListNode deleteNode(ListNode head, int val) {
 
 # 2021.1.8记录
 
-## 合并两个排序的链表(剑指Offer[25])
+## 合并两个排序的链表(剑指Offer[25] && LeetCode[21] 合并两个有序链表)
 
 ### 题目描述
 
@@ -6977,7 +6977,7 @@ public ListNode mergeTwoLists(ListNode l1, ListNode l2) {
 
 # 2021.2.9记录
 
-## 对称的二叉树(剑指Offer[28])
+## 对称的二叉树(剑指Offer[28] && LeetCode[101]对称二叉树)
 
 ### 题目描述
 
@@ -9503,7 +9503,7 @@ public int singleNumber(int[] nums) {
 
 空间复杂度：O(1)，数组 counts 长度恒为 32 ，占用常数大小的额外空间。
 
-## 排列(剑指Offer[38])
+## 股票的最大利润(剑指Offer[63])
 
 ### 题目描述
 
@@ -9516,6 +9516,43 @@ public int singleNumber(int[] nums) {
 注意利润不能是 7-1 = 6, 因为卖出价格需要大于买入价格。
 
 ### 思路
+
+计算机解决问题的方法就是穷举。遇到一个问题，如果想不到什么奇技淫巧，那么首先请读者自问：**如何穷举这个问题的所有可能性？**
+
+首先暴力求解的解法为：
+
+```java
+public int maxProfit(int[] prices) {
+    // 暴力解法
+    int res = Integer.MIN_VALUE;
+    for (int i = 0; i < prices.length; i++) {
+        for (int j = i + 1; j < prices.length; j++) {
+            res = Math.max(res, prices[j] - prices[i]);
+        }
+    }
+    return res < 0 ? 0 : res;
+}
+```
+
+实际上，这个解法就是可行的，能够得到正确答案。但是我们分析一下这个算法在干嘛，就能发现一些冗余计算。
+
+![](LeetCode刷题记录.assets/LeetCode121思路1.jpg)
+
+如上图，可以看到大量的重复操作。我们相当于固定了买入时间 buy，然后将 buy 后面的每一天作为 sell 进行穷举，只为寻找 prices[sell] 最大的那天，因为这样 prices[sell] - prices[buy] 的差价才会最大。
+
+如果反过来想，固定卖出时间 sell，向前穷举买入时间 buy，寻找 prices[buy] 最小的那天，是不是也能达到相同的效果？是的，而且这种思路可以减少一个 for 循环。即下面的解法中的代码。
+
+> 为什么可以减少一个 for 循环呢？
+
+假设你有一堆数字，你知道其中最大的数，现在从中取走一个数，你还知道最大的那个数是多少吗？不一定，如果拿走的这个数不是那个最大数，那么最大数不变；如果拿走的恰好是那个最大的数，你就得重新遍历这堆数字以寻找之前第二大的那个数，作为新的最大数。这就是我们的原始算法，每向后移动一位，就要重新遍历寻找最大值。
+
+但是，假设你知道一堆数字中最小的那个，再添加一个新的数字，你现在是否知道最小的数字是那个？知道，只要比较一下新数和当前最小的数字，就能得到新的最小数。这就是优化算法的情况，所以可以消除嵌套循环的计算冗余。
+
+**关键不在于最大值还是最小值，而是数字的添加和减少。**添加新数时，可以根据已有最值，推导出新的最值；而减少数字时，不一定能直接推出新的最值，不得不重新遍历。
+
+
+
+很多人认为这道题不是动态规划，但是我认为最值的更新就是旧状态向新状态的转移，所以这个问题还是含有动态规划的技巧的。**不要觉得此题简单，这里完成了最困难的一步：穷举。后面所有的题目都可以基于此框架扩展出来。**
 
 动态规划解析：
 
@@ -9540,15 +9577,6 @@ public int maxProfit(int[] prices) {
         profit = Math.max(profit, price - cost);
     }
     return profit;
-
-    // 暴力解法
-    int res = Integer.MIN_VALUE;
-    for (int i = 0; i < prices.length; i++) {
-        for (int j = i + 1; j < prices.length; j++) {
-            res = Math.max(res, prices[j] - prices[i]);
-        }
-    }
-    return res < 0 ? 0 : res;
 }
 ```
 
