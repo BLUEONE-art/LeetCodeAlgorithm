@@ -51,6 +51,22 @@
             </LeetcodeEditor>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/剑指Offer/leetcode/editor/cn/[1]两数之和.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/剑指Offer/leetcode/editor/cn/[1]两数之和.java" />
+              <option name="questionId" value="1" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/剑指Offer/leetcode/editor/cn/[21]合并两个有序链表.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/剑指Offer/leetcode/editor/cn/[21]合并两个有序链表.java" />
+              <option name="questionId" value="21" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/剑指Offer/leetcode/editor/cn/[226]翻转二叉树.java">
           <value>
             <LeetcodeEditor>
@@ -96,6 +112,14 @@
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/剑指Offer/leetcode/editor/cn/[343]整数拆分.java" />
               <option name="questionId" value="343" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/剑指Offer/leetcode/editor/cn/[50]Pow(x, n).java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/剑指Offer/leetcode/editor/cn/[50]Pow(x, n).java" />
+              <option name="questionId" value="50" />
             </LeetcodeEditor>
           </value>
         </entry>
