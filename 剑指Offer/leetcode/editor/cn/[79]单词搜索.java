@@ -38,6 +38,7 @@ class Solution {
         // 回溯算法要遍历每一个可能的结果
         for (int i = 0; i < board.length; i++) {
             for (int j = 0; j < board[0].length; j++) {
+                // 路径可以在矩阵中的任何一个开始，所以要统计所有可能的情况
                 if (dfs(board, words, i, j, 0)) return true;
             }
         }
