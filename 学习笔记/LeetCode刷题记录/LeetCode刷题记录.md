@@ -6770,7 +6770,7 @@ def dp(i, j):
 
 # 2021.2.4记录
 
-## 青蛙跳台阶问题(剑指Offer[10] && LeetCode[70])
+## 青蛙跳台阶问题(剑指Offer[10] && LeetCode[70]爬楼梯)
 
 ### 题目描述
 
@@ -6806,7 +6806,7 @@ public int numWays(int n) {
 }
 ```
 
-## 旋转数组的最小数字(剑指Offer[11])
+## 旋转数组的最小数字(剑指Offer[11] && LeetCode[154]寻找旋转排序数组中的最小值)
 
 ### 题目描述
 
@@ -6838,7 +6838,7 @@ public int minArray(int[] numbers) {
 }
 ```
 
-## 二进制中 1 的个数(剑指Offer[15])
+## 二进制中 1 的个数(剑指Offer[15] && LeetCode[191]位 1 的个数)
 
 ### 题目描述
 
@@ -8109,7 +8109,7 @@ public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
 
 空间复杂度**O(1) ：** 使用常数大小的额外空间。
 
-## 二维数组中的查找(剑指Offer[04] && LeetCode[240])
+## 二维数组中的查找(剑指Offer[04] && LeetCode[240]搜索二维矩阵)
 
 ### 题目描述
 
@@ -8173,7 +8173,7 @@ public boolean findNumberIn2DArray(int[][] matrix, int target) {
 
 # 2021.2.21记录
 
-## 矩阵中的路径(剑指Offer[12])
+## 矩阵中的路径(剑指Offer[12] && LeetCode[79]单词搜索)
 
 ### 题目描述
 
@@ -8394,7 +8394,7 @@ public int cuttingRope(int n) {
 
 空间复杂度：**O(1) ：** 变量 `count` 和 `b` 使用常数大小额外空间。
 
-## 数值的整数次方(LeetCode[16])
+## 数值的整数次方(剑指Offer[16] && LeetCode[50]Pow(x, n))
 
 ### 题目描述
 
@@ -8407,6 +8407,9 @@ public int cuttingRope(int n) {
 ![](LeetCode刷题记录.assets/剑指Offer16解题过程.png)
 
 ![](LeetCode刷题记录.assets/剑指Offer16算法流程.png)
+
+> Java 代码中 int32 变量 n∈[−2147483648,2147483647] ，因此当 n = -2147483648 时执行 n=−n 会因越界而赋值出错。解决方法是先将 n 存入 long 变量 b ，后面用 b 操作即可。
+>
 
 ### 代码实现
 
@@ -9911,27 +9914,40 @@ public int mergeSort(int left, int right) {
 
 空间复杂度：**O(N)**，辅助数组 tmp 占用 O(N) 大小的额外空间；
 
-## 点数(剑指Offer[60])
+# 2021.3.3记录
+
+## 调整数组顺序使奇数位于偶数前面(剑指Offer[21])
 
 ### 题目描述
 
-
+输入一个整数数组，实现一个函数来调整该数组中数字的顺序，使得所有奇数位于数组的前半部分，所有偶数位于数组的后半部分。
 
 ### 思路
 
-
+双指针技巧
 
 ### 代码实现
 
 ```java
-
+public int[] exchange(int[] nums) {
+    int left = 0, right = nums.length - 1;
+    while (left < right) {
+        while (left < right && nums[left] % 2 == 1) left++;
+        while (left < right && nums[right] % 2 == 0) right--;
+        // 交换
+        int tmp = nums[left];
+        nums[left] = nums[right];
+        nums[right] = tmp;
+    }
+    return nums;
+}
 ```
 
 ### 复杂度分析
 
-时间复杂度：O(N^2)
+时间复杂度：O(N)，*N* 为数组 nums 长度，双指针 i, j 共同遍历整个数组。
 
-空间复杂度：O(N)。
+空间复杂度：O(1)，双指针 i, j 使用常数大小的额外空间。
 
 ## 点数(剑指Offer[60])
 
