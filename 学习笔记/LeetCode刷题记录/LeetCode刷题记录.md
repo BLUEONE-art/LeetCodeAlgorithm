@@ -10033,7 +10033,56 @@ public int maxProfit(int[] prices) {
 
 直接翻译成代码 + base case 可得：
 
+```java
+// 统一：动态规划解法
+// 大的前提：只能买卖一次，即 k == 1
+// 状态转移方程：
+// ①：dp[i][k][0]：第 i 天我没有持股，并且我只能买卖 k 次
+// ②：dp[i][k][1]：第 i 天我持股了，我能买卖 k 次
+public int maxProfit(int[] prices) {
+    // 状态 [0] 表示卖出，[1] 表示持有
+    // dp[i][0]：表示第 i 天，手上没有持有股票 ---> 若 i == n - 1：就是最后一天我把股票卖完了，也就是最后获得的利润
+    // dp[i][1]：表示第 i 天，手上还持有股票
+    int n = prices.length;
+    int[][] dp = new int[n][2];
+    for (int i = 0; i < n; i++) {
+        // base case
+        if (i - 1 == -1) {
+            // 第一天没有持股，哪来的利润？
+            dp[i][0] = 0;
+            // 第一天就持股了，我的利润就是 -prices[i]
+            dp[i][1] = -prices[i];
+            continue;
+        }
+        // 根据选择更新状态，此时由于 k 只能等于 1
+        // [0]：①可能前一天就没有持有股票 || ②前一天持有股票 ---> 选择：卖或者不卖，规定买入会消耗一次买卖机会(k - 1)，卖出不消耗
+        // dp[i][1][0] = Math.max(dp[i - 1][1][0], dp[i - 1][1][1] + prices[i]);
+        // dp[i][1][1] = Math.max(dp[i - 1][1][1], dp[i - 1][0][0] - prices[i]) = Math.max(dp[i - 1][1][1], 0 - prices[i]);
+        // --->因为此时 k = 1 不会对状态有影响，可以忽略
+        dp[i][0] = Math.max(dp[i - 1][0], dp[i - 1][1] + prices[i]);
+        dp[i][1] = Math.max(dp[i - 1][1], -prices[i]);
+    }
+    return dp[n - 1][0];
+}
+```
 
+注意一下状态转移方程，新状态只和相邻的一个状态有关，其实不用整个 dp 数组，只需要两个变量储存所需的状态就足够了，这样可以把空间复杂度降到 O(1):
+
+```java
+// 动态规划简化版
+public int maxProfit(int[] prices) {
+    // 初始化第一天不持股的情况，利润为 0
+    int dp_i_0 = 0;
+    // 初始化第一天就持股的情况，利润为负值
+    int dp_i_1 = Integer.MIN_VALUE;
+    for (int i = 0; i < prices.length; i++) {
+        // 根据状态方程优化空间复杂度
+        dp_i_0 = Math.max(dp_i_0, dp_i_1 + prices[i]);
+        dp_i_1 = Math.max(dp_i_1, -prices[i]);
+    }
+    return dp_i_0;
+}
+```
 
 ## 买卖股票的最佳时机 II(LeetCode[122])
 
