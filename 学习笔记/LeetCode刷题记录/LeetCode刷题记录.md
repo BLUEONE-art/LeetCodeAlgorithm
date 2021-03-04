@@ -6770,7 +6770,7 @@ def dp(i, j):
 
 # 2021.2.4记录
 
-## 青蛙跳台阶问题(剑指Offer[10])
+## 青蛙跳台阶问题(剑指Offer[10] && LeetCode[70]爬楼梯)
 
 ### 题目描述
 
@@ -6806,7 +6806,7 @@ public int numWays(int n) {
 }
 ```
 
-## 旋转数组的最小数字(剑指Offer[11])
+## 旋转数组的最小数字(剑指Offer[11] && LeetCode[154]寻找旋转排序数组中的最小值)
 
 ### 题目描述
 
@@ -6838,7 +6838,7 @@ public int minArray(int[] numbers) {
 }
 ```
 
-## 二进制中 1 的个数(剑指Offer[15])
+## 二进制中 1 的个数(剑指Offer[15] && LeetCode[191]位 1 的个数)
 
 ### 题目描述
 
@@ -6938,7 +6938,7 @@ public ListNode deleteNode(ListNode head, int val) {
 
 # 2021.1.8记录
 
-## 合并两个排序的链表(剑指Offer[25])
+## 合并两个排序的链表(剑指Offer[25] && LeetCode[21] 合并两个有序链表)
 
 ### 题目描述
 
@@ -6977,7 +6977,7 @@ public ListNode mergeTwoLists(ListNode l1, ListNode l2) {
 
 # 2021.2.9记录
 
-## 对称的二叉树(剑指Offer[28])
+## 对称的二叉树(剑指Offer[28] && LeetCode[101]对称二叉树)
 
 ### 题目描述
 
@@ -8109,7 +8109,7 @@ public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
 
 空间复杂度**O(1) ：** 使用常数大小的额外空间。
 
-## 二维数组中的查找(剑指Offer[04])
+## 二维数组中的查找(剑指Offer[04] && LeetCode[240]搜索二维矩阵)
 
 ### 题目描述
 
@@ -8173,7 +8173,7 @@ public boolean findNumberIn2DArray(int[][] matrix, int target) {
 
 # 2021.2.21记录
 
-## 矩阵中的路径(剑指Offer[12])
+## 矩阵中的路径(剑指Offer[12] && LeetCode[79]单词搜索)
 
 ### 题目描述
 
@@ -8394,7 +8394,7 @@ public int cuttingRope(int n) {
 
 空间复杂度：**O(1) ：** 变量 `count` 和 `b` 使用常数大小额外空间。
 
-## 数值的整数次方(LeetCode[16])
+## 数值的整数次方(剑指Offer[16] && LeetCode[50]Pow(x, n))
 
 ### 题目描述
 
@@ -8407,6 +8407,9 @@ public int cuttingRope(int n) {
 ![](LeetCode刷题记录.assets/剑指Offer16解题过程.png)
 
 ![](LeetCode刷题记录.assets/剑指Offer16算法流程.png)
+
+> Java 代码中 int32 变量 n∈[−2147483648,2147483647] ，因此当 n = -2147483648 时执行 n=−n 会因越界而赋值出错。解决方法是先将 n 存入 long 变量 b ，后面用 b 操作即可。
+>
 
 ### 代码实现
 
@@ -9500,61 +9503,6 @@ public int singleNumber(int[] nums) {
 
 空间复杂度：O(1)，数组 counts 长度恒为 32 ，占用常数大小的额外空间。
 
-## 排列(剑指Offer[38])
-
-### 题目描述
-
-假设把某股票的价格按照时间先后顺序存储在数组中，请问买卖该股票一次可能获得的最大利润是多少？ 
-示例 1: 
-输入: [7,1,5,3,6,4]
-输出: 5
-解释: 在第 2 天（股票价格 = 1）的时候买入，在第 5 天（股票价格 = 6）的时候卖出，最大利润 = 6-1 = 5 。     
-
-注意利润不能是 7-1 = 6, 因为卖出价格需要大于买入价格。
-
-### 思路
-
-动态规划解析：
-
-+ **状态定义：** 设动态规划列表 dp，dp[i] 代表以 prices[i] 为结尾的子数组的最大利润（以下简称为 前 i 日的最大利润 ）。
-+ **转移方程：** 由于题目限定 “买卖该股票一次” ，因此前 i 日最大利润 dp[i] 等于前 i - 1 日最大利润 dp[i-1] 和第 i 日卖出的最大利润中的最大值。
-
-![](LeetCode刷题记录.assets\剑指Offer63转移方程.png)
-
-- **初始状态：** dp[0] = 0 ，即首日利润为 00 ；
-- **返回值：** dp[n - 1]，其中 n*n* 为 dp 列表长度。
-
-![](LeetCode刷题记录.assets\剑指Offer63过程图.png)
-
-### 代码实现
-
-```java
-public int maxProfit(int[] prices) {
-    // dp[i]：以 prices[i] 结尾的子数组的最大利润 --> dp[n] = Max(dp[n - 1], prices[i] - min(price[0 : i]))
-    int cost = Integer.MAX_VALUE, profit = 0;
-    for (int price : prices) {
-        cost = Math.min(cost, price);
-        profit = Math.max(profit, price - cost);
-    }
-    return profit;
-
-    // 暴力解法
-    int res = Integer.MIN_VALUE;
-    for (int i = 0; i < prices.length; i++) {
-        for (int j = i + 1; j < prices.length; j++) {
-            res = Math.max(res, prices[j] - prices[i]);
-        }
-    }
-    return res < 0 ? 0 : res;
-}
-```
-
-### 复杂度分析
-
-时间复杂度：O(N)，其中 N 为 prices 列表长度，动态规划需遍历 prices。
-
-空间复杂度：O(1)，变量 cost 和 profit 使用常数大小的额外空间。
-
 # 2021.3.1记录
 
 ## 求1+2+…+n(剑指Offer[64])
@@ -9911,13 +9859,275 @@ public int mergeSort(int left, int right) {
 
 空间复杂度：**O(N)**，辅助数组 tmp 占用 O(N) 大小的额外空间；
 
-## 点数(剑指Offer[60])
+# 2021.3.3记录
+
+## 调整数组顺序使奇数位于偶数前面(剑指Offer[21])
 
 ### 题目描述
 
-
+输入一个整数数组，实现一个函数来调整该数组中数字的顺序，使得所有奇数位于数组的前半部分，所有偶数位于数组的后半部分。
 
 ### 思路
+
+双指针技巧
+
+### 代码实现
+
+```java
+public int[] exchange(int[] nums) {
+    int left = 0, right = nums.length - 1;
+    while (left < right) {
+        while (left < right && nums[left] % 2 == 1) left++;
+        while (left < right && nums[right] % 2 == 0) right--;
+        // 交换
+        int tmp = nums[left];
+        nums[left] = nums[right];
+        nums[right] = tmp;
+    }
+    return nums;
+}
+```
+
+### 复杂度分析
+
+时间复杂度：O(N)，*N* 为数组 nums 长度，双指针 i, j 共同遍历整个数组。
+
+空间复杂度：O(1)，双指针 i, j 使用常数大小的额外空间。
+
+# 2021.3.4记录 -- 买卖股票专题，以《买卖股票的最佳时机 IV》为例分析
+
+第一题是只进行一次交易，相当于 k = 1；第二题是不限交易次数，相当于 k = +infinity（正无穷）；第三题是只进行 2 次交易，相当于 k = 2；剩下两道也是不限交易次数，但是加了交易「冷冻期」和「手续费」的额外条件，其实就是第二题的变种，都很容易处理。
+
+## 思路：穷举框架 -- 利用「状态」进行穷举。
+
+看看总共有几种「状态」，再找出每个「状态」对应的「选择」。我们要穷举所有「状态」，穷举的目的是根据对应的「选择」更新状态。
+
+![](LeetCode刷题记录.assets/LeetCode股票专题状态选择.png)
+
+具体到当前问题，**每天都有三种「选择」**：买入、卖出、无操作，我们用 buy, sell, rest 表示这三种选择。
+
+但问题是，并不是每天都可以任意选择这三种选择的，因为 sell 必须在 buy 之后，buy 必须在 sell 之后（第一次除外）。那么 rest 操作还应该分两种状态，一种是 buy 之后的 rest（持有了股票），一种是 sell 之后的 rest（没有持有股票）。而且别忘了，我们还有交易次数 k 的限制，就是说你 buy 还只能在 k > 0 的前提下操作。
+
+**这个问题的「状态」有三个**，第一个是**天数**，第二个是**当天允许交易的最大次数**，第三个是**当前的持有状态**（即之前说的 rest 的状态，我们不妨用 1 表示持有，0 表示没有持有）。
+
+我们可以用自然语言描述出每一个状态的含义，比如说 
+
++ dp[3] [2] [1] 的含义就是：今天是第三天，我现在手上持有着股票，至今最多进行 2 次交易。
++ dp[2] [3] [0] 的含义：今天是第二天，我现在手上没有持有股票，至今最多进行 3 次交易。
+
+我们想求的最终答案是 dp[n - 1] [K] [0]，即最后一天，最多允许 K 次交易，所能获取的最大利润。读者可能问为什么不是 dp[n - 1] [K] [1]？因为 [1] 代表手上还持有股票，[0] 表示手上的股票已经卖出去了，很显然后者得到的利润一定大于前者。
+
+## 状态转移框架
+
+现在，我们完成了「状态」的穷举，我们开始思考每种「状态」有哪些「选择」，应该如何更新「状态」。
+
+因为我们的选择是 buy, sell, rest，而这些选择是和「持有状态」相关的，所以只看「持有状态」，可以画个状态转移图。
+
+![](LeetCode刷题记录.assets/LeetCode股票转移状态机.jpg)
+
+通过这个图可以很清楚地看到，每种状态（0 和 1）是如何转移而来的。
+
+![](LeetCode刷题记录.assets/LeetCode股票专题状态转移解释.jpg)
+
++ 如果 buy，就要从利润中减去 prices[i]；
++ 如果 sell，就要给利润增加 prices[i]；
++ 今天的最大利润就是这两种可能选择中较大的那个；
++ 而且注意 k 的限制，我们在选择 buy 的时候，把最大交易数 k 减小了 1，很好理解吧，当然你也可以在 sell 的时候减 1，一样的。
+
+还差最后一点点，就是定义 base case，即最简单的情况。
+
+![](LeetCode刷题记录.assets/LeetCode股票专题basecase.jpg)
+
+把上面的状态转移方程总结一下：
+
+![](LeetCode刷题记录.assets/LeetCode状态转移方程.png)
+
+## 股票的最大利润(剑指Offer[63] && LeetCode[121])
+
+### 题目描述
+
+假设把某股票的价格按照时间先后顺序存储在数组中，请问买卖该股票一次可能获得的最大利润是多少？ 
+示例 1: 
+输入: [7,1,5,3,6,4]
+输出: 5
+解释: 在第 2 天（股票价格 = 1）的时候买入，在第 5 天（股票价格 = 6）的时候卖出，最大利润 = 6-1 = 5 。     
+
+注意利润不能是 7-1 = 6, 因为卖出价格需要大于买入价格。
+
+### 思路1
+
+计算机解决问题的方法就是穷举。遇到一个问题，如果想不到什么奇技淫巧，那么首先请读者自问：**如何穷举这个问题的所有可能性？**
+
+首先暴力求解的解法为：
+
+```java
+public int maxProfit(int[] prices) {
+    // 暴力解法
+    int res = Integer.MIN_VALUE;
+    for (int i = 0; i < prices.length; i++) {
+        for (int j = i + 1; j < prices.length; j++) {
+            res = Math.max(res, prices[j] - prices[i]);
+        }
+    }
+    return res < 0 ? 0 : res;
+}
+```
+
+实际上，这个解法就是可行的，能够得到正确答案。但是我们分析一下这个算法在干嘛，就能发现一些冗余计算。
+
+![](LeetCode刷题记录.assets/LeetCode121思路1.jpg)
+
+如上图，可以看到大量的重复操作。我们相当于固定了买入时间 buy，然后将 buy 后面的每一天作为 sell 进行穷举，只为寻找 prices[sell] 最大的那天，因为这样 prices[sell] - prices[buy] 的差价才会最大。
+
+如果反过来想，固定卖出时间 sell，向前穷举买入时间 buy，寻找 prices[buy] 最小的那天，是不是也能达到相同的效果？是的，而且这种思路可以减少一个 for 循环。即下面的解法中的代码。
+
+> 为什么可以减少一个 for 循环呢？
+
+假设你有一堆数字，你知道其中最大的数，现在从中取走一个数，你还知道最大的那个数是多少吗？不一定，如果拿走的这个数不是那个最大数，那么最大数不变；如果拿走的恰好是那个最大的数，你就得重新遍历这堆数字以寻找之前第二大的那个数，作为新的最大数。这就是我们的原始算法，每向后移动一位，就要重新遍历寻找最大值。
+
+但是，假设你知道一堆数字中最小的那个，再添加一个新的数字，你现在是否知道最小的数字是那个？知道，只要比较一下新数和当前最小的数字，就能得到新的最小数。这就是优化算法的情况，所以可以消除嵌套循环的计算冗余。
+
+**关键不在于最大值还是最小值，而是数字的添加和减少。**添加新数时，可以根据已有最值，推导出新的最值；而减少数字时，不一定能直接推出新的最值，不得不重新遍历。
+
+
+
+很多人认为这道题不是动态规划，但是我认为最值的更新就是旧状态向新状态的转移，所以这个问题还是含有动态规划的技巧的。**不要觉得此题简单，这里完成了最困难的一步：穷举。后面所有的题目都可以基于此框架扩展出来。**
+
+动态规划解析：
+
++ **状态定义：** 设动态规划列表 dp，dp[i] 代表以 prices[i] 为结尾的子数组的最大利润（以下简称为 前 i 日的最大利润 ）。
++ **转移方程：** 由于题目限定 “买卖该股票一次” ，因此前 i 日最大利润 dp[i] 等于前 i - 1 日最大利润 dp[i-1] 和第 i 日卖出的最大利润中的最大值。
+
+![](LeetCode刷题记录.assets\剑指Offer63转移方程.png)
+
+- **初始状态：** dp[0] = 0 ，即首日利润为 0；
+- **返回值：** dp[n - 1]，其中 n 为 dp 列表长度。
+
+![](LeetCode刷题记录.assets\剑指Offer63过程图.png)
+
+### 代码实现1
+
+```java
+public int maxProfit(int[] prices) {
+    // dp[i]：以 prices[i] 结尾的子数组的最大利润 --> dp[n] = Max(dp[n - 1], prices[i] - min(price[0 : i]))
+    int cost = Integer.MAX_VALUE, profit = 0;
+    for (int price : prices) {
+        cost = Math.min(cost, price);
+        profit = Math.max(profit, price - cost);
+    }
+    return profit;
+}
+```
+
+### 复杂度分析
+
+时间复杂度：O(N)，其中 N 为 prices 列表长度，动态规划需遍历 prices。
+
+空间复杂度：O(1)，变量 cost 和 profit 使用常数大小的额外空间。
+
+### 思路2 -- 套用框架
+
+直接套状态转移方程，根据 base case，可以做一些化简：
+
+![](LeetCode刷题记录.assets/LeetCode股票专题basecase化简.jpg)
+
+直接翻译成代码 + base case 可得：
+
+```java
+// 统一：动态规划解法
+// 大的前提：只能买卖一次，即 k == 1
+// 状态转移方程：
+// ①：dp[i][k][0]：第 i 天我没有持股，并且我只能买卖 k 次
+// ②：dp[i][k][1]：第 i 天我持股了，我能买卖 k 次
+public int maxProfit(int[] prices) {
+    // 状态 [0] 表示卖出，[1] 表示持有
+    // dp[i][0]：表示第 i 天，手上没有持有股票 ---> 若 i == n - 1：就是最后一天我把股票卖完了，也就是最后获得的利润
+    // dp[i][1]：表示第 i 天，手上还持有股票
+    int n = prices.length;
+    int[][] dp = new int[n][2];
+    for (int i = 0; i < n; i++) {
+        // base case
+        if (i - 1 == -1) {
+            // 第一天没有持股，哪来的利润？
+            dp[i][0] = 0;
+            // 第一天就持股了，我的利润就是 -prices[i]
+            dp[i][1] = -prices[i];
+            continue;
+        }
+        // 根据选择更新状态，此时由于 k 只能等于 1
+        // [0]：①可能前一天就没有持有股票 || ②前一天持有股票 ---> 选择：卖或者不卖，规定买入会消耗一次买卖机会(k - 1)，卖出不消耗
+        // dp[i][1][0] = Math.max(dp[i - 1][1][0], dp[i - 1][1][1] + prices[i]);
+        // dp[i][1][1] = Math.max(dp[i - 1][1][1], dp[i - 1][0][0] - prices[i]) = Math.max(dp[i - 1][1][1], 0 - prices[i]);
+        // --->因为此时 k = 1 不会对状态有影响，可以忽略
+        dp[i][0] = Math.max(dp[i - 1][0], dp[i - 1][1] + prices[i]);
+        dp[i][1] = Math.max(dp[i - 1][1], -prices[i]);
+    }
+    return dp[n - 1][0];
+}
+```
+
+注意一下状态转移方程，新状态只和相邻的一个状态有关，其实不用整个 dp 数组，只需要两个变量储存所需的状态就足够了，这样可以把空间复杂度降到 O(1):
+
+```java
+// 动态规划简化版
+public int maxProfit(int[] prices) {
+    // 初始化第一天不持股的情况，利润为 0
+    int dp_i_0 = 0;
+    // 初始化第一天就持股的情况，利润为负值
+    int dp_i_1 = Integer.MIN_VALUE;
+    for (int i = 0; i < prices.length; i++) {
+        // 根据状态方程优化空间复杂度
+        dp_i_0 = Math.max(dp_i_0, dp_i_1 + prices[i]);
+        dp_i_1 = Math.max(dp_i_1, -prices[i]);
+    }
+    return dp_i_0;
+}
+```
+
+## 买卖股票的最佳时机 II(LeetCode[122])
+
+### 题目描述
+
+定一个数组，它的第 i 个元素是一支给定股票第 i 天的价格。 
+设计一个算法来计算你所能获取的最大利润。你可以尽可能地完成更多的交易（多次买卖一支股票）。  
+
+注意：你不能同时参与多笔交易（你必须在再次购买前出售掉之前的股票）。 
+
+### 思路
+
+贪心算法是基于动态规划之上的一种特殊方法，对于某些特定问题可以比动态规划更高效。核心思想就是：既然可以预知未来，那么能赚一点就赚一点。
+
+### 代码实现
+
+```java
+// 贪心算法，能赚一点是一点
+public int maxProfit(int[] prices) {
+    int profit = 0;
+    for (int i = 1; i < prices.length; i++) {
+        // 只要后面有比前面成本大的数，就卖掉更新利润，再买当前 price 的股票和后面比、
+        if (prices[i] - prices[i - 1] > 0) {
+            profit += prices[i] - prices[i - 1];
+        }
+    }
+    return profit;
+}
+```
+
+### 复杂度分析
+
+时间复杂度：O(N)
+
+空间复杂度：O(1)。
+
+
+
+
+
+## 以 - 买卖股票的最佳时机 IV(LeetCode[188]) - 为例分析
+
+### 题目描述
+
+![](LeetCode刷题记录.assets/LeetCode股票第四题思路.jpg)
 
 
 
@@ -9932,3 +10142,6 @@ public int mergeSort(int left, int right) {
 时间复杂度：O(N^2)
 
 空间复杂度：O(N)。
+
+
+
