@@ -54,5 +54,40 @@ class Solution {
         }
         return profit;
     }
+
+    // 框架简化版本
+    // 框架套用：因为 k 不限次数，相当于跟正无穷一样，所以 k 和 k - 1 应该是没有差别的，所以 k 这个状态可以不考虑
+    // dp[i][k][0] = Math.max(dp[i - 1][k][0], dp[i - 1][k][1] + prices[i]);
+    // dp[i][k][1] = Math.max(dp[i - 1][k][1], dp[i - 1][k - 1][0] - price[i]);
+    public int maxProfit(int[] prices) {
+        int n = prices.length;
+        int dp_i_0 = 0;
+        int dp_i_1 = Integer.MIN_VALUE;
+        for (int i = 0; i < n; i++) {
+            int tmp = dp_i_0;
+            dp_i_0 = Math.max(dp_i_0, dp_i_1 + prices[i]);
+            dp_i_1 = Math.max(dp_i_1, tmp - prices[i]);
+        }
+        return dp_i_0;
+    }
+
+    // 框架套用：因为 k 不限次数，相当于跟正无穷一样，所以 k 和 k - 1 应该是没有差别的，所以 k 这个状态可以不考虑
+    // dp[i][k][0] = Math.max(dp[i - 1][k][0], dp[i - 1][k][1] + prices[i]);
+    // dp[i][k][1] = Math.max(dp[i - 1][k][1], dp[i - 1][k - 1][0] - price[i]);
+    public int maxProfit(int[] prices) {
+        int n = prices.length;
+        int[][] dp = new int[n][2];
+        for (int i = 0; i < n; i++) {
+            // base case:
+            if (i - 1 == -1) {
+                dp[i][0] = 0;
+                dp[i][1] = -prices[i];
+                continue;
+            }
+            dp[i][0] = Math.max(dp[i - 1][0], dp[i - 1][1] + prices[i]);
+            dp[i][1] = Math.max(dp[i - 1][1], dp[i - 1][0] - prices[i]);
+        }
+        return dp[n - 1][0];
+    }
 }
 //leetcode submit region end(Prohibit modification and deletion)
