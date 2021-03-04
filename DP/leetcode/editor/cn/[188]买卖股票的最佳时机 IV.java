@@ -37,8 +37,43 @@
 
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
+    // 此时的 k 的取值最大只能为任意大
     public int maxProfit(int k, int[] prices) {
+        int n = prices.length;
+        // 大体上跟 k = 2 没什么区别，但是从股票买入到卖出至少需要两天的时间，所以如果 k > n/2，这个约束实际上就和 k 可以取无穷大一样，失去了约束意义
+        if (k > n / 2) {
+            return maxProfit(prices);
+        }
+        int dp[][][] = new int[n][k + 1][2];
+        // 这里要遍历所有的情况，包括 k
+        for (int i = 0; i < n; i++) {
+            for (int k1 = k; k1 >= 1; k1--) {
+                // base case
+                if (i - 1 == -1) {
+                    dp[i][k1][0] = 0;
+                    dp[i][k1][1] = -prices[i];
+                    continue;
+                }
+                // 状态转移
+                dp[i][k1][0] = Math.max(dp[i - 1][k1][0], dp[i - 1][k1][1] + prices[i]);
+                dp[i][k1][1] = Math.max(dp[i - 1][k1][1], dp[i - 1][k1 - 1][0] - prices[i]);
+            }
+        }
+        return dp[n - 1][k][0];
+    }
 
+    // 动态规划简化版
+    public int maxProfit(int[] prices) {
+        // 初始化第一天不持股的情况，利润为 0
+        int dp_i_0 = 0;
+        // 初始化第一天就持股的情况，利润为负值
+        int dp_i_1 = Integer.MIN_VALUE;
+        for (int i = 0; i < prices.length; i++) {
+            // 根据状态方程优化空间复杂度
+            dp_i_0 = Math.max(dp_i_0, dp_i_1 + prices[i]);
+            dp_i_1 = Math.max(dp_i_1, -prices[i]);
+        }
+        return dp_i_0;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
