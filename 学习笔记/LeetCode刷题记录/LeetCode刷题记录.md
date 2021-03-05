@@ -7011,7 +7011,7 @@ public boolean isSymmetric(TreeNode root) {
 
 # 2021.2.10记录
 
-## 顺时针打印矩阵(剑指Offer[29])
+## 顺时针打印矩阵(剑指Offer[29] && LeetCode[54]螺旋矩阵)
 
 ### 题目描述
 
@@ -7084,7 +7084,7 @@ public int[] spiralOrder(int[][] matrix) {
 
 # 2021.2.12记录
 
-## 包含min函数的栈(剑指Offer[30])
+## 包含min函数的栈(剑指Offer[30] && LeetCode[155]最小栈)
 
 ### 题目描述
 
@@ -8544,7 +8544,7 @@ public boolean recur(TreeNode A, TreeNode B) {
 
 空间复杂度O(M)： 当树 A 和树 B 都退化为链表时，递归调用深度最大。当 M≤N 时，遍历树 A 与递归判断的总递归深度为 M；当 M>N 时，最差情况为遍历至树 A 叶子节点，此时总递归深度为 M。
 
-## 栈的压入、弹出序列(剑指Offer [31])
+## 栈的压入、弹出序列(剑指Offer [31] && LeetCode[946]验证栈序列)
 
 ### 题目描述
 
