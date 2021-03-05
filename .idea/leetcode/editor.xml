@@ -75,6 +75,14 @@
             </LeetcodeEditor>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/DP/leetcode/editor/cn/[剑指 Offer 29]顺时针打印矩阵.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/DP/leetcode/editor/cn/[剑指 Offer 29]顺时针打印矩阵.java" />
+              <option name="questionId" value="100293" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/剑指Offer/leetcode/editor/cn/[101]对称二叉树.java">
           <value>
             <LeetcodeEditor>
@@ -200,6 +208,14 @@
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/剑指Offer/leetcode/editor/cn/[50]Pow(x, n).java" />
               <option name="questionId" value="50" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/剑指Offer/leetcode/editor/cn/[54]螺旋矩阵.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/剑指Offer/leetcode/editor/cn/[54]螺旋矩阵.java" />
+              <option name="questionId" value="54" />
             </LeetcodeEditor>
           </value>
         </entry>
