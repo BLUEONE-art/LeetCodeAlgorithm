@@ -10089,15 +10089,15 @@ public int maxProfit(int[] prices) {
 ### 题目描述
 
 定一个数组，它的第 i 个元素是一支给定股票第 i 天的价格。 
-设计一个算法来计算你所能获取的最大利润。你可以尽可能地完成更多的交易（多次买卖一支股票）。  
+设计一个算法来计算你所能获取的最大利润。你可以**尽可能地完成更多的交易**（多次买卖一支股票）。  
 
 注意：你不能同时参与多笔交易（你必须在再次购买前出售掉之前的股票）。 
 
-### 思路
+### 思路1
 
 贪心算法是基于动态规划之上的一种特殊方法，对于某些特定问题可以比动态规划更高效。核心思想就是：既然可以预知未来，那么能赚一点就赚一点。
 
-### 代码实现
+### 代码实现1
 
 ```java
 // 贪心算法，能赚一点是一点
@@ -10119,11 +10119,104 @@ public int maxProfit(int[] prices) {
 
 空间复杂度：O(1)。
 
+### 思路2
 
+套入框架，此时的买卖次数不限制，相当于可以取到无穷：
 
++ dp[i] [k] [0] = Math.max(dp[i - 1] [k] [0], dp[i - 1] [k] [1] + prices[i]);
++ dp[i] [k] [1] = Math.max(dp[i - 1] [k] [1], dp[i - 1] [k - 1] [0] - price[i]);
 
+### 代码实现2
 
-## 以 - 买卖股票的最佳时机 IV(LeetCode[188]) - 为例分析
+```java
+// 框架简化版本
+// 框架套用：因为 k 不限次数，相当于跟正无穷一样，所以 k 和 k - 1 应该是没有差别的，所以 k 这个状态可以不考虑
+// dp[i][k][0] = Math.max(dp[i - 1][k][0], dp[i - 1][k][1] + prices[i]);
+// dp[i][k][1] = Math.max(dp[i - 1][k][1], dp[i - 1][k - 1][0] - price[i]);
+public int maxProfit(int[] prices) {
+    int n = prices.length;
+    int dp_i_0 = 0;
+    int dp_i_1 = Integer.MIN_VALUE;
+    for (int i = 0; i < n; i++) {
+        int tmp = dp_i_0;
+        dp_i_0 = Math.max(dp_i_0, dp_i_1 + prices[i]);
+        dp_i_1 = Math.max(dp_i_1, tmp - prices[i]);
+    }
+    return dp_i_0;
+}
+```
+
+## 买卖股票的最佳时机 III(LeetCode[123])
+
+### 题目描述
+
+给定一个数组，它的第 i 个元素是一支给定的股票在第 i 天的价格。 
+设计一个算法来计算你所能获取的最大利润。你最多可以完成 **两笔** 交易。 
+注意：你不能同时参与多笔交易（你必须在再次购买前出售掉之前的股票）。 
+
+### 思路2
+
+套入框架，此时的买卖次数 k 限制在最大值为 2
+
+k = 2 和前面题目的情况稍微不同，因为上面的情况都和 k 的关系不太大。要么 k 是正无穷，状态转移和 k 没关系了；要么 k = 1，跟 k = 0 这个 base case 挨得近，最后也被消掉了。
+
+前面总结的「穷举框架」吗？就在强调必须穷举所有状态。其实我们之前的解法，都在穷举所有状态，只是之前的题目中 k 都被化简掉了，所以没有对 k 的穷举。
+
+这道题由于没有消掉 k 的影响，所以必须要用 for 循环对 k 进行穷举才是正确的：
+
+```java
+// 此时的 k 的取值最大只能为 2，直接套用框架会超时
+public int maxProfit(int[] prices) {
+    int max_k = 2;
+    int n = prices.length;
+    int dp[][][] = new int[n][max_k + 1][2];
+    // 这里要遍历所有的情况，包括 k
+    for (int i = 0; i < n; i++) {
+        for (int k = max_k; k >= 1; k--) {
+            // base case
+            if (i - 1 == -1) {
+                dp[i][k][0] = 0;
+                dp[i][k][1] = -prices[i];
+                continue;
+            }
+            // 状态转移
+            dp[i][k][0] = Math.max(dp[i - 1][k][0], dp[i - 1][k][1] + prices[i]);
+            dp[i][k][1] = Math.max(dp[i - 1][k][1], dp[i - 1][k - 1][0] - prices[i]);
+        }
+    }
+    return dp[n - 1][max_k][0];
+}
+```
+
+但是此时会超时，因为这里 k 取值范围比较小，所以也可以不用 for 循环，直接把 k = 1 和 2 的情况手动列举出来也是一样的。
+
+### 代码实现
+
+```java
+// 此时的 k 的取值最大只能为 2，直接套用框架会超时 --> 优化空间复杂度
+public int maxProfit(int[] prices) {
+    int max_k = 2;
+    int n = prices.length;
+    // base case：因为 k = 2，不是很大，可以列出所有的情况
+    // ①dp[i][2][0] = Math.max(dp[i - 1][2][0], dp[i - 1][2][1] + prices[i]);
+    // ②dp[i][2][1] = Math.max(dp[i - 1][2][1], dp[i - 1][2 - 1][0] - prices[i]);
+    // ③dp[i][1][0] = Math.max(dp[i - 1][1][0], dp[i - 1][1][1] + prices[i]);
+    // ④dp[i][2][1] = Math.max(dp[i - 1][1][1], dp[i - 1][1 - 1][0] - prices[i]) = Math.max(dp[i - 1][1][1], -prices[i]);
+    int dp_i_2_0 = 0, dp_i_1_0 = 0;
+    int dp_i_2_1 = Integer.MIN_VALUE, dp_i_1_1 = Integer.MIN_VALUE;
+    // 这里要遍历 i 所有的情况
+    for (int i = 0; i < n; i++) {
+        // 状态转移
+        dp_i_2_0 = Math.max(dp_i_2_0, dp_i_2_1 + prices[i]);
+        dp_i_2_1 = Math.max(dp_i_2_1, dp_i_1_0 - prices[i]);
+        dp_i_1_0 = Math.max(dp_i_1_0, dp_i_1_1 + prices[i]);
+        dp_i_1_1 = Math.max(dp_i_1_1, -prices[i]);
+    }
+    return dp_i_2_0;
+}
+```
+
+## 买卖股票的最佳时机 IV(LeetCode[188])
 
 ### 题目描述
 
@@ -10131,17 +10224,126 @@ public int maxProfit(int[] prices) {
 
 
 
+### 思路
+
+这里要讨论 k 与 n = prices.length 之间的关系，因为买卖至少需要两天的时间来完成，也就是说在 n 范围内，至多进行 n/2 的交易次数：
+
++ k > n/2：此时 k 的限制消失，相当于无限制的情况；
++ k <= n/2：此时 k 有约束作用。
+
 ### 代码实现
 
 ```java
+// 此时的 k 的取值最大只能为任意大
+public int maxProfit(int k, int[] prices) {
+    int n = prices.length;
+    // 大体上跟 k = 2 没什么区别，但是从股票买入到卖出至少需要两天的时间，所以如果 k > n/2，这个约束实际上就和 k 可以取无穷大一样，失去了约束意义
+    if (k > n / 2) {
+        return maxProfit(prices);
+    }
+    int dp[][][] = new int[n][k + 1][2];
+    // 这里要遍历所有的情况，包括 k
+    for (int i = 0; i < n; i++) {
+        for (int k1 = k; k1 >= 1; k1--) {
+            // base case
+            if (i - 1 == -1) {
+                dp[i][k1][0] = 0;
+                dp[i][k1][1] = -prices[i];
+                continue;
+            }
+            // 状态转移
+            dp[i][k1][0] = Math.max(dp[i - 1][k1][0], dp[i - 1][k1][1] + prices[i]);
+            dp[i][k1][1] = Math.max(dp[i - 1][k1][1], dp[i - 1][k1 - 1][0] - prices[i]);
+        }
+    }
+    return dp[n - 1][k][0];
+}
 
+// 动态规划简化版
+public int maxProfit(int[] prices) {
+    // 初始化第一天不持股的情况，利润为 0
+    int dp_i_0 = 0;
+    // 初始化第一天就持股的情况，利润为负值
+    int dp_i_1 = Integer.MIN_VALUE;
+    for (int i = 0; i < prices.length; i++) {
+        // 根据状态方程优化空间复杂度
+        dp_i_0 = Math.max(dp_i_0, dp_i_1 + prices[i]);
+        dp_i_1 = Math.max(dp_i_1, -prices[i]);
+    }
+    return dp_i_0;
+}
 ```
 
-### 复杂度分析
+## 最佳买卖股票时机含冷冻期(LeetCode[309])
 
-时间复杂度：O(N^2)
+### 题目描述
 
-空间复杂度：O(N)。
+给定一个整数数组，其中第 i 个元素代表了第 i 天的股票价格 。 
+设计一个算法计算出最大利润。在满足以下约束条件下，你可以尽可能地完成更多的交易（多次买卖一支股票）: 
+你不能同时参与多笔交易（你必须在再次购买前出售掉之前的股票）。 
+卖出股票后，你无法在第二天买入股票 (即冷冻期为 1 天)。 
 
+### 思路
 
+每次 sell 之后要等一天才能继续交易。只要把这个特点融入状态转移方程即可：
+
++ dp[i] [k] [0] = Math.max(dp[i - 1] [k] [0], dp[i - 1] [k] [1] + prices[i]);
++ dp[i] [k] [1] = Math.max(dp[i - 1] [k] [1], **dp[i - 2]**[k - 1] [0] - price[i]);
+
+考虑冷冻期一天，选择要入股时，必须间隔一天，因为刚卖完不能立即入股。
+
+### 代码实现
+
+```java
+// dp[i][k][0] = Math.max(dp[i - 1][k][0], dp[i - 1][k][1] + prices[i])
+// 考虑冷冻期一天，选择要入股时，必须间隔一天，因为刚卖完不能立即入股
+// dp[i][k][1] = Math.max(dp[i - 1][k][1], dp[i - 2][k - 1][0] - prices[i])
+// 此时没有买卖次数 k 的限制，所以可以忽略 k
+public int maxProfit(int[] prices) {
+    int n = prices.length;
+    // base case
+    int dp_i_0 = 0;
+    int dp_i_1 = Integer.MIN_VALUE;
+    // dp[i - 2][0]，记录 dp[i - 1][0] 的前一个状态
+    int dp_pre_0 = 0;
+    for (int i = 0; i < n; i++) {
+        int tmp = dp_i_0;
+        dp_i_0 = Math.max(dp_i_0, dp_i_1 + prices[i]);
+        dp_i_1 = Math.max(dp_i_1, dp_pre_0 - prices[i]);
+        // dp_pre_0 = dp[i - 2][0]，即下一次更新到 dp[i - 1][0]
+        dp_pre_0 = tmp;
+    }
+    return dp_i_0;
+}
+```
+
+## 买卖股票的最佳时机含手续费(LeetCode[714])
+
+### 题目描述
+
+给定一个整数数组 prices，其中第 i 个元素代表了第 i 天的股票价格 ；非负整数 fee 代表了交易股票的手续费用。 
+你可以无限次地完成交易，但是你每笔交易都需要付手续费。如果你已经购买了一个股票，在卖出它之前你就不能再继续购买股票了。 返回获得利润的最大值。 
+
+### 思路
+
+每次交易要支付手续费，只要把手续费从利润中减去即可：
+
+![](LeetCode刷题记录.assets/LeetCode714思路.png)
+
+### 代码实现
+
+```java
+// 仅仅加了一个费用 fee
+public int maxProfit(int[] prices, int fee) {
+    int n = prices.length;
+    int dp_i_0 = 0;
+    int dp_i_1 = Integer.MIN_VALUE;
+    for (int i = 0; i < n; i++) {
+        int tmp = dp_i_0;
+        dp_i_0 = Math.max(dp_i_0, dp_i_1 + prices[i]);
+        dp_i_1 = Math.max(dp_i_1, tmp - prices[i] - fee);
+    }
+    return dp_i_0;
+}
+```
 
