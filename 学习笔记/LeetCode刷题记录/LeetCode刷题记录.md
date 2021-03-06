@@ -7176,7 +7176,7 @@ public List<List<Integer>> levelOrder(TreeNode root) {
 
 # 2021.2.14记录
 
-## 数组中出现次数超过一半的数字(剑指Offer [39])
+## 数组中出现次数超过一半的数字(剑指Offer [39] && LeetCode[169]多数元素)
 
 ### 题目描述
 
@@ -8903,7 +8903,7 @@ public Node copyRandomList(Node head) {
 
 空间复杂度：O(N)，哈希表 `dic` 使用线性大小的额外空间。
 
-## 二叉搜索树与双向链表(剑指Offer[36])
+## 二叉搜索树与双向链表(剑指Offer[36] && LeetCode[426]将二叉搜索树化为排序的双向链表)
 
 ### 题目描述
 
@@ -8942,7 +8942,7 @@ public void inorder(Node cur) {
     /* 中序遍历代码位置 */
     // 第一次递归的时候拿到的是头结点，其左侧没有节点，即 cur 节点左侧没有 pre 节点
     if (pre != null) {
-        cur.right = cur;
+        pre.right = cur;
     } else {
         head = cur;
     }
@@ -9734,7 +9734,7 @@ public int strToInt(String str) {
 
 # 2021.3.2记录
 
-## 1～n 整数中 1 出现的次数(剑指Offer[43])
+## 1～n 整数中 1 出现的次数(剑指Offer[43] && LeetCode[233] 数字 1 的个数)
 
 ### 题目描述
 
