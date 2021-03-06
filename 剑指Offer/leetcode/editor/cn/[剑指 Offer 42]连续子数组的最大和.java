@@ -31,7 +31,7 @@ class Solution {
     /* 连续数组的最大和 */
     public int maxSubArray(int[] nums) {
         int size = nums.length;
-        // dp[i]：表示以 nums[i] 结尾的最大字序和为 dp[i]
+        // dp[i]：表示以 nums[i] 结尾的子数组的最大字序和为 dp[i]
         int[] dp = new int[size];
         // base case:
         dp[0] = nums[0];
