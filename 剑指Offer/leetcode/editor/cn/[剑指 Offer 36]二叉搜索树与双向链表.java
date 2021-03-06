@@ -73,7 +73,7 @@ class Solution {
         /* 中序遍历代码位置 */
         // 第一次递归的时候拿到的是头结点，其左侧没有节点，即 cur 节点左侧没有 pre 节点
         if (pre != null) {
-            cur.right = cur;
+            pre.right = cur;
         } else {
             head = cur;
         }
