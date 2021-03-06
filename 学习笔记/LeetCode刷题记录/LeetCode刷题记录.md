@@ -7131,7 +7131,7 @@ public int min() {
 
 # 2021.2.13记录
 
-## 从上到下打印二叉树 II(剑指Offer[32 - II])
+## 从上到下打印二叉树 II(剑指Offer[32 - II] && LeetCode[102]二叉树的层序遍历)
 
 ### 题目描述
 
@@ -8746,7 +8746,7 @@ public boolean isBST(int[] postorder, int i, int j) {
 
 # 2021.2.24记录
 
-## 二叉树中和为某一值的路径(剑指Offer[34])
+## 二叉树中和为某一值的路径(剑指Offer[34] && LeetCode[113]路径总和 II)
 
 ### 题目描述
 
@@ -8801,7 +8801,44 @@ public void recur(TreeNode root, int tar) {
 
 空间复杂度：O(N)，最差情况下（即当树退化为链表），`path` 存储所有树节点，使用 O(N) 额外空间。
 
-## 复杂链表的复制(剑指Offer[35])
+## 路径总和(LeetCode[112])
+
+### 题目描述
+
+给你二叉树的根节点 root 和一个表示目标和的整数 targetSum ，判断该树中是否存在 根节点到叶子节点 的路径，这条路径上所有节点值相加等于目标和 targetSum 。 
+
+### 思路
+
+采用递归，分别求路径中有没有包含该 targetSum 的路径。
+
+### 代码实现
+
+```java
+LinkedList<Integer> path = new LinkedList<>();
+boolean flag = false;
+public boolean hasPathSum(TreeNode root, int targetSum) {
+    recur (root, targetSum);
+    return flag;
+}
+
+public void recur(TreeNode root, int targetSum) {
+    if (root == null) return;
+    targetSum -= root.val;
+    if (targetSum == 0 && root.left == null && root.right == null) {
+        flag = true;
+    }
+    recur(root.left, targetSum);
+    recur(root.right, targetSum);
+}
+```
+
+### 复杂度分析
+
+时间复杂度：O(N)，*N* 为二叉树的节点数，先序遍历需要遍历所有节点。
+
+空间复杂度：O(N)，最差情况下（即当树退化为链表），`path` 存储所有树节点，使用 O(N) 额外空间。
+
+## 复杂链表的复制(剑指Offer[35] && LeetCode[138]复制带随机指针的链表)
 
 ### 题目描述
 
