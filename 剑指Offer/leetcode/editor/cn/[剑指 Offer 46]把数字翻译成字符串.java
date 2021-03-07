@@ -24,7 +24,7 @@ class Solution {
     // 0 -> a 1 -> b ... 25 -> z, 26 以后的数字不翻译
     public int translateNum(int num) {
         String str = String.valueOf(num);
-        // 定义 dp[i] 表示以数字 xi 结尾的数字的翻译方式种数
+        // 定义 dp[i] 表示以数字 x_i 结尾的数字的翻译方式种数
         // base case：当只有一个数字或者没有数字的时候是一种方式
         int[] dp = new int[str.length() + 1];
         dp[0] = dp[1] = 1;
