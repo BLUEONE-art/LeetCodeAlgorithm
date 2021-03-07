@@ -7372,7 +7372,7 @@ public char firstUniqChar(String s) {
 
 空间复杂度：O(1)
 
-## 两个链表的第一个公共节点(剑指Offer[52])
+## 两个链表的第一个公共节点(剑指Offer[52] && LeetCode[160]相交链表)
 
 ### 题目描述
 
@@ -7434,7 +7434,7 @@ public int listNodeLength(ListNode head) {
 
 空间复杂度：O(1)
 
-## 在排序数组中查找数字 I(剑指Offer [53 - I])
+## 在排序数组中查找数字 I(剑指Offer [53 - I] && LeetCode[34][34]在排序数组中查找元素的第一个和最后一个位置)
 
 ### 题目描述
 
@@ -9156,7 +9156,7 @@ public String charListToStr(LinkedList<Character> track) {
 
 空间复杂度：O(N^2)，全排列的递归深度为 N，系统累计使用栈空间大小为 O(N)；递归中辅助 Set 累计存储的字符数量最多为 N + (N-1) + ... + 2 + 1 = (N+1)N/2，即占用 O(N^2)的额外空间。
 
-## 数字序列中某一位的数字(剑指Offer[44])
+## 数字序列中某一位的数字(剑指Offer[44] & LeetCode[400]第 N 位数字)
 
 ### 题目描述
 
@@ -9199,6 +9199,7 @@ public int findNthDigit(int n) {
         n -= count;
         digit += 1;
         start *= 10;
+        // 数位的量，因为有 90 个十位数，所以有 180 个数位
         count = 9 * digit * start;
     }
     // 更新的 digit 数值就表示是几位数，转换成求这个 digit 位数的 第几位 --> 公式：goal = (n - 1) % digit
@@ -9396,7 +9397,31 @@ public int maxValue(int[][] grid) {
 
 # 2021.2.27记录
 
-## 丑数(剑指Offer[49])
+## 丑数(LeetCode[263])
+
+### 问题描述
+
+编写一个程序判断给定的数是否为丑数。 
+丑数就是只包含质因数 2, 3, 5 的正整数，1 是丑数。
+
+### 思路
+
+丑数一直除以 2，3，5，最后答案一定为 1。
+
+### 代码实现
+
+```java
+public boolean isUgly(int num) {
+    //需要特判0
+    if (num < 1) return false;
+    while (num % 2 == 0) num /= 2;
+    while (num % 3 == 0) num /= 3;
+    while (num % 5 == 0) num /= 5;
+    return num == 1;
+}
+```
+
+## 丑数(剑指Offer[49] && LeetCode[264] 丑数 II)
 
 ### 题目描述
 
