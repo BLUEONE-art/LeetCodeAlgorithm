@@ -10655,7 +10655,198 @@ public int stoneGame(int[] piles) {
 }
 ```
 
-## Nim 游戏(LeetCode[292])
+# 2021.3.10记录
+
+## 石子游戏 II(LeetCode[1140])
+
+### 问题描述
+
+亚历克斯和李继续他们的石子游戏。许多堆石子 排成一行，每堆都有正整数颗石子 piles[i]。游戏以谁手中的石子最多来决出胜负。 
+亚历克斯和李轮流进行，亚历克斯先开始。最初，M = 1。 
+在每个玩家的回合中，该玩家可以拿走剩下的 前 X 堆的所有石子，其中 1 <= X <= 2M。然后，令 M = max(M, X)。 
+游戏一直持续到所有石子都被拿走。 
+假设亚历克斯和李都发挥出最佳水平，返回亚历克斯可以得到的最大数量的石头。 
+
+### 思路
+
+首先一定要存储的是取到某一个位置时，已经得到的最大值或者后面能得到的最大值，但是光有位置是不够的，相同的位置有不同数量的堆可以取，所以我们还需存储当前的M值。
+
+由于本题中的状态是从后往前递推的，如：假如最后只剩一堆，一定能算出来最佳方案，但是剩很多堆时不好算（依赖后面的状态）。所以我们选择从后往前递推。
+
+![](LeetCode刷题记录.assets/LeetCode[1140]石子游戏II思路.png)
+
+### 代码实现
+
+```java
+public int stoneGameII(int[] piles) {
+    int n = piles.length;
+    // dp[i][j]：当面对 piles[i,...,len - 1]，M = j 时，所能得到的最大石头个数为 dp[i][j]；i = 0 ~ 4, M = 1 ~ Max(M, x); M 不能等于 0，所以 M = 1 开始，矩阵列维度 + 1
+    int[][] dp = new int[n][n + 1];
+    int sum = 0;
+    for (int i = n - 1; i >= 0; i--) {
+        sum += piles[i];
+        for (int M = 1; M <= n; M++) {
+            if (i + 2 * M >= n) {
+                dp[i][M] = sum;
+            }
+            else {
+                for (int x = 1; x <= 2 * M; x++) {
+                    dp[i][M] = Math.max(dp[i][M], sum - dp[i + x][Math.max(x, M)]);
+                }
+            }
+        }
+    }
+    return dp[0][1];
+}
+```
+
+## 打家劫舍(LeetCode[198])
+
+### 问题描述
+
+![](LeetCode刷题记录.assets/LeetCode[198]打家劫舍题目描述.jpg)
+
+### 思路
+
+假想你就是这个专业强盗，从左到右走过这一排房子，在每间房子前都有两种**选择**：抢或者不抢。
+
+如果你抢了这间房子，那么你肯定不能抢相邻的下一间房子了，只能从**下下间**房子开始做选择。
+
+如果你不抢这间房子，那么你可以走到**下一间**房子前，继续做选择。
+
+当你走过了最后一间房子后，你就没得抢了，能抢到的钱显然是 0（**base case**）。
+
+以上的逻辑很简单吧，其实已经明确了「状态」和「选择」：**你面前房子的索引就是状态，抢和不抢就是选择**。
+
+![](LeetCode刷题记录.assets/LeetCode[198]打家劫舍思路.jpg)
+
+在两个选择中，每次都选更大的结果，最后得到的就是最多能抢到的 money。
+
+### 代码实现
+
+```java
+public int rob(int[] nums) {
+    // base case：打劫到超过数组的长度，得到的钱肯定为 0
+    int len = nums.length;
+    // 如果抢劫到倒数第二家，则下次跳到 dp[len] = 0; 若抢劫到最后一家，则跳到 dp[len + 1] = 0；(从 0 计数)
+    int[] dp = new int[len + 2];
+    // 遍历 + 状态选择(由后向前)
+    for (int i = len - 1; i >= 0; i--) {
+        dp[i] = Math.max(
+            // 不抢，去下家
+            dp[i + 1],
+            // 抢，去下家
+            dp[i + 2] + nums[i]
+        );
+    }
+    return dp[0];
+}
+
+int rob(int[] nums) {
+    int n = nums.length;
+    // 记录 dp[i+1] 和 dp[i+2]
+    int dp_i_1 = 0, dp_i_2 = 0;
+    // 记录 dp[i]
+    int dp_i = 0;
+    for (int i = n - 1; i >= 0; i--) {
+        dp_i = Math.max(dp_i_1, nums[i] + dp_i_2);
+        dp_i_2 = dp_i_1;
+        dp_i_1 = dp_i;
+    }
+    return dp_i;
+}
+```
+
+## 打家劫舍 II(LeetCode[213])
+
+### 问题描述
+
+这道题目和第一道描述基本一样，强盗依然不能抢劫相邻的房子，输入依然是一个数组，但是告诉你**这些房子不是一排，而是围成了一个圈**。
+
+也就是说，现在第一间房子和最后一间房子也相当于是相邻的，不能同时抢。比如说输入数组`nums=[2,3,2]`，算法返回的结果应该是 3 而不是 4，因为开头和结尾不能同时被抢。
+
+### 思路
+
+首先，首尾房间不能同时被抢，那么只可能有三种不同情况：要么都不被抢；要么第一间房子被抢最后一间不抢；要么最后一间房子被抢第一间不抢。
+
+![](LeetCode刷题记录.assets/LeetCode[213]打家劫舍II思路.jpg)
+
+那就简单了啊，这三种情况，哪种的结果最大，就是最终答案呗！不过，其实我们不需要比较三种情况，**只要比较情况二和情况三就行了，因为这两种情况对于房子的选择余地比情况一大呀，房子里的钱数都是非负数，所以选择余地大，最优决策结果肯定不会小**。
+
+### 代码实现
+
+```java
+public int rob(int[] nums) {
+    // 假如只有一间房子
+    int len = nums.length;
+    if (len == 1) return nums[0];
+    // 为了避免环形，比如 [2, 3, 2] 返回 3
+    return Math.max(
+        // 从 0 ~ n - 2
+        robRange(nums, 0, len - 2),
+        robRange(nums, 1, len - 1)
+    );
+}
+public int robRange(int[] nums, int start, int end) {
+    // base case
+    int dp_i_1 = 0, dp_i_2 = 0;
+    int dp_i = 0;
+    for (int i = end; i >= start; i--) {
+        dp_i = Math.max(
+            // 抢了，下一家
+            nums[i] + dp_i_2,
+            // 没抢，下一家
+            dp_i_1
+        );
+        // 更新，用新的两个已知结果去迭代后面的结果
+        dp_i_2 = dp_i_1;
+        dp_i_1 = dp_i;
+    }
+    return dp_i;
+}
+```
+
+## 打家劫舍 III(LeetCode[337])
+
+### 问题描述
+
+房子在二叉树的节点上，相连的两个房子不能同时被抢劫：
+
+![](LeetCode刷题记录.assets/LeetCode[337]打家劫舍III题目描述.jpg)
+
+### 思路
+
+整体的思路完全没变，还是做抢或者不抢的选择，取收益较大的选择。
+
+### 代码实现
+
+```java
+int rob(TreeNode root) {
+    int[] res = dp(root);
+    return Math.max(res[0], res[1]);
+}
+
+/* 返回一个大小为 2 的数组 arr
+arr[0] 表示不抢 root 的话，得到的最大钱数
+arr[1] 表示抢 root 的话，得到的最大钱数 */
+int[] dp(TreeNode root) {
+    if (root == null)
+        return new int[]{0, 0};
+    int[] left = dp(root.left);
+    int[] right = dp(root.right);
+    // 抢，下家就不能抢了
+    int rob = root.val + left[0] + right[0];
+    // 不抢，下家可抢可不抢，取决于收益大小
+    int not_rob = Math.max(left[0], left[1])
+                + Math.max(right[0], right[1]);
+
+    return new int[]{not_rob, rob};
+}
+```
+
+时间复杂度 O(N)，空间复杂度只有递归函数堆栈所需的空间，不需要备忘录的额外空间。
+
+## 石子游戏 II(LeetCode[1140])
 
 ### 问题描述
 
@@ -10668,8 +10859,6 @@ public int stoneGame(int[] piles) {
 ### 代码实现
 
 ```java
-public boolean canWinNim(int n) {
-
-}
+p
 ```
 
