@@ -10846,6 +10846,238 @@ int[] dp(TreeNode root) {
 
 时间复杂度 O(N)，空间复杂度只有递归函数堆栈所需的空间，不需要备忘录的额外空间。
 
+# 2021.3.11记录
+
+## 实现 strStr()(LeetCode[28])
+
+### 问题描述
+
+实现 strStr() 函数。 
+给定一个 haystack 字符串和一个 needle 字符串，在 haystack 字符串中找出 needle 字符串出现的第一个位置 (从0开始)。如果不存在，则返回 -1。 
+
+### 思路
+
++ 暴力解法：
+
+  对于暴力算法，如果出现不匹配字符，同时回退`txt`和`pat`的指针，嵌套 for 循环，时间复杂度 *O*(*MN*)，空间复杂度*O*(1)。
+
+  ![](LeetCode刷题记录.assets/LeetCode[28]实现str思路.gif)
+
+### 代码实现
+
+```java
+// 在 haystack 找是否存在 needle 字符串，存在返回第一次出现的位置，否则返回 -1
+public int strStr(String haystack, String needle) {
+    // 暴力解法
+    int M = haystack.length();
+    int N = needle.length();
+    for (int i = 0; i <= M - N; i++) {
+        int j;
+        for (j = 0; j < N; j++) {
+            if (needle.charAt(j) != haystack.charAt(i + j)) {
+                break;
+            }
+        }
+        // 如果全匹配了
+        if (j == N) return i;
+    }
+    return -1;
+}
+```
+
+## 让字符串成为回文串的最少插入次数(LeetCode[1312])
+
+### 问题描述
+
+![](LeetCode刷题记录.assets/LeetCode[1312]字符串转回文串问题描述.jpg)
+
+比如说输入`s = "abcea"`，算法返回 2，因为可以给`s`插入 2 个字符变成回文串`"abeceba"`或者`"aebcbea"`。如果输入`s = "aba"`，则算法返回 0，因为`s`已经是回文串，不用插入任何字符。
+
+### 思路
+
+**我们定义一个二维的`dp`数组，`dp[i][j]`的定义如下：对字符串`s[i..j]`，最少需要进行`dp[i][j]`次插入才能变成回文串**。
+
+我们想求整个`s`的最少插入次数，根据这个定义，也就是想求`dp[0][n-1]`的大小（`n`为`s`的长度）。
+
+同时，**base case** 也很容易想到，当`i == j`时`dp[i][j] = 0`，因为当`i == j`时`s[i..j]`就是一个字符，本身就是回文串，所以不需要进行任何插入操作。
+
+**状态转移方程：**
+
+状态转移就是从小规模问题的答案推导更大规模问题的答案，从 base case 向其他状态推导嘛。**如果我们现在想计算`dp[i][j]`的值，而且假设我们已经计算出了子问题`dp[i+1][j-1]`的值了，你能不能想办法推出`dp[i][j]`的值呢**？
+
++ **如果`s[i] == s[j]`的话**，我们不需要进行任何插入，只要知道如何把`s[i+1..j-1]`变成回文串即可：
+
+  ![](LeetCode刷题记录.assets/LeetCode[1312]字符串转回文串思路1.jpg)
+
+翻译成代码就是这样：
+
+```java
+if (s[i] == s[j]) {
+    dp[i][j] = dp[i + 1][j - 1];
+}
+```
+
++ **如果`s[i] != s[j]`的话**，就比较麻烦了，比如下面这种情况：
+  ![](LeetCode刷题记录.assets/LeetCode[1312]字符串转回文串思路2.jpg)
+
+  不能直接 +2(先把`s[j]`插到`s[i]`右边，同时把`s[i]`插到`s[j]`右边，这样构造出来的字符串一定是回文串)，还要考虑一下情况：
+
+  ![](LeetCode刷题记录.assets/LeetCode[1312]字符串转回文串思路3.jpg)
+
+  所以说，当`s[i] != s[j]`时，无脑插入两次肯定是可以让`s[i..j]`变成回文串，但是不一定是插入次数最少的，最优的插入方案应该被拆解成如下流程：
+
+  + **步骤一，做选择，先将`s[i..j-1]`或者`s[i+1..j]`变成回文串**。怎么做选择呢？谁变成回文串的插入次数少，就选谁呗。
+
+  + **步骤二，根据步骤一的选择，将`s[i..j]`变成回文**。
+
+    如果你在步骤一中选择把`s[i+1..j]`变成回文串，那么在`s[i+1..j]`右边插入一个字符`s[i]`一定可以将`s[i..j]`变成回文；同理，如果在步骤一中选择把`s[i..j-1]`变成回文串，在`s[i..j-1]`左边插入一个字符`s[j]`一定可以将`s[i..j]`变成回文。
+
++ 首先想想 base case 是什么，当`i == j`时`dp[i][j] = 0`，因为这时候`s[i..j]`就是单个字符，本身就是回文串，不需要任何插入；最终的答案是`dp[0][n-1]`（`n`是字符串`s`的长度）。那么 dp table 长这样：
+
+  ![](LeetCode刷题记录.assets/LeetCode[1312]字符串转回文串思路4.jpg)
+
+### 代码实现
+
+```java
+public int minInsertions(String s) {
+    // 定义 dp[i][j] 数组：表示字符串 s[i,...,j] 能转换成回文串的最小步数
+    int n = s.length();
+    // base case: dp[i][i] = 0，即当 i == j 时本身就是回文串，所以最小步数为 0
+    int[][] dp = new int[n][n];
+    // 遍历 + 状态选择 (可以斜着遍历 或 先从下到上 -> 从左到右)
+    for (int l = 2; l <= n; l++) {
+        for (int i = 0; i <= n - l; i++) {
+            int j = l + i - 1;
+            // 如果 dp[i + 1][j - 1] 结果已知，推出 dp[i][j] 只要开开头和结尾的字符是否相等
+            if (s.charAt(i) == s.charAt(j)) {
+                // 相等
+                dp[i][j] = dp[i + 1][j - 1];
+            }
+            else {
+                // 不相等
+                dp[i][j] = Math.min(dp[i + 1][j], dp[i][j - 1]) + 1;
+            }
+        }
+    }
+    return dp[0][n - 1];
+}
+
+// 从下到上 -> 从左到右 遍历
+public int minInsertions(String s) {
+    // 定义 dp[i][j] 数组：表示字符串 s[i,...,j] 能转换成回文串的最小步数
+    int n = s.length();
+    // base case: dp[i][i] = 0，即当 i == j 时本身就是回文串，所以最小步数为 0
+    int[][] dp = new int[n][n];
+    // 遍历 + 状态选择 (可以斜着遍历 或 先从下到上 -> 从左到右)
+    for (int i = n - 2; i >= 0; i--) {
+        for (int j = i + 1; j < n; j++) {
+            // 如果 dp[i + 1][j - 1] 结果已知，推出 dp[i][j] 只要开开头和结尾的字符是否相等
+            if (s.charAt(i) == s.charAt(j)) {
+                // 相等
+                dp[i][j] = dp[i + 1][j - 1];
+            }
+            else {
+                // 不相等
+                dp[i][j] = Math.min(dp[i + 1][j], dp[i][j - 1]) + 1;
+            }
+        }
+    }
+    return dp[0][n - 1];
+}
+```
+
+## N 皇后问题(LeetCode[51])
+
+### 问题描述
+
+给你一个 N×N 的棋盘，让你放置 N 个皇后，使得它们不能互相攻击。
+
+PS：皇后可以攻击同一行、同一列、左上左下右上右下四个方向的任意单位。
+
+这是 N = 8 的一种放置方法：
+
+![](LeetCode刷题记录.assets/LeetCode[51]N皇后问题描述.jpg)
+
+### 思路
+
+这个问题本质上跟全排列问题差不多，决策树的每一层表示棋盘上的每一行；每个节点可以做出的选择是，在该行的任意一列放置一个皇后。
+
+**函数`backtrack`依然像个在决策树上游走的指针，每个节点就表示在`board[row][col]`上放置皇后，通过`isValid`函数可以将不符合条件的情况剪枝**：
+
+![](LeetCode刷题记录.assets/LeetCode[51]N皇后思路.jpg)
+
+这个问题的复杂度确实非常高，看看我们的决策树，虽然有`isValid`函数剪枝，但是最坏时间复杂度仍然是 O(N^(N+1))，而且无法优化。
+
+### 代码实现
+
+```java
+public List<List<String>> solveNQueens(int n) {
+    List<List<String>> res = new ArrayList<>();
+    char[][] chess = new char[n][n];
+    // 初始化没有皇后
+    for (int i = 0; i < chess.length; i++) {
+        for (int j = 0; j < chess[0].length; j++) {
+            chess[i][j] = '.';
+        }
+    }
+    // 回溯算法计算所有可能性
+    backtrack(res, chess, 0);
+    return res;
+}
+
+// 回溯函数主体
+public void backtrack(List<List<String>> res, char[][] chess, int row) {
+    // 终止条件：每一次试探后，如果有可行结果就记录
+    if (row == chess.length) {
+        res.add(construct(chess));
+        return;
+    }
+    // 回溯框架，列举所有的情况
+    for (int col = 0; col < chess[0].length; col++) {
+        // 剪枝
+        if (isValid(chess, row, col)) {
+            chess[row][col] = 'Q';
+            // 选择判断下一行
+            backtrack(res, chess, row+1);
+            // 撤销选择
+            chess[row][col] = '.';
+        }
+    }
+}
+
+// 只有满足条件才能放皇后
+public boolean isValid(char[][] chess, int row, int col) {
+    // 检测同一列上有没有重复的
+    for (int i = 0; i < row; i++) {
+        if (chess[i][col] == 'Q') {
+            return false;
+        }
+    }
+    // 检测该皇后左上边对角线上有没有其他皇后
+    for (int i = row - 1, j = col - 1; i >= 0 && j >= 0; i--, j--) {
+        if (chess[i][j] == 'Q') {
+            return false;
+        }
+    }
+    // 检测该皇后右上边对角线上有没有其他皇后
+    for (int i = row - 1, j = col + 1; i >= 0 && j < chess[0].length; i--, j++) {
+        if (chess[i][j] == 'Q') {
+            return false;
+        }
+    }
+    return true;
+}
+
+// char[][] 类型 --> List<String>
+public List<String> construct(char[][] chess) {
+    List<String> path = new ArrayList<>();
+    for (int i = 0; i < chess.length; i++) {
+        path.add(new String(chess[i]));
+    }
+    return path;
+}
+```
+
 ## 石子游戏 II(LeetCode[1140])
 
 ### 问题描述
