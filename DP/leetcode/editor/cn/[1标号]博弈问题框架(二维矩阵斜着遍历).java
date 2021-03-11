@@ -32,7 +32,7 @@ class Solution {
         }
         // 状态选择(斜着遍历)
         for (int l = 2; l <= n; l++) {
-            for (int i = 0; i <= n; i++) {
+            for (int i = 0; i <= n - l; i++) {
                 int j = l + i - 1;
                 // 选择拿最左边一堆石头有两种情况：①我是先手：我直接就拿了最左边；②我是后手：我拿了上一个人先手后剩下的石头堆中的最左边，这是选择左边的全部分数
                 int left = piles[i] + dp[i + 1][j].sec;
