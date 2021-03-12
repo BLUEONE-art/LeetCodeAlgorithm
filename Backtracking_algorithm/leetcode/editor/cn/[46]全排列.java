@@ -21,7 +21,6 @@ class Solution {
     List<List<Integer>> res = new ArrayList<>();
     public List<List<Integer>> permute(int[] nums) {
         // 回溯框架
-//        List<Integer> path = new ArrayList<>();
         backtrack(0, nums);
         return res;
     }
@@ -30,6 +29,11 @@ class Solution {
         HashSet<Integer> repeat = new HashSet<>();
         // 终止条件
         if (start == nums.length - 1) {
+            // List<Integer> list1 = Arrays.stream(data).boxed().collect(Collectors.toList());
+            // Arrays.stream(arr) 可以替换成IntStream.of(arr)。
+            // 1.使用Arrays.stream将int[]转换成IntStream。
+            // 2.使用IntStream中的boxed()装箱。将IntStream转换成Stream<Integer>。
+            // 3.使用Stream的collect()，将Stream<T>转换成List<T>，因此正是List<Integer>。
             res.add(Arrays.stream(nums).boxed().collect(Collectors.toList()));
             return;
         }
