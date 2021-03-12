@@ -11078,6 +11078,197 @@ public List<String> construct(char[][] chess) {
 }
 ```
 
+# 2021.3.12记录
+
+## 子集(LeetCode[78])
+
+### 问题描述
+
+问题很简单，输入一个**不包含重复数字**的数组，要求算法输出这些数字的所有子集。
+
+### 思路
+
+**回溯算法**的模板：
+
+```java
+result = []
+def backtrack(路径, 选择列表):
+    if 满足结束条件:
+        result.add(路径)
+        return
+    for 选择 in 选择列表:
+        做选择
+        backtrack(路径, 选择列表)
+        撤销选择
+```
+
+![](LeetCode刷题记录.assets/LeetCode[78]子集思路.jpg)
+
+### 代码实现
+
+```java
+public List<List<Integer>> subsets(int[] nums) {
+    List<List<Integer>> res = new ArrayList<>();
+    List<Integer> path = new ArrayList<>();
+    backtrack(nums, 0, path, res);
+    return res;
+}
+
+public void backtrack(int[] nums, int start, List<Integer> path, List<List<Integer>> res) {
+    // 终止条件
+    res.add(new ArrayList<>(path));
+    // 选择列表：因为数组是无重复元素，一直往后面的元素找
+    for (int i = start; i < nums.length; i++) {
+        // 选择
+        path.add(nums[i]);
+        // 往后面找
+        backtrack(nums, i + 1, path, res);
+        // 撤销
+        path.remove(path.size() - 1);
+    }
+}
+```
+
+## 组合(LeetCode[77])
+
+### 问题描述
+
+输入两个数字 `n, k`，算法输出 `[1..n]` 中 k 个数字的所有组合。
+
+比如输入 `n = 4, k = 2`，输出如下结果，顺序无所谓，但是不能包含重复（按照组合的定义，`[1,2]` 和 `[2,1]` 也算重复）：
+
+[
+ [1,2],
+ [1,3],
+ [1,4],
+ [2,3],
+ [2,4],
+ [3,4]
+]
+
+### 思路
+
+这就是典型的回溯算法，`k` 限制了树的高度，`n` 限制了树的宽度，直接套我们以前讲过的回溯算法模板框架就行了：
+
+![](LeetCode刷题记录.assets/LeetCode[77]组合回溯树.jpg)
+
+### 代码实现
+
+```java
+public List<List<Integer>> combine(int n, int k) {
+    List<List<Integer>> res = new ArrayList<>();
+    if (n <= 0 || k <= 0) return res;
+    // 回溯框架
+    List<Integer> path = new ArrayList<>();
+    // start 不为 0，因为返回从 1~n 的组合
+    backtrack(n, k, 1, path, res);
+    return res;
+}
+
+public void backtrack(int n, int k, int start, List<Integer> path, List<List<Integer>> res) {
+    // 终止条件
+    if (path.size() == k) {
+        res.add(new ArrayList<>(path));
+        return;
+    }
+    // 选择列表
+    for (int i = start; i <= n; i++) {
+        // 做选择
+        path.add(i);
+        // 回溯框架
+        backtrack(n, k, i + 1, path, res);
+        // 撤销选择
+        path.remove(path.size() - 1);
+    }
+}
+```
+
+## 全排列(LeetCode[46])
+
+### 问题描述
+
+输入一个不包含重复数字的数组 `nums`，返回这些数字的全部排列。
+
+比如说输入数组 `[1,2,3]`，输出结果应该如下，顺序无所谓，不能有重复：
+
+[
+ [1,2,3],
+ [1,3,2],
+ [2,1,3],
+ [2,3,1],
+ [3,1,2],
+ [3,2,1]
+]
+
+### 思路
+
+回溯树：
+
+![](LeetCode刷题记录.assets/LeetCode[46]全排列回溯树.jpg)
+
+### 代码实现
+
+```java
+List<List<Integer>> res = new ArrayList<>();
+public List<List<Integer>> permute(int[] nums) {
+    // 回溯框架
+    backtrack(0, nums);
+    return res;
+}
+
+public void backtrack(int start, int[] nums) {
+    HashSet<Integer> repeat = new HashSet<>();
+    // 终止条件
+    if (start == nums.length - 1) {
+        // List<Integer> list1 = Arrays.stream(data).boxed().collect(Collectors.toList());
+        // Arrays.stream(arr) 可以替换成IntStream.of(arr)。
+        // 1.使用Arrays.stream将int[]转换成IntStream。
+        // 2.使用IntStream中的boxed()装箱。将IntStream转换成Stream<Integer>。
+        // 3.使用Stream的collect()，将Stream<T>转换成List<T>，因此正是List<Integer>。
+        res.add(Arrays.stream(nums).boxed().collect(Collectors.toList()));
+        return;
+    }
+    // 选择列表
+    for (int i = start; i < nums.length; i++) {
+        // 剪枝
+        if (repeat.contains(nums[i])) {
+            continue;
+        }
+        repeat.add(nums[i]);
+        // 做选择
+        swap(i, start, nums);
+        backtrack(start + 1, nums);
+        swap(i, start, nums);
+    }
+}
+
+public void swap(int i, int j, int[] nums) {
+    int tmp = nums[i];
+    nums[i] = nums[j];
+    nums[j] = tmp;
+}
+```
+
+### 子集、组合和排列的区别：
+
+```java
+// 子集组合选择列表
+for (int i = start; i < nums.length; i++) {
+    // 做选择
+    swap(i, start, nums);
+    backtrack(i + 1, nums);
+    swap(i, start, nums);
+}
+
+// 排列选择列表
+for (int i = start; i < nums.length; i++) {
+    // 做选择
+    swap(i, start, nums);
+    backtrack(start + 1, nums);
+    swap(i, start, nums);
+}
+```
+
 ## 石子游戏 II(LeetCode[1140])
 
 ### 问题描述
