@@ -11269,6 +11269,74 @@ for (int i = start; i < nums.length; i++) {
 }
 ```
 
+# 2021.3.13记录
+
+## 解数独(LeetCode[37])
+
+### 问题描述
+
+输入是一个9x9的棋盘，空白格子用点号字符`.`表示，算法需要在原地修改棋盘，将空白格子填上数字，得到一个可行解。
+
+每行，每列以及每一个 3×3 的小方格都不能有相同的数字出现。
+
+![](LeetCode刷题记录.assets/LeetCode[37]解数独问题描述.gif)
+
+
+
+### 思路
+
+**核心思路非常非常的简单，就是对每一个空着的格子穷举 1 到 9，如果遇到不合法的数字（在同一行或同一列或同一个 3×3 的区域中存在相同的数字）则跳过，如果找到一个合法的数字，则继续穷举下一个空格子**
+
+### 代码实现
+
+```java
+public void solveSudoku(char[][] board) {
+    backtrack(board, 0, 0);
+}
+// 回溯函数
+public boolean backtrack(char[][] board, int i, int j) {
+    int m = 9, n = 9;
+    // 当 j 到达超过每一行的最后一个索引时，转为增加 i 开始穷举下一行
+    if (j == n) {
+        return backtrack(board, i + 1, 0);
+    }
+    // base case：当 i == m 的时候就说明穷举完了最后一行
+    if (i == m) return true;
+    // 如果该位置是预设的数字，就不必操心
+    if (board[i][j] != '.') {
+        return backtrack(board, i, j + 1);
+    }
+    // 根据框架写出穷举的过程
+    for (char char_num = '1'; char_num <= '9'; char_num++) {
+        // 剪枝
+        if (!isValid(board, i, j, char_num)) {
+            continue;
+        }
+        // 选择
+        board[i][j] = char_num;
+        // 填下一个空格，如果找到一个可行解，直接返回
+        if (backtrack(board, i, j + 1)) return true;
+        // 撤销
+        board[i][j] = '.';
+        //思考1：当 j 到达超过每一行的最后一个索引时，转为增加 i 开始穷举下一行，并且在穷举之前添加一个判断，跳过不满足条件的数字
+        //思考2：递归函数的 base case
+    }
+    return false;
+}
+// 剪枝判断的函数，如果是 false，直接跳过
+public boolean isValid(char[][] board, int row, int col, char char_num) {
+    for (int i = 0; i < 9; i++) {
+        // 判断每一行是否有元素重复
+        if (board[row][i] == char_num) return false;
+        // 判断每一列是否有元素重复
+        if (board[i][col] == char_num) return false;
+        // 判断每个 3*3 的网格内的元素是否重复
+        if (board[(row/3)*3 + i/3][(col/3)*3 + i%3] == char_num) return false;
+    }
+    return true;
+}
+```
+
 ## 石子游戏 II(LeetCode[1140])
 
 ### 问题描述
