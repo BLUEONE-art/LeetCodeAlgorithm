@@ -7554,7 +7554,7 @@ public void dfs(TreeNode root) {
 
 空间复杂度：**O(N)** 当树退化为链表时（全部为右子节点），系统使用 O(N) 大小的栈空间。
 
-## 二叉树的深度(剑指Offer [55 - I])
+## 二叉树的深度(剑指Offer [55 - I] && LeetCode[111])
 
 ### 题目描述
 
@@ -11410,6 +11410,147 @@ public void backtrack(int left, int right, StringBuilder path, List<String> res)
 ### 复杂度分析
 
 **对于递归相关的算法，时间复杂度这样计算[递归次数]x[递归函数本身的时间复杂度]**。
+
+## BFS 框架解析
+
+BFS 的核心思想应该不难理解的，就是把一些问题抽象成图，从一个点开始，向四周开始扩散。一般来说，我们写 BFS 算法都是用**「队列」**这种数据结构，每次将一个节点周围的所有节点加入队列。
+
+BFS 相对 DFS 的最主要的区别是：**BFS 找到的路径一定是最短的，但代价就是空间复杂度比 DFS 大很多**。
+
+### 框架
+
+要说框架的话，我们先举例一下 BFS 出现的常见场景好吧，**问题的本质就是让你在一幅「图」中找到从起点`start`到终点`target`的最近距离**
+
+这个广义的描述可以有各种变体，比如走迷宫，有的格子是围墙不能走，从起点到终点的最短距离是多少？如果这个迷宫带「传送门」可以瞬间传送呢？
+
+再比如说两个单词，要求你通过某些替换，把其中一个变成另一个，每次只能替换一个字符，最少要替换几次？
+
+```java
+// 计算从起点 start 到终点 target 的最近距离
+int BFS(Node start, Node target) {
+    Queue<Node> q; // 核心数据结构
+    Set<Node> visited; // 避免走回头路
+
+    q.offer(start); // 将起点加入队列
+    visited.add(start);
+    int step = 0; // 记录扩散的步数
+
+    while (q not empty) {
+        int sz = q.size();
+        /* 将当前队列中的所有节点向四周扩散 */
+        for (int i = 0; i < sz; i++) {
+            Node cur = q.poll();
+            /* 划重点：这里判断是否到达终点 */
+            if (cur is target)
+                return step;
+            /* 将 cur 的相邻节点加入队列 */
+            for (Node x : cur.adj())
+                if (x not in visited) {
+                    q.offer(x);
+                    visited.add(x);
+                }
+        }
+        /* 划重点：更新步数在这里 */
+        step++;
+    }
+}
+```
+
+队列`q`就不说了，BFS 的核心数据结构；`cur.adj()`泛指`cur`相邻的节点，比如说二维数组中，`cur`上下左右四面的位置就是相邻节点；`visited`的主要作用是防止走回头路，大部分时候都是必须的，但是像一般的二叉树结构，没有子节点到父节点的指针，不会走回头路就不需要`visited`。
+
+> **既然 BFS 那么好，为啥 DFS 还要存在**？
+
+BFS 可以找到最短距离，但是空间复杂度高，而 DFS 的空间复杂度较低。
+
+假设给你的这个二叉树是满二叉树，节点总数为`N`，对于 DFS 算法来说，空间复杂度无非就是递归堆栈，最坏情况下顶多就是树的高度，也就是`O(logN)`。
+
+但是你想想 BFS 算法，队列中每次都会储存着二叉树一层的节点，这样的话最坏情况下空间复杂度应该是树的最底层节点的数量，也就是`N/2`，用 Big O 表示的话也就是`O(N)`。
+
+## 打开转盘锁(LeetCode[752])
+
+### 问题描述
+
+![](LeetCode刷题记录.assets/LeetCode[752]打开转盘锁问题描述.jpg)
+
+### 思路
+
+**第一步，我们不管所有的限制条件，不管`deadends`和`target`的限制，就思考一个问题：如果让你设计一个算法，穷举所有可能的密码组合，你怎么做**？
+
+穷举呗，再简单一点，如果你只转一下锁，有几种可能？总共有 4 个位置，每个位置可以向上转，也可以向下转，也就是有 8 种可能对吧。
+
+比如说从`"0000"`开始，转一次，可以穷举出`"1000", "9000", "0100", "0900"...`共 8 种密码。然后，再以这 8 种密码作为基础，对每个密码再转一下，穷举出所有可能…
+
+**仔细想想，这就可以抽象成一幅图，每个节点有 8 个相邻的节点**，又让你求最短距离，这不就是典型的 BFS 嘛，框架就可以派上用场了。
+
+**这段 BFS 代码已经能够穷举所有可能的密码组合了，但是显然不能完成题目，有如下问题需要解决**：
+
+1、会走回头路。比如说我们从`"0000"`拨到`"1000"`，但是等从队列拿出`"1000"`时，还会拨出一个`"0000"`，这样的话会产生死循环。
+
+2、没有终止条件，按照题目要求，我们找到`target`就应该结束并返回拨动的次数。
+
+3、没有对`deadends`的处理，按道理这些「死亡密码」是不能出现的，也就是说你遇到这些密码的时候需要跳过。
+
+### 代码实现
+
+```java
+// 广度优先搜索
+public int openLock(String[] deadends, String target) {
+    // 记录需要跳过的死亡密码
+    Set<String> dead = new HashSet<>();
+    for (String deadend : deadends) dead.add(deadend);
+    // 记录已经穷举过的密码，防止走回头路
+    Set<String> visited = new HashSet<>();
+    Queue<String> queue = new LinkedList<>();
+    int steps = 0;
+    queue.offer("0000");
+    visited.add("0000");
+    while (!queue.isEmpty()) {
+        int size = queue.size();
+        // 当前队列所有元素向周围扩散
+        for (int i = 0; i < size; i++) {
+            String cur = queue.poll();
+            // 如果碰到了 deadends，直接跳过
+            if (dead.contains(cur))
+                continue;
+            // 判断是否到达终点
+            if (cur.equals(target))
+                return steps;
+            // 将相邻所有可能的节点放入队列
+            for (int j = 0; j < 4; j++) {
+                String up = plusOne(cur, j);
+                if (!visited.contains(up)) {
+                    queue.offer(up);
+                    visited.add(up);
+                }
+                String down = minusOne(cur, j);
+                if (!visited.contains(down)) {
+                    queue.offer(down);
+                    visited.add(down);
+                }
+            }
+        }
+        steps++;
+    }
+    // 如果穷举完都没找到目标密码，那就是找不到了
+    return -1;
+}
+// 选择往下滑密码锁，“+1”
+public String plusOne(String s, int j) {
+    char[] chars = s.toCharArray();
+    if (chars[j] == '9') {
+        chars[j] = '0';
+    } else chars[j] += 1;
+    return new String(chars);
+}
+// 选择往上滑密码锁，“-1”
+public String minusOne(String s, int j) {
+    char[] chars = s.toCharArray();
+    if (chars[j] == '0') {
+        chars[j] = '9';
+    } else chars[j] -= 1;
+    return new String(chars);
+}
+```
 
 ## 石子游戏 II(LeetCode[1140])
 
