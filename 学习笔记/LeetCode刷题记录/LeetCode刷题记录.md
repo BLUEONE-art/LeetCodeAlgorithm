@@ -11337,6 +11337,80 @@ public boolean isValid(char[][] board, int row, int col, char char_num) {
 }
 ```
 
+# 2021.3.16记录
+
+## 括号生成(LeetCode[22])
+
+### 问题描述
+
+请你写一个算法，输入是一个正整数`n`，输出是`n`对儿括号的**所有合法组合**
+
+比如说，输入`n=3`，输出为如下 5 个字符串：
+
+"((()))",
+"(()())",
+"(())()",
+"()(())",
+"()()()"
+
+### 思路
+
+**有关括号问题，你只要记住两个个性质，思路就很容易想出来：**
+
+**1、一个「合法」括号组合的左括号数量一定等于右括号数量，这个显而易见**。
+
+**2、对于一个「合法」的括号字符串组合**`p`，必然对于任何`0 <= i < len(p)`都有：子串`p[0..i]`中左括号的数量都大于或等于右括号的数量。
+
+因为从左往右算的话，肯定是左括号多嘛，到最后左右括号数量相等，说明这个括号组合是合法的。
+
+反之，比如这个括号组合`))((`，前几个子串都是右括号多于左括号，显然不是合法的括号组合。
+
+算法输入一个整数`n`，让你计算 **`n`****对儿括号**能组成几种合法的括号组合，可以改写成如下问题：
+
+**现在有`2n`个位置，每个位置可以放置字符`(或者`)`，组成的所有括号组合中，有多少个是合法的**？
+
+我们先想想如何得到全部`2^(2n)`种组合，然后再根据我们刚才总结出的合法括号组合的性质筛选出合法的组合。
+
+### 代码实现
+
+```java
+public List<String> generateParenthesis(int n) {
+    List<String> res = new ArrayList<>();
+    // 每一个可行的路径
+    StringBuilder path = new StringBuilder();
+    // 回溯框架
+    backtrack(n, n, path, res);
+    return res;
+}
+// left、right：表示左右括号的数量
+public void backtrack(int left, int right, StringBuilder path, List<String> res) {
+    // 终止条件
+    // ①*可用*的左括号一定比*可用*的右括号少的，因为 path 的子串中肯定是左括号比右括号多的
+    if (left > right) return;
+    // ②可用括号数小于0
+    if (left < 0 || right < 0) return;
+    // ③当两者恰好都为0
+    if (left == 0 && right == 0) {
+        res.add(path.toString());
+        return;
+    }
+    // 所有选择：其实就两个，放 ”（“ 或 ”）“
+    path.append('(');
+    backtrack(left - 1, right, path, res);
+    // 撤销选择
+    path.deleteCharAt(path.length() - 1);
+
+    path.append(')');
+    backtrack(left, right - 1, path, res);
+    // 撤销选择
+    path.deleteCharAt(path.length() - 1);
+}
+```
+
+### 复杂度分析
+
+**对于递归相关的算法，时间复杂度这样计算[递归次数]x[递归函数本身的时间复杂度]**。
+
 ## 石子游戏 II(LeetCode[1140])
 
 ### 问题描述
