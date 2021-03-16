@@ -45,8 +45,8 @@
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public int[] twoSum(int[] nums, int target) {
-        int left = 0;
-        int right = nums.length - 1;
+        int left = 0; // 左侧最小索引
+        int right = nums.length - 1; // 搜索空间：[left, right]
         int[] arr = Arrays.copyOfRange(nums, 0, nums.length);
         Arrays.sort(arr);
         while (left <= right) {
@@ -57,6 +57,7 @@ class Solution {
                 int b = findIndex(right, arr, nums);
                 // 如果 10 = 5 + 5，两个数是同一个索引
                 if (a == b) {
+//                    b = a + 1;测试用例:[3,2,3]
                     nums[b] = arr[arr.length - 1] + 1;
                     b = findIndex(right, arr, nums);
                 }
@@ -65,7 +66,7 @@ class Solution {
             else if (sum < target) {
                 left++;
             }
-            else if (sum > right) {
+            else if (sum > target) {
                 right--;
             }
         }
