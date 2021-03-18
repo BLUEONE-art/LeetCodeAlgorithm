@@ -11552,6 +11552,122 @@ public String minusOne(String s, int j) {
 }
 ```
 
+# 2021.3.18记录
+
+## 滑动谜题(LeetCode[773])
+
+### 问题描述
+
+给你一个 2x3 的滑动拼图，用一个 2x3 的数组`board`表示。拼图中有数字 0~5 六个数，其中数字 0 就表示那个空着的格子，你可以移动其中的数字，当`board`变为`[[1,2,3],[4,5,0]]`时，赢得游戏。
+
+请你写一个算法，计算赢得游戏需要的最少移动次数，如果不能赢得游戏，返回 -1。
+
+比如说输入的二维数组`board = [[4,1,2],[5,0,3]]`，算法应该返回 5：
+
+![](LeetCode刷题记录.assets/LeetCode[773]华东谜题描述.jpg)
+
+### 思路
+
+对于这种计算最小步数的问题，我们就要敏感地想到 BFS 算法。
+
+这个题目转化成 BFS 问题是有一些技巧的，我们面临如下问题：
+
+1、一般的 BFS 算法，是从一个起点`start`开始，向终点`target`进行寻路，但是拼图问题不是在寻路，而是在不断交换数字，这应该怎么转化成 BFS 算法问题呢？
+
+2、即便这个问题能够转化成 BFS 问题，如何处理起点`start`和终点`target`？它们都是数组哎，把数组放进队列，套 BFS 框架，想想就比较麻烦且低效。
+
+首先回答第一个问题，**BFS 算法并不只是一个寻路算法，而是一种暴力搜索算法**，只要涉及暴力穷举的问题，BFS 就可以用，而且可以最快地找到答案。
+
+你想想计算机怎么解决问题的？哪有那么多奇技淫巧，本质上就是把所有可行解暴力穷举出来，然后从中找到一个最优解罢了。
+
+明白了这个道理，我们的问题就转化成了：**如何穷举出`board`当前局面下可能衍生出的所有局面**？这就简单了，看数字 0 的位置呗，和上下左右的数字进行交换就行了：
+
+![](LeetCode刷题记录.assets/LeetCode[773]滑动谜题思路1.jpg)
+
+这样其实就是一个 BFS 问题，每次先找到数字 0，然后和周围的数字进行交换，形成新的局面加入队列…… 当第一次到达`target`时，就得到了赢得游戏的最少步数。
+
+对于第二个问题，我们这里的`board`仅仅是 2x3 的二维数组，所以可以压缩成一个一维字符串。**其中比较有技巧性的点在于，二维数组有「上下左右」的概念，压缩成一维后，如何得到某一个索引上下左右的索引**？
+
+很简单，我们只要手动写出来这个映射就行了：
+
+```c++
+vector<vector<int>> neighbor = {
+    { 1, 3 },
+    { 0, 4, 2 },
+    { 1, 5 },
+    { 0, 4 },
+    { 3, 1, 5 },
+    { 4, 2 }
+};
+```
+
+**这个含义就是，在一维字符串中，索引`i`在二维数组中的的相邻索引为`neighbor[i]`**：
+
+![](LeetCode刷题记录.assets/LeetCode[773]滑动谜题思路2.jpg)
+
+### 代码实现
+
+```java
+// 没拼图之前各个元素相邻的元素的索引
+int[][] neighbor = new int[][]{
+    {1, 3},
+    {0, 4, 2},
+    {1, 5},
+    {0, 4},
+    {3, 1, 5},
+    {4, 2}
+};
+public String swap(String new_board, int i, int j) {
+    char[] chars = new_board.toCharArray();
+    char tmp = chars[i];
+    chars[i] = chars[j];
+    chars[j] = tmp;
+    return new String(chars);
+}
+public int slidingPuzzle(int[][] board) {
+    int m = 2, n = 3;
+    // 初始状态转字符串
+    char[] chars = new char[6];
+    int index = 0;
+    for (int[] row:board) {
+        for (int ch:row) {
+            chars[index++] = (char)(ch+'0');
+        }
+    }
+    String start = new String(chars);
+    String target = "123450";
+    // 防止走回头路
+    HashSet<String> visited = new HashSet<>();
+    Queue<String> q = new LinkedList<>();
+    q.offer(start.toString());
+    int steps = 0;
+    // BFS 框架
+    while (!q.isEmpty()) {
+        int size = q.size();
+        // 框架：目的将每一层可能的情况都放入队列
+        for (int i = 0; i < size; i++) {
+            String cur = q.poll();
+            // 如果找到target
+            if (cur.equals(target)) return steps;
+            // 找到 0 所在的索引
+            int index0 = cur.indexOf('0');
+            // 0 周围对应的索引有几个，这一层就有几种情况
+            for (int adj : neighbor[index0]) {
+                // 互换位置
+                String s = swap(cur, adj, index0);
+                // 防止回头
+                if (!visited.contains(s)) {
+                    q.offer(s);
+                    visited.add(s);
+                }
+            }
+        }
+        steps++;
+    }
+    return -1;
+}
+```
+
 ## 石子游戏 II(LeetCode[1140])
 
 ### 问题描述
