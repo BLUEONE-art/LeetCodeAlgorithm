@@ -11668,6 +11668,63 @@ public int slidingPuzzle(int[][] board) {
 }
 ```
 
+# 2021.3.19记录
+
+## 前缀和技巧
+
+**如何快速得到某个子数组的和呢**，比如说给你一个数组`nums`，让你实现一个接口`sum(i, j)`，这个接口要返回`nums[i..j]`的和，而且会被多次调用，你怎么实现这个接口呢？
+
+因为接口要被多次调用，显然不能每次都去遍历`nums[i..j]`，有没有一种快速的方法在 O(1) 时间内算出`nums[i..j]`呢？这就需要**前缀和**技巧了。
+
+前缀和的思路是这样的，对于一个给定的数组`nums`，我们额外开辟一个前缀和数组进行预处理：
+
+```java
+int n = nums.length;
+// 前缀和数组
+int[] preSum = new int[n + 1];
+preSum[0] = 0;
+for (int i = 0; i < n; i++)
+    preSum[i + 1] = preSum[i] + nums[i];
+```
+
+![](LeetCode刷题记录.assets/LeetCode[560]思路.jpg)
+
+## 和为 k 的子数组(LeetCode[560])
+
+### 问题描述
+
+![](LeetCode刷题记录.assets/LeetCode[560和为k的子数组描述].png)
+
+### 思路
+
+`preSum[i]`就是`nums[0..i-1]`的和。那么如果我们想求`nums[i..j]`的和，只需要一步操作`preSum[j+1]-preSum[i]`即可，而不需要重新去遍历数组。
+
+优化：**直接记录下有几个`sum[j]`和`sum[i]-k`相等，直接更新结果**
+
+### 代码实现
+
+```java
+// 连续数组的组合是否等于 k
+public int subarraySum(int[] nums, int k) {
+    // 记录前缀和 和 该前缀和出现的次数
+    HashMap<Integer, Integer> preSum = new HashMap<>();
+    // 前缀和为 0 出现 1 次
+    preSum.put(0, 1);
+    int sum0_i = 0, ans = 0;
+    for (int i = 0; i < nums.length; i++) {
+        sum0_i += nums[i];
+        // sum_i：表示 nums[0,...,i] 的前缀和，所以如果 preSum[i,...,j] = k = sum_j - sum_(i-1)，则找到一个连续数组 nums[i,...j] 符合要求
+        // 稍微变化一下：如果 sum_(i-1) = sum_j - k，令 sum_(i-1) = sum_j，如果 preSum 里有，直接返回其频次
+        int sum0_j = sum0_i - k;
+        if (preSum.containsKey(sum0_j)) {
+            ans += preSum.get(sum0_j);
+        }
+        preSum.put(sum0_i, preSum.getOrDefault(sum0_i, 0) + 1);
+    }
+    return ans;
+}
+```
+
 ## 石子游戏 II(LeetCode[1140])
 
 ### 问题描述
