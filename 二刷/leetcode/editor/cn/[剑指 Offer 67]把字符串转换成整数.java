@@ -58,55 +58,26 @@
 //
 // 注意：本题与主站 8 题相同：https://leetcode-cn.com/problems/string-to-integer-atoi/ 
 // Related Topics 数学 字符串 
-// 👍 57 👎 0
+// 👍 67 👎 0
 
 
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public int strToInt(String str) {
-        int i = 0, res = 0, sign = 1, boundary = Integer.MAX_VALUE / 10;
-        // 去除字符串前的空格
+        int i = 0, res = 0, boundary = Integer.MAX_VALUE / 10, sign = 1;
         str = str.trim();
         if (str.length() == 0) return 0;
-        // 如果不全部为空格 --> 判断有没有符号位
+        // 碰到负号
         if (str.charAt(i) == '-') sign = -1;
         // 跳过符号位
         if (str.charAt(i) == '-' || str.charAt(i) == '+') i++;
-        // 判断符号位之后的字符
         for (int j = i; j <= str.length() - 1; j++) {
-            // 如果字符超过数字的范围
+            // 尽可能找到连续的数字
             if (str.charAt(j) < '0' || str.charAt(j) > '9') break;
-            // 最后再判断：如果字符超过大数边界
+            // 超过边界？
             if (res > boundary || (res == boundary && str.charAt(j) > '7')) {
-                return sign == 1 ? Integer.MAX_VALUE : Integer.MIN_VALUE;
+                return sign == 1 ? Integer.MIN_VALUE : Integer.MIN_VALUE;
             }
-            // 结果计算
-            res = (res * 10) + (str.charAt(j) - '0');
-        }
-        return sign * res;
-
-
-
-        int i = 0, res = 0, sign = 1, boundary = Integer.MAX_VALUE / 10;
-        if (str.length() == 0) return 0;
-        // 去除字符串前的空格
-        while (str.charAt(i) == ' ') {
-            // ++i 的表达式比 i 大 1
-            if (++i == str.length()) break;
-        }
-        // 如果不全部为空格 --> 判断有没有符号位
-        if (str.charAt(i) == '-') sign = -1;
-        // 跳过符号位
-        if (str.charAt(i) == '-' || str.charAt(i) == '+') i++;
-        // 判断符号位之后的字符
-        for (int j = i; j < str.length() - 1; j++) {
-            // 如果字符超过数字的范围
-            if (str.charAt(j) < '0' || str.charAt(j) > '9') break;
-            // 最后再判断：如果字符超过大数边界
-            if (res > boundary || (res == boundary && str.charAt(j) > '7')) {
-                return sign == 1 ? Integer.MAX_VALUE : Integer.MIN_VALUE;
-            }
-            // 结果计算
             res = (res * 10) + (str.charAt(j) - '0');
         }
         return sign * res;
