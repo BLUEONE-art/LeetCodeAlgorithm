@@ -64,10 +64,11 @@
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public int strToInt(String str) {
-        int i = 0, res = 0, boundary = Integer.MAX_VALUE / 10, sign = 1;
+        int res = 0, boundary = Integer.MAX_VALUE / 10, sign = 1;
         str = str.trim();
         if (str.length() == 0) return 0;
         // 碰到负号
+        int i = 0;
         if (str.charAt(i) == '-') sign = -1;
         // 跳过符号位
         if (str.charAt(i) == '-' || str.charAt(i) == '+') i++;
@@ -76,7 +77,7 @@ class Solution {
             if (str.charAt(j) < '0' || str.charAt(j) > '9') break;
             // 超过边界？
             if (res > boundary || (res == boundary && str.charAt(j) > '7')) {
-                return sign == 1 ? Integer.MIN_VALUE : Integer.MIN_VALUE;
+                return sign == 1 ? Integer.MAX_VALUE : Integer.MIN_VALUE;
             }
             res = (res * 10) + (str.charAt(j) - '0');
         }
