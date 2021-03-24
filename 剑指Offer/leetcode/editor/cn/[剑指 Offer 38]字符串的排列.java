@@ -71,6 +71,8 @@ class Solution {
         return sb.toString();
     }
 
+
+
     // 定义结果，求不含有重复字母的全排列
     List<String> res = new LinkedList<>();
     char[] chars;
