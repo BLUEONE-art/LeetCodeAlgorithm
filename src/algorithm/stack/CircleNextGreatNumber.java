@@ -27,15 +27,40 @@ public class CircleNextGreatNumber {
         return res;
     }
 
+    // 找到目标数字的右边界
+    public static int searchRight(int[] nums, int target) {
+        if (nums.length == 0) return -1;
+        int left = 0, right = nums.length;
+        while (left < right) { // [left, right)
+            int mid = (left + right) / 2;
+            if (nums[mid] == target) {
+                left = mid + 1;
+            }
+            else if (nums[mid] < target) {
+                left = mid + 1;
+            }
+            else if (nums[mid] > target) {
+                right = mid;
+            }
+        }
+        return right - 1;
+    }
+
     public static void main(String[] args) {
-        CircleNextGreatNumber circleNextGreatNumber = new CircleNextGreatNumber();
-        Vector<Integer> nums = new Vector<>();
-        nums.add(2);
-        nums.add(1);
-        nums.add(2);
-        nums.add(4);
-        nums.add(3);
-        Vector<Integer> res = circleNextGreatNumber.nextGreaterElements(nums);
+        int[] nums = new int[]{5,7,7,8,8,10};
+        int res = CircleNextGreatNumber.searchRight(nums, 7);
         System.out.println(res);
     }
+
+//    public static void main(String[] args) {
+//        CircleNextGreatNumber circleNextGreatNumber = new CircleNextGreatNumber();
+//        Vector<Integer> nums = new Vector<>();
+//        nums.add(2);
+//        nums.add(1);
+//        nums.add(2);
+//        nums.add(4);
+//        nums.add(3);
+//        Vector<Integer> res = circleNextGreatNumber.nextGreaterElements(nums);
+//        System.out.println(res);
+//    }
 }
