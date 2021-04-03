@@ -43,12 +43,13 @@ public class CircleNextGreatNumber {
                 right = mid;
             }
         }
-        return right - 1;
+        if (left == 0) return -1;
+        return nums[right - 1] == target ? (right - 1) : -1;
     }
 
     public static void main(String[] args) {
         int[] nums = new int[]{5,7,7,8,8,10};
-        int res = CircleNextGreatNumber.searchRight(nums, 7);
+        int res = CircleNextGreatNumber.searchRight(nums, 6);
         System.out.println(res);
     }
 
