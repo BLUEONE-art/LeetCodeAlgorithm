@@ -1,6 +1,7 @@
 package algorithm.stack;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Stack;
 import java.util.Vector;
 
