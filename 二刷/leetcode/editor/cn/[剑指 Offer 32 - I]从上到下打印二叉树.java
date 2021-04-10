@@ -44,7 +44,7 @@ class Solution {
         List<Integer> res = new ArrayList<>();
         if (root != null) queue.offer(root);
         while (!queue.isEmpty()) {
-            for (int i = 0; i < queue.size(); i++) {
+            for (int i = queue.size(); i > 0; i--) {
                 TreeNode cur = queue.poll();
                 res.add(cur.val);
                 // 装入每一层的节点
