@@ -1,4 +1,4 @@
-package changeTo1;
+package algorithm.changeTo1;
 
 public class ChangeTo1 {
 

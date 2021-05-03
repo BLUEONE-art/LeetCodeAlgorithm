@@ -1,4 +1,4 @@
-package changeTo1;
+package algorithm.changeTo1;
 
 public class ChangeTo1Copy {
     // 此递归函数表示：将n转换为1的最小步数
