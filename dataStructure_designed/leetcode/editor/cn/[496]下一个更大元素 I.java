@@ -48,6 +48,32 @@
 class Solution {
     // 核心思想：数组中的元素想象成一组不同身高的人，矮的人会被高的人遮住，所以只有越来越高才能被看见
     // 即下一个更大的元素，输出没被“遮住”的元素
+//    public int[] nextGreaterElement(int[] nums1, int[] nums2) {
+//
+//        HashMap<Integer, Integer> map = new HashMap<>();
+//        int [] res = new int[nums1.length];
+//        // 栈中用来存放“更大的数”并不断更新
+//        Stack<Integer> s = new Stack<>();
+//        // 将 nums 数组的元素倒着放入栈中
+//        for (int i = nums2.length - 1; i >= 0; i--) {
+//
+//            // 如果栈中元素不为空，说明至少两个以上的元素进行比较得出了一个更大的数，否则 s 会一直为空、
+//            while (!s.isEmpty() && nums2[i] >= s.peek()) {
+//                // 如果新输入的树比原来 s 中存的最大数还要大，那 s 的栈顶元素可以换了
+//                s.pop();
+//            }
+//
+//            map.put(nums2[i], s.isEmpty() ? -1 : s.peek());
+//
+//            s.push(nums2[i]);
+//        }
+//
+//        for (int i = 0; i < nums1.length; i++) {
+//            res[i] = map.get(nums1[i]);
+//        }
+//        return res;
+//    }
+
     public int[] nextGreaterElement(int[] nums1, int[] nums2) {
 
         HashMap<Integer, Integer> map = new HashMap<>();
@@ -59,12 +85,10 @@ class Solution {
 
             // 如果栈中元素不为空，说明至少两个以上的元素进行比较得出了一个更大的数，否则 s 会一直为空、
             while (!s.isEmpty() && nums2[i] >= s.peek()) {
-                // 如果新输入的树比原来 s 中存的最大数还要大，那 s 的栈顶元素可以换了
+                // 如果新输入的数比原来 s 中存的最大数还要大，那 s 的栈顶元素可以换了
                 s.pop();
             }
-
             map.put(nums2[i], s.isEmpty() ? -1 : s.peek());
-
             s.push(nums2[i]);
         }
 
