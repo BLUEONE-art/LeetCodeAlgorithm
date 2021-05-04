@@ -45,16 +45,16 @@
 
 //leetcode submit region begin(Prohibit modification and deletion)
 class MedianFinder {
-    // 大顶堆元素：从小到大
+    // 大顶堆元素：从小到大，堆顶最大
     private PriorityQueue<Integer> small;
-    // 小顶堆元素：从大到小
+    // 小顶堆元素：从大到小，堆顶最小
     private PriorityQueue<Integer> large;
     /** initialize your data structure here. */
     public MedianFinder() {
-        // 正常顺序就是从小打到大的大顶堆
-        small = new PriorityQueue<>();
-        // 小顶堆要逆序
-        large = new PriorityQueue<>((a, b) -> {
+        // 正常顺序就是从小打到大的小顶堆
+        large = new PriorityQueue<>();
+        // 大顶堆要逆序
+        small = new PriorityQueue<>((a, b) -> {
             return b - a;
         });
     }
