@@ -299,6 +299,22 @@
             </LeetcodeEditor>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/array/leetcode/editor/cn/[1095]山脉数组中查找目标值.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/array/leetcode/editor/cn/[1095]山脉数组中查找目标值.java" />
+              <option name="questionId" value="1185" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/array/leetcode/editor/cn/[153]寻找旋转排序数组中的最小值.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/array/leetcode/editor/cn/[153]寻找旋转排序数组中的最小值.java" />
+              <option name="questionId" value="153" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/array/leetcode/editor/cn/[15]三数之和.java">
           <value>
             <LeetcodeEditor>
@@ -331,6 +347,14 @@
             </LeetcodeEditor>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/array/leetcode/editor/cn/[33]搜索旋转排序数组.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/array/leetcode/editor/cn/[33]搜索旋转排序数组.java" />
+              <option name="questionId" value="33" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/array/leetcode/editor/cn/[344]反转字符串.java">
           <value>
             <LeetcodeEditor>
@@ -352,6 +376,14 @@
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/array/leetcode/editor/cn/[560]和为K的子数组.java" />
               <option name="questionId" value="560" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/array/leetcode/editor/cn/[852]山脉数组的峰顶索引.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/array/leetcode/editor/cn/[852]山脉数组的峰顶索引.java" />
+              <option name="questionId" value="882" />
             </LeetcodeEditor>
           </value>
         </entry>
