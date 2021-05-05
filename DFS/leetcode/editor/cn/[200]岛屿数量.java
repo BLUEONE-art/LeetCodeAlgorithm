@@ -52,8 +52,9 @@ class Solution {
         for (int i = 0; i < grid.length; i++) {
             for (int j = 0; j < grid[0].length; j++) {
                 if (grid[i][j] == '1') {
-                    // 帮你找大陆个数，怎么找的不需要关心
+                    // 帮你找大陆，怎么找的不需要关心
                     dfsGrid(grid, i, j);
+                    // 找到一个就+1
                     count++;
                 }
             }
