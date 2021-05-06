@@ -395,6 +395,14 @@
             </LeetcodeEditor>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/array/leetcode/editor/cn/[1]两数之和.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/array/leetcode/editor/cn/[1]两数之和.java" />
+              <option name="questionId" value="1" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/array/leetcode/editor/cn/[206]反转链表.java">
           <value>
             <LeetcodeEditor>
@@ -520,6 +528,22 @@
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/array/leetcode/editor/cn/[92]反转链表 II.java" />
               <option name="questionId" value="92" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/dataStructure_designed/leetcode/editor/cn/[154]寻找旋转排序数组中的最小值 II.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/dataStructure_designed/leetcode/editor/cn/[154]寻找旋转排序数组中的最小值 II.java" />
+              <option name="questionId" value="154" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/dataStructure_designed/leetcode/editor/cn/[155]最小栈.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/dataStructure_designed/leetcode/editor/cn/[155]最小栈.java" />
+              <option name="questionId" value="155" />
             </LeetcodeEditor>
           </value>
         </entry>
