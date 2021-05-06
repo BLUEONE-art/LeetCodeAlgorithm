@@ -347,6 +347,14 @@
             </LeetcodeEditor>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/array/leetcode/editor/cn/[124]二叉树中的最大路径和.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/array/leetcode/editor/cn/[124]二叉树中的最大路径和.java" />
+              <option name="questionId" value="124" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/array/leetcode/editor/cn/[143]重排链表.java">
           <value>
             <LeetcodeEditor>
@@ -424,6 +432,14 @@
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/array/leetcode/editor/cn/[283]移动零.java" />
               <option name="questionId" value="283" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/array/leetcode/editor/cn/[300]最长递增子序列.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/array/leetcode/editor/cn/[300]最长递增子序列.java" />
+              <option name="questionId" value="300" />
             </LeetcodeEditor>
           </value>
         </entry>
@@ -512,6 +528,14 @@
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/leetcode_binarytree/leetcode/editor/cn/[105]从前序与中序遍历序列构造二叉树.java" />
               <option name="questionId" value="105" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/leetcode_binarytree/leetcode/editor/cn/[124]二叉树中的最大路径和.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/leetcode_binarytree/leetcode/editor/cn/[124]二叉树中的最大路径和.java" />
+              <option name="questionId" value="124" />
             </LeetcodeEditor>
           </value>
         </entry>
