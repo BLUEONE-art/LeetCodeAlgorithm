@@ -8,6 +8,8 @@ public class Extend0_6To0_9 {
             int rand1 = rand10();
             System.out.println(rand1);
         }
+        boolean res = a();
+        System.out.println(res);
     }
 
     public static int rand6() {
@@ -21,5 +23,13 @@ public class Extend0_6To0_9 {
         int x = 0;
         while ((x = (rand6() - 1) * 6 + (rand6() -1)) >= 36);
         return x % 9 + 1;
+    }
+
+    public static boolean a() {
+        try {
+            return true;
+        } finally {
+            return false;
+        }
     }
 }
