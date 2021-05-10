@@ -58,16 +58,18 @@
 class Solution {
     public int maxSubArray(int[] nums) {
         int n = nums.length;
-        int[] dp = new int[n];
-        dp[0] = nums[0];
-        for (int i = 1; i < n; i++) {
-            dp[i] = Math.max(nums[i], dp[i - 1] + nums[i]);
+        int dp_res = nums[0];
+        int sum = 0;
+        for (int num : nums) {
+            if (sum > 0) {
+                sum += num;
+            }
+            else {
+                sum = num;
+            }
+            dp_res = Math.max(dp_res, sum);
         }
-        int res = Integer.MIN_VALUE;
-        for (int a : dp) {
-            res = Math.max(res, a);
-        }
-        return res;
+        return dp_res;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
