@@ -9,7 +9,7 @@ public class Circle {
     public int backToOrigin(int n) {
         int len = 10;
         int[][] dp = new int[n + 1][len];
-        dp[0][0] = 1;
+        dp[0][0] = 1; // dp[0][1~9] = 0
         // 走i步到0的选择是 走i-1步到1 + 走i-1步到9 的和
         for (int i = 1; i < n + 1; i++) {
             for (int j = 0; j < len; j++) {
