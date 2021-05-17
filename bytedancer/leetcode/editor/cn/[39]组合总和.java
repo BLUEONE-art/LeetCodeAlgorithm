@@ -50,6 +50,8 @@ class Solution {
         int len = candidates.length;
         res = new ArrayList<>();
         if (len == 0) return res;
+
+        Arrays.sort(candidates);
         Deque<Integer> path = new ArrayDeque<>();
         dfs(candidates, 0, len, target, path);
         return res;
@@ -57,13 +59,16 @@ class Solution {
 
     public void dfs(int[] candidates, int start, int len, int target, Deque<Integer> path) {
         // 终止条件
-        if (target < 0) return;
+//        if (target < 0) return;
         if (target == 0) {
             res.add(new ArrayList<>(path));
             return;
         }
         // 所有可能的选择
         for (int i = start; i < len; i++) {
+            // 剪枝
+            if (target - candidates[i] < 0) break;
+
             // 做选择
             path.addLast(candidates[i]);
             // 递归：因为每一个元素可重复利用，下一轮起点仍是 i
