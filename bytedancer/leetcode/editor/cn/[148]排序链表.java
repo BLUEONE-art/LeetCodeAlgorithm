@@ -55,7 +55,7 @@
 class Solution {
     public ListNode sortList(ListNode head) {
         if (head == null || head.next == null) return head;
-        // 分裂链表
+        // 分裂链表：找到中间节点的上一个节点
         ListNode mid = middleNode(head);
         ListNode rightHead = mid.next;
         mid.next = null;
@@ -70,7 +70,7 @@ class Solution {
 
     public ListNode middleNode(ListNode head) {
         if (head == null || head.next == null) return head;
-        ListNode slow = head, fast = head.next.next;
+        ListNode slow = head, fast = head.next;
         while (fast != null && fast.next != null) {
             slow = slow.next;
             fast = fast.next.next;
