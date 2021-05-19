@@ -47,7 +47,37 @@
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public int numIslands(char[][] grid) {
+        int count = 0;
+        // 可以从任何一个岛屿开始寻找
+        for (int i = 0; i < grid.length; i++) {
+            for (int j = 0; j < grid[0].length; j++) {
+                if (grid[i][j] == '1') {
+                    // 帮你找大陆，怎么找的不需要关心
+                    dfsGrid(grid, i, j);
+                    // 找到一个就+1
+                    count++;
+                }
+            }
+        }
+        return count;
+    }
 
+    public void dfsGrid(char[][] grid, int r, int c) {
+        // base case
+        if (!isArea(grid, r, c)) return;
+        if (grid[r][c] != '1') return;
+        grid[r][c] = '2';
+        // 模板
+        dfsGrid(grid, r - 1, c);
+        dfsGrid(grid, r + 1, c);
+        dfsGrid(grid, r, c - 1);
+        dfsGrid(grid, r, c + 1);
+
+    }
+
+    // 判断是否越界
+    public boolean isArea(char[][] grid, int r, int c) {
+        return r >= 0 && r <= grid.length - 1 && c >= 0 && c <= grid[0].length - 1;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)

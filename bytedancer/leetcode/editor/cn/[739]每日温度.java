@@ -33,12 +33,12 @@ class Solution {
         int len = temperatures.length;
         int[] res = new int[len];
         for (int i = len - 1; i >= 0; i--) {
-            while (!s.isEmpty() && temperatures[i] >= temperatures[s.peek()]) { // ②
+            while (!s.isEmpty() && temperatures[i] >= temperatures[s.peek()]) { // ③
                 s.pop();
             }
-            res[i] = s.isEmpty() ? 0 : s.peek() - i; // ③
+            res[i] = s.isEmpty() ? 0 : s.peek() - i; // ①
 
-            s.push(i); // ①
+            s.push(i); // ②
         }
         return res;
     }

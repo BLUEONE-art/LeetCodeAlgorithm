@@ -72,6 +72,7 @@ class Solution {
         dfsGrid(grid, r + 1, c);
         dfsGrid(grid, r, c - 1);
         dfsGrid(grid, r, c + 1);
+        grid[r][c] = '1';
     }
 
     // 判断是否越界
