@@ -53,20 +53,57 @@
 // Related Topics 字符串 回溯算法 
 // 👍 573 👎 0
 
+//     List<String> res = new ArrayList<>();
+//    int[] path = new int[4]; // ip一截最多四个字符
+//    public List<String> restoreIpAddresses(String s) {
+//        helper(s.toCharArray(), 0, 0);
+//        return res;
+//    }
+//
+//    public void helper(char[] chars, int resIdx, int idx) {
+//        // 终止条件
+//        if (resIdx == 4) { // 找到一个可能的Ip
+//            if (idx == chars.length) {
+//                StringBuilder sb = new StringBuilder();
+//                for (int i = 0; i < 3; i++) {
+//                    sb.append(path[i]);
+//                    sb.append('.');
+//                }
+//                sb.append(path[3]);
+//                res.add(sb.toString());
+//            }
+//            return;
+//        }
+//        if (idx == chars.length) return;
+//
+//        // 如果首位元素为0，则只有这一位为0的时候合法，后面的无需递归
+//        if (chars[idx] == '0') {
+//            path[resIdx] = 0;
+//            helper(chars, resIdx + 1, idx + 1);
+//        }
+//        int tmp = 0;
+//        for (int i = idx; i < chars.length; i++) {
+//            tmp = tmp * 10 + (chars[i] - '0');
+//            if (tmp > 0 && tmp < 256) {
+//                path[resIdx] = tmp;
+//                helper(chars, resIdx + 1, i + 1);
+//            } else break;
+//        }
+//    }
 
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     List<String> res = new ArrayList<>();
-    int[] path = new int[4]; // ip一截最多四个字符
+    int[] path = new int[4];
     public List<String> restoreIpAddresses(String s) {
         helper(s.toCharArray(), 0, 0);
         return res;
     }
 
-    public void helper(char[] chars, int resIdx, int idx) {
+    public void helper(char[] chars, int idx, int resIdx) {
         // 终止条件
-        if (resIdx == 4) { // 找到一个可能的Ip
-            if (idx == chars.length) {
+        if (resIdx == 4) { // 第四次回溯
+            if (idx == chars.length) { // 并且正确执行到最后一位
                 StringBuilder sb = new StringBuilder();
                 for (int i = 0; i < 3; i++) {
                     sb.append(path[i]);
@@ -77,19 +114,18 @@ class Solution {
             }
             return;
         }
-        if (idx == chars.length) return;
+        if (idx == chars.length) return; // resIdx != 4 && idx == chars.length，必不满足情况
 
-        // 如果首位元素为0，则只有这一位为0的时候合法，后面的无需递归
-        if (chars[idx] == '0') {
+        if (chars[idx] == '0') { // 如果只有首位0，只需回溯一次
             path[resIdx] = 0;
-            helper(chars, resIdx + 1, idx + 1);
+            helper(chars, idx + 1, resIdx + 1);
         }
         int tmp = 0;
         for (int i = idx; i < chars.length; i++) {
             tmp = tmp * 10 + (chars[i] - '0');
             if (tmp > 0 && tmp < 256) {
                 path[resIdx] = tmp;
-                helper(chars, resIdx + 1, i + 1);
+                helper(chars, i + 1, resIdx + 1);
             } else break;
         }
     }
