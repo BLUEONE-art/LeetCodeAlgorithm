@@ -35,7 +35,20 @@
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public int trap(int[] height) {
-
+        int res = 0;
+        Stack<Integer> s = new Stack<>();
+        for (int i = 0; i <= height.length - 1; i++) {
+            while (!s.isEmpty() && height[i] > height[s.peek()]) { // 后面比前面大
+                int bottom = s.peek();
+                s.pop(); // 谷底拿到了就可以被弹出
+                if (s.isEmpty()) break;
+                int left = s.peek(); // 弹走一个谷底，左杯壁就是栈顶数据
+                int h = Math.min(height[left], height[i]) - height[bottom]; // i就是右杯壁索引
+                res += (i - left - 1) * h;
+            }
+            s.push(i); // 放索引
+        }
+        return res;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
