@@ -32,29 +32,28 @@
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public int nextGreaterElement(int n) {
-        int tmp = n, count = 0, res = 0;
+        int tmp = n, size = 0, res = 0;
         while (tmp != 0) {
-            count++;
+            size++;
             tmp /= 10;
         }
-        int[] nums = new int[count];
-        for (int i = count - 1; i >= 0; i--) {
+        int[] nums = new int[size];
+        for (int i = size - 1; i >= 0; i--) {
             nums[i] = n % 10;
             n /= 10;
         }
-
-        // 特判全是升序情况
-        int size = count - 2;
-        for (; size >= 0; size--) {
-            if (nums[size] < nums[size + 1]) break;
+        // 特判全是降序，返回-1
+        int j = size - 2;
+        for (; j >= 0; j--) {
+            if (nums[j] < nums[j + 1]) break;
         }
-        if (size < 0) return -1;
+        if (j < 0) return -1;
 
         nextPermutation(nums);
         for (int i = 0; i < nums.length; i++) {
-            int tmp_res = res;
+            int last_res = res;
             res = res * 10 + nums[i];
-            if (res / 10 != tmp_res) return -1;
+            if (res / 10 != last_res) return -1;
         }
         return res;
     }
@@ -62,31 +61,25 @@ class Solution {
     public void nextPermutation(int[] nums) {
         int size = nums.length;
         if (nums == null || size == 0) return;
-        // 从后往前找到第一个逆序对
+        // 从后往前找逆序对（前往后看是升序的）
         int i = size - 2;
         for (; i >= 0; i--) {
             if (nums[i] < nums[i + 1]) break;
         }
-        // 此时找到 i 和 i + 1 两个索引对应的值从后往前看是逆序的
-        // 想要找到下一个更大的排序，需要找到在 i + 1 ~ size - 1 范围内大于索引 i 对应值的最小值
-        if (i >= 0) { // i < 0 表示从后向前看全是升序
-            // 大于 nums[i] 的最小值对应的索引
-            int j = binSearch(nums, i + 1, size - 1, nums[i]);
-            // 交换 nums[i] 和 大于 nums[i] 的最小值
+        if (i >= 0) { // i < 0表示从前往后看全是升序，根本没有更大的排列了
+            int j = findBiggerNum(nums, i + 1, size - 1, nums[i]); // 找到nums[i] ~ nums[size - 1]中大于nums[i]的最小值对应的索引
             swap(nums, i, j);
         }
-        // 为了使得找到的数是大于数组字典序的最小值，让 nums[i] 后的数字排列为升序即可
-        reverse(nums, i + 1, size - 1);
+        reverse(nums, i + 1, size - 1); // 让nums[i]后面的数保持升序，即是大于nums的最小排列
     }
 
-    // nums[left, right] 逆序，查找其中 > target 的 最大下标
-    private int binSearch(int[] nums, int left, int right, int target){
-        while(left <= right){
+    public int findBiggerNum(int[] nums, int left, int right, int tar) {
+        while (left <= right) {
             int mid = (left + right) >>> 1;
-            if(nums[mid] > target){
-                left = mid + 1; // 尝试再缩小区间
+            if (nums[mid] > tar) { // 找大于tar的最小数，所以mid后面可能还有大于tar的数并且比nums[mid]小
+                left = mid + 1;
             }
-            else{
+            else {
                 right = mid - 1;
             }
         }
