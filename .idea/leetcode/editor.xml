@@ -627,6 +627,14 @@
             </LeetcodeEditor>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/bytedancer/leetcode/editor/cn/[123]买卖股票的最佳时机 III.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/bytedancer/leetcode/editor/cn/[123]买卖股票的最佳时机 III.java" />
+              <option name="questionId" value="123" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/bytedancer/leetcode/editor/cn/[124]二叉树中的最大路径和.java">
           <value>
             <LeetcodeEditor>
@@ -736,6 +744,14 @@
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/bytedancer/leetcode/editor/cn/[1669]合并两个链表.java" />
               <option name="questionId" value="1765" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/bytedancer/leetcode/editor/cn/[188]买卖股票的最佳时机 IV.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/bytedancer/leetcode/editor/cn/[188]买卖股票的最佳时机 IV.java" />
+              <option name="questionId" value="188" />
             </LeetcodeEditor>
           </value>
         </entry>
