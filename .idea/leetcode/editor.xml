@@ -643,6 +643,14 @@
             </LeetcodeEditor>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/bytedancer/leetcode/editor/cn/[138]复制带随机指针的链表.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/bytedancer/leetcode/editor/cn/[138]复制带随机指针的链表.java" />
+              <option name="questionId" value="138" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/bytedancer/leetcode/editor/cn/[141]环形链表.java">
           <value>
             <LeetcodeEditor>
@@ -1352,6 +1360,14 @@
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/二刷/leetcode/editor/cn/[78]子集.java" />
               <option name="questionId" value="78" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/二刷/leetcode/editor/cn/[93]复原 IP 地址.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/二刷/leetcode/editor/cn/[93]复原 IP 地址.java" />
+              <option name="questionId" value="93" />
             </LeetcodeEditor>
           </value>
         </entry>
