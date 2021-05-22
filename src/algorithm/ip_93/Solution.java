@@ -6,55 +6,28 @@ import java.util.Stack;
 
 public class Solution {
     public static void main(String[] args) {
-        Node root = new Node(4);
-        root.left = new Node(2);
-        root.right = new Node(5);
-        root.left.left = new Node(1);
-        root.left.right = new Node(3);
-        System.out.println(treeToDoublyList(root));
+        int[] a = new int[]{2,3,1,2,4,3};
+        System.out.println(minSubArrayLen(7, a));
     }
 
-    static class Node {
-        public int val;
-        public Node left;
-        public Node right;
-
-        public Node() {}
-
-        public Node(int _val) {
-            val = _val;
+    public static int minSubArrayLen(int target, int[] nums) {
+        int left = 0, right = 0, start = 0, len = Integer.MAX_VALUE;
+        while (right < nums.length) {
+            int sum = 0;
+            sum += nums[right];
+            right++;
+            while (sum >= target) { // 开始收缩窗口
+                // 更新len
+                if (right - left < len) {
+                    start = left;
+                    len = Math.min(len, right - left);
+                }
+                int tmp = nums[left];
+                sum -= tmp;
+                left++;
+            }
         }
-
-        public Node(int _val,Node _left,Node _right) {
-            val = _val;
-            left = _left;
-            right = _right;
-        }
-    };
-
-    static Node pre, head;
-    public static Node treeToDoublyList(Node root) {
-        if (root == null) return null;
-        dfs(root); // 中序遍历完成了除头尾相连的其他工作
-        pre.right = head; // pre是尾部
-        head.left = pre; // head头部
-        return head;
-    }
-
-    public static void dfs(Node root) {
-        if (root == null) return;
-        dfs(root.left);
-        // 中序遍历代码位置
-        if (pre == null) {
-            head = root;
-        }
-        else {
-            pre.right = root;
-        }
-        root.left = pre;
-        pre = root;
-        // 中序遍历代码位置
-        dfs(root.right);
+        return len;
     }
 }
 
@@ -93,6 +66,59 @@ public class Solution {
 //                helper(str, i + 1, resIdx + 1);
 //            } else break;
 //        }
+//    }
+
+
+//     public static void main(String[] args) {
+//        Node root = new Node(4);
+//        root.left = new Node(2);
+//        root.right = new Node(5);
+//        root.left.left = new Node(1);
+//        root.left.right = new Node(3);
+//        System.out.println(treeToDoublyList(root));
+//    }
+//
+//    static class Node {
+//        public int val;
+//        public Node left;
+//        public Node right;
+//
+//        public Node() {}
+//
+//        public Node(int _val) {
+//            val = _val;
+//        }
+//
+//        public Node(int _val,Node _left,Node _right) {
+//            val = _val;
+//            left = _left;
+//            right = _right;
+//        }
+//    };
+//
+//    static Node pre, head;
+//    public static Node treeToDoublyList(Node root) {
+//        if (root == null) return null;
+//        dfs(root); // 中序遍历完成了除头尾相连的其他工作
+//        pre.right = head; // pre是尾部
+//        head.left = pre; // head头部
+//        return head;
+//    }
+//
+//    public static void dfs(Node root) {
+//        if (root == null) return;
+//        dfs(root.left);
+//        // 中序遍历代码位置
+//        if (pre == null) {
+//            head = root;
+//        }
+//        else {
+//            pre.right = root;
+//        }
+//        root.left = pre;
+//        pre = root;
+//        // 中序遍历代码位置
+//        dfs(root.right);
 //    }
 
 
