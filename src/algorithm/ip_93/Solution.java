@@ -6,32 +6,22 @@ import java.util.Stack;
 
 public class Solution {
     public static void main(String[] args) {
-        System.out.println(findKthNumber(101,5));
+        System.out.println(numDecodings("226"));
     }
 
-    public static int findKthNumber(int n, int k) {
-        int cur = 1;
-        k = k - 1;//扣除掉第一个0节点
-        while(k>0){
-            int num = getNode(n,cur,cur+1);
-            if(num<=k){//第k个数不在以cur为根节点的树上
-                cur+=1;//cur在字典序数组中从左往右移动
-                k-=num;
-            }else{//在子树中
-                cur*=10;//cur在字典序数组中从上往下移动
-                k-=1;//刨除根节点
+    public static int numDecodings(String s) {
+        int len = s.length();
+        int[] dp = new int[len + 1]; // 前i个字符的解码数
+        dp[0] = 1; // 前0个字符，就1种
+        for (int i = 1; i <= len; i++) {
+            if (s.charAt(i - 1) != '0') { // 前导0排除
+                dp[i] = dp[i - 1];
+            }
+            if (i >= 2 && (s.charAt(i - 2) == '1' || s.charAt(i - 2) == '2' && s.charAt(i - 1) <= '6')) {
+                dp[i] += dp[i - 2];
             }
         }
-        return cur;
-    }
-    public static int getNode(int n, long first, long last){
-        int num = 0;
-        while(first <= n){
-            num += Math.min(n+1,last) - first;//比如n是195的情况195到100有96个数
-            first *= 10;
-            last *= 10;
-        }
-        return num;
+        return dp[len];
     }
 }
 
