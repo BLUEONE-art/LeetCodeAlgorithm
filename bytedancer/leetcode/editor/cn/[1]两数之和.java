@@ -39,13 +39,20 @@
 // 只会存在一个有效答案 
 // 
 // Related Topics 数组 哈希表 
-// 👍 11025 👎 0
+// 👍 11157 👎 0
 
 
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public int[] twoSum(int[] nums, int target) {
-
+        HashMap<Integer, Integer> numToIdx = new HashMap<>();
+        for (int i = 0; i < nums.length; i++) {
+            if (numToIdx.containsKey(target - nums[i]) && i != numToIdx.get(target - nums[i])) {
+                return new int[]{i, numToIdx.get(target - nums[i])};
+            }
+            numToIdx.put(nums[i], i);
+        }
+        return new int[]{-1, -1};
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
