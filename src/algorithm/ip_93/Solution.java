@@ -6,22 +6,55 @@ import java.util.Stack;
 
 public class Solution {
     public static void main(String[] args) {
-        System.out.println(numDecodings("226"));
+        Node root = new Node(4);
+        root.left = new Node(2);
+        root.right = new Node(5);
+        root.left.left = new Node(1);
+        root.left.right = new Node(3);
+        System.out.println(treeToDoublyList(root));
     }
 
-    public static int numDecodings(String s) {
-        int len = s.length();
-        int[] dp = new int[len + 1]; // 前i个字符的解码数
-        dp[0] = 1; // 前0个字符，就1种
-        for (int i = 1; i <= len; i++) {
-            if (s.charAt(i - 1) != '0') { // 前导0排除
-                dp[i] = dp[i - 1];
-            }
-            if (i >= 2 && (s.charAt(i - 2) == '1' || s.charAt(i - 2) == '2' && s.charAt(i - 1) <= '6')) {
-                dp[i] += dp[i - 2];
-            }
+    static class Node {
+        public int val;
+        public Node left;
+        public Node right;
+
+        public Node() {}
+
+        public Node(int _val) {
+            val = _val;
         }
-        return dp[len];
+
+        public Node(int _val,Node _left,Node _right) {
+            val = _val;
+            left = _left;
+            right = _right;
+        }
+    };
+
+    static Node pre, head;
+    public static Node treeToDoublyList(Node root) {
+        if (root == null) return null;
+        dfs(root); // 中序遍历完成了除头尾相连的其他工作
+        pre.right = head; // pre是尾部
+        head.left = pre; // head头部
+        return head;
+    }
+
+    public static void dfs(Node root) {
+        if (root == null) return;
+        dfs(root.left);
+        // 中序遍历代码位置
+        if (pre == null) {
+            head = root;
+        }
+        else {
+            pre.right = root;
+        }
+        root.left = pre;
+        pre = root;
+        // 中序遍历代码位置
+        dfs(root.right);
     }
 }
 
