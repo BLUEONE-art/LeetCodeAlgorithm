@@ -38,7 +38,12 @@
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public int maxProfit(int[] prices) {
-
+        int profit = 0, min_price = Integer.MAX_VALUE;
+        for (int price : prices) {
+            min_price = Math.min(min_price, price);
+            profit = Math.max(profit, price - min_price);
+        }
+        return profit;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
