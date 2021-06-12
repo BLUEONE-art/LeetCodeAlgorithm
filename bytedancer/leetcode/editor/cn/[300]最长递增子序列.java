@@ -1,4 +1,4 @@
-//给你一个整数数组 nums ，找到其中最长严格递增子序列的长度。 
+//给你一个整数数组 nums ，找到其中最长严格递增子序列的长度。
 //
 // 子序列是由数组派生而来的序列，删除（或不删除）数组中的元素而不改变其余元素的顺序。例如，[3,6,2,7] 是数组 [0,3,1,6,2,2,7] 的子序
 //列。 
@@ -44,13 +44,27 @@
 // 你能将算法的时间复杂度降低到 O(n log(n)) 吗? 
 // 
 // Related Topics 二分查找 动态规划 
-// 👍 1600 👎 0
+// 👍 1648 👎 0
 
 
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public int lengthOfLIS(int[] nums) {
-
+        int len = nums.length;
+        int[] dp = new int[len]; // 以nums[i]结尾的数字的最长递增子序列长度
+        Arrays.fill(dp, 1);
+        for (int i = 1; i < len; i++) {
+            for (int j = 0; j < i; j++) {
+                if (nums[i] > nums[j]) {
+                    dp[i] = Math.max(dp[i], dp[j] + 1);
+                }
+            }
+        }
+        int res = 1;
+        for (int i : dp) {
+            res = Math.max(res, i);
+        }
+        return res;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
