@@ -64,7 +64,7 @@ class Solution {
                 }
                 else {
                     dp[i][j] = min(
-                        dp[i][j - 1] + 1,
+                        dp[i][j - 1] + 1, // 往word1中添加一字母word2[j - 1]，现在word1[i - 1]匹配了，word1[i]继续和word2[j - 1]匹配
                         dp[i - 1][j] + 1,
                         dp[i - 1][j - 1] + 1
                     );
