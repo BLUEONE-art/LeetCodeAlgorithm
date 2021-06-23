@@ -51,7 +51,7 @@ class Solution {
         char[] str = s.toCharArray();
         char sign = '+';
 
-        Deque<Integer> stack = new ArrayDeque<>();
+        Stack<Integer> stack = new Stack<>();
 
         for (int i = 0; i < len; i++) {
             if (Character.isDigit(str[i])) {
