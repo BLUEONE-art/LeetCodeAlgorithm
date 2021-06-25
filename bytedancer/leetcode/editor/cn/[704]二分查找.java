@@ -32,21 +32,21 @@
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public int search(int[] nums, int target) {
-        int left = 0, right = nums.length;
+        int left = 0, right = nums.length - 1;
         int res = -1;
         while (left < right) {
             int mid = (right + left) / 2;
             // 超出索引范围：target会比数组中最大的数还要大
-            if (mid < nums.length && nums[mid] < target) {
+            if (nums[mid] < target) {
                 left = mid + 1;
-            } else if (mid < nums.length && nums[mid] >= target) {
+            } else if (nums[mid] >= target) {
                 right = mid;
             } else break;
         }
-        if (left < nums.length && nums[left] == target) {
+        if (nums[left] == target) {
             res = left;
         }
-        if (right < nums.length && nums[right] == target) {
+        if (nums[right] == target) {
             res = right;
         }
         return res;
