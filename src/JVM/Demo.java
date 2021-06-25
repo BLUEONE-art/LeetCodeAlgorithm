@@ -24,10 +24,18 @@ public class Demo {
         int operationLen = 8;
         char[] operations = new char[]{'-', '+', '-', '-', '+', '-', '-', '+'};
         List<Integer> path1 = new ArrayList<>();
-        path1.add(2);
+        path1.add(1);
         path1.add(8);
+        List<Integer> path2 = new ArrayList<>();
+        path2.add(2);
+        path2.add(8);
+        List<Integer> path3 = new ArrayList<>();
+        path3.add(1);
+        path3.add(1);
         List<List<Integer>> invalidOperationRange = new ArrayList<>();
         invalidOperationRange.add(path1);
+        invalidOperationRange.add(path2);
+        invalidOperationRange.add(path3);
         System.out.println(countNumLists(operationLen, operations, invalidOperationRange));
     }
 
@@ -45,12 +53,11 @@ public class Demo {
             for (char c : operationRange) {
                 if (c == '+') {
                     x += 1;
-                    path.add(x);
                 }
                 else {
                     x -= 1;
-                    path.add(x);
                 }
+                path.add(x);
             }
             resLists.add(path);
         }
@@ -58,9 +65,7 @@ public class Demo {
         List<Integer> res = new ArrayList<>();
         Set<Integer> set = new HashSet<>();
         for (List<Integer> resList : resLists) {
-            for (Integer integer : resList) {
-                set.add(integer);
-            }
+            set.addAll(resList);
             res.add(set.size());
             set.clear();
         }
