@@ -19,6 +19,18 @@ public class Demo {
 //                "转换为MB=" + (total/(double)1024/1024) + "MB");
 //    }
 
+    public static class ListNode {
+        int val;
+        ListNode next;
+        ListNode(int val) {
+            this.val = val;
+        }
+        ListNode(int val, ListNode next) {
+            this.val = val;
+            this.next = next;
+        }
+    }
+
     @Test
     public static void main(String[] args) {
 //        int operationLen = 8;
@@ -39,42 +51,52 @@ public class Demo {
 //        System.out.println(countNumLists(operationLen, operations, invalidOperationRange));
 
 
-        int[] nums = new int[]{4, 5, 6, 7, 0, 1, 2,};
-        int target = 0;
-        int res = search(nums, target);
+        ListNode head = new ListNode(0);
+        head.next = new ListNode(1);
+        head.next.next = new ListNode(2);
+        ListNode res = rotateRight(head, 4);
         System.out.println(res);
     }
 
-    public static int search(int[] nums, int target) {
-        int left = 0, right = nums.length - 1;
-        while (left < right) {
-            int mid = (left + right) / 2;
-            if (nums[mid] > nums[right]) {
-                left = mid + 1;
-            } else {
-                right = mid;
-            }
+    public static ListNode rotateRight(ListNode head, int k) {
+        int len = getLen(head);
+        // 找到链表的倒数第k+1个节点
+        k %= len;
+        ListNode slow = getDivision(head, k);
+        // 分裂链表
+        ListNode newHead = slow.next;
+        slow.next = null;
+        ListNode cur = newHead;
+        while (cur.next != null) {
+            cur = cur.next;
         }
-        int minNumIdx = -1;
-        minNumIdx = nums[left] < nums[right] ? left : right;
-        int tarIdx = helper(nums, 0, minNumIdx, target, true);
-        return tarIdx != -1 ? tarIdx : helper(nums, minNumIdx + 1, nums.length - 1, target, true);
+        cur.next = head;
+        return newHead;
     }
 
-    public static int helper(int[] nums, int left, int right, int tar, boolean isAsc) {
-        while (left <= right) {
-            int mid = (left + right) / 2;
-            if (nums[mid] == tar) {
-                return mid;
-            } else if (nums[mid] < tar) {
-                left = isAsc ? mid + 1 : left;
-                right = isAsc ? right : mid - 1;
-            } else {
-                right = isAsc ? mid - 1 : right;
-                left = isAsc ? left : mid + 1;
-            }
+    public static int getLen(ListNode head) {
+        int count = 0;
+        while(head != null) {
+            count++;
+            head = head.next;
         }
-        return -1;
+        return count;
+    }
+
+    public static ListNode getDivision(ListNode head, int k) {
+        if (head == null) return head;
+        ListNode slow = head, fast = head;
+        List<ListNode> res = new LinkedList<>();
+        while (k > 0) {
+            fast = fast.next;
+            k--;
+        }
+        if (fast == null) return head;
+        while (fast.next != null) {
+            slow = slow.next;
+            fast = fast.next;
+        }
+        return slow;
     }
 
     public static List<Integer> countNumLists(int operationLen, char[] operations, List<List<Integer>> invalidOperationRange) {
