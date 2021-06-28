@@ -22,9 +22,11 @@ public class Demo {
     public static class ListNode {
         int val;
         ListNode next;
+
         ListNode(int val) {
             this.val = val;
         }
+
         ListNode(int val, ListNode next) {
             this.val = val;
             this.next = next;
@@ -50,12 +52,24 @@ public class Demo {
 //        invalidOperationRange.add(path3);
 //        System.out.println(countNumLists(operationLen, operations, invalidOperationRange));
 
+        int[] nums = new int[]{-2, 3, -4};
+        System.out.println(maxProduct(nums));
+    }
 
-        ListNode head = new ListNode(0);
-        head.next = new ListNode(1);
-        head.next.next = new ListNode(2);
-        ListNode res = rotateRight(head, 4);
-        System.out.println(res);
+    public static int maxProduct(int[] nums) {
+        int max = Integer.MIN_VALUE, tmpMax = 1, tmpMin = 1;
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i] < 0) {
+                int tmp = tmpMax;
+                tmpMax = tmpMin;
+                tmpMin = tmp;
+            }
+            tmpMax = Math.max(tmpMax * nums[i], nums[i]);
+            tmpMin = Math.min(tmpMin * nums[i], nums[i]);
+
+            max = Math.max(max, tmpMax);
+        }
+        return max;
     }
 
     public static ListNode rotateRight(ListNode head, int k) {
@@ -76,7 +90,7 @@ public class Demo {
 
     public static int getLen(ListNode head) {
         int count = 0;
-        while(head != null) {
+        while (head != null) {
             count++;
             head = head.next;
         }
