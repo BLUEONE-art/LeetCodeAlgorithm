@@ -46,7 +46,7 @@ class Solution {
                 right = mid;
             }
         }
-        return right - 1;
+        return right;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
