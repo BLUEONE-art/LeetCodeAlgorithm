@@ -33,6 +33,25 @@ public class Demo {
         }
     }
 
+    public static class TreeNode {
+        int val;
+        TreeNode left;
+        TreeNode right;
+
+        TreeNode() {
+        }
+
+        TreeNode(int val) {
+            this.val = val;
+        }
+
+        TreeNode(int val, TreeNode left, TreeNode right) {
+            this.val = val;
+            this.left = left;
+            this.right = right;
+        }
+    }
+
     @Test
     public static void main(String[] args) {
 //        int operationLen = 8;
@@ -52,8 +71,45 @@ public class Demo {
 //        invalidOperationRange.add(path3);
 //        System.out.println(countNumLists(operationLen, operations, invalidOperationRange));
 
-        int[] nums = new int[]{-2, 3, -4};
-        System.out.println(maxProduct(nums));
+//        int[] nums = new int[]{-2, 3, -4};
+//        System.out.println(maxProduct(nums));
+
+        TreeNode root1 = new TreeNode(1);
+        root1.left = new TreeNode(1);
+//        root1.right = new TreeNode(3);
+        TreeNode root2 = new TreeNode(1);
+        root2.left = null;
+        root2.right = new TreeNode(1);
+        boolean flag = isSameTree(root1, root2);
+        System.out.println(flag);
+    }
+
+    public static boolean isSameTree(TreeNode p, TreeNode q) {
+        StringBuilder sb1 = new StringBuilder();
+        StringBuilder sb2 = new StringBuilder();
+        TreeNode root1 = p, root2 = q;
+        inorder(root1, sb1);
+        inorder(root2, sb2);
+        char[] chars1 = sb1.toString().toCharArray();
+        char[] chars2 = sb2.toString().toCharArray();
+        if (chars1.length != chars2.length) return false;
+        for (int i = 0; i < chars1.length; i++) {
+            if (chars1[i] != chars2[i]) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static void inorder(TreeNode root, StringBuilder sb) {
+        if (root == null) {
+            sb.append('#');
+            return;
+        }
+        sb.append(root.val);
+        inorder(root.left, sb);
+
+        inorder(root.right, sb);
     }
 
     public static int maxProduct(int[] nums) {
