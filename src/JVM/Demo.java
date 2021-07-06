@@ -71,17 +71,51 @@ public class Demo {
 //        invalidOperationRange.add(path3);
 //        System.out.println(countNumLists(operationLen, operations, invalidOperationRange));
 
-//        int[] nums = new int[]{-2, 3, -4};
-//        System.out.println(maxProduct(nums));
+        String res = fractionToDecimal(1, -3);
+        System.out.println(res);
+    }
 
-        TreeNode root1 = new TreeNode(1);
-        root1.left = new TreeNode(1);
-//        root1.right = new TreeNode(3);
-        TreeNode root2 = new TreeNode(1);
-        root2.left = null;
-        root2.right = new TreeNode(1);
-        boolean flag = isSameTree(root1, root2);
-        System.out.println(flag);
+    public static String fractionToDecimal(int numerator, int denominator) {
+        if (numerator == 0) {
+            return "0";
+        }
+        boolean sign = (numerator > 0) ^ (denominator > 0);
+        StringBuilder res = new StringBuilder();
+        if (sign) {
+            res.append("-");
+        }
+        long numerator_long = numerator;
+        long denominator_long = denominator;
+        numerator_long = Math.abs(numerator_long);
+        denominator_long = Math.abs(denominator_long);
+        long integer = numerator_long / denominator_long;
+        res.append(integer);
+
+        String dot = ".";
+        long remainder = numerator_long % denominator_long;
+        if (remainder == 0) {
+            return res.toString();
+        } else {
+            res.append(dot);
+        }
+
+        // 处理多位小数+循环小数
+        Map<Long, Integer> map = new HashMap<>();
+        int idx = res.length() - 1;
+        while (remainder > 0) {
+            idx++;
+            remainder *= 10;
+            if (map.get(remainder) != null) {
+                res.insert(map.get(remainder), "(");
+                res.append(")");
+                break;
+            } else {
+                map.put(remainder, idx);
+            }
+            res.append(remainder / denominator_long);
+            remainder = remainder % denominator_long;
+        }
+        return res.toString();
     }
 
     public static boolean isSameTree(TreeNode p, TreeNode q) {
