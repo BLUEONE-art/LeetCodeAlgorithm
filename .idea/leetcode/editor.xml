@@ -1099,6 +1099,14 @@
             </LeetcodeEditor>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/bytedancer/leetcode/editor/cn/[283]移动零.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/bytedancer/leetcode/editor/cn/[283]移动零.java" />
+              <option name="questionId" value="283" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/bytedancer/leetcode/editor/cn/[287]寻找重复数.java">
           <value>
             <LeetcodeEditor>
@@ -1664,6 +1672,14 @@
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/bytedancer/leetcode/editor/cn/[剑指 Offer 53 - I]在排序数组中查找数字 I.java" />
               <option name="questionId" value="100329" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/bytedancer/leetcode/editor/cn/[剑指 Offer 61]扑克牌中的顺子.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/bytedancer/leetcode/editor/cn/[剑指 Offer 61]扑克牌中的顺子.java" />
+              <option name="questionId" value="100341" />
             </LeetcodeEditor>
           </value>
         </entry>
