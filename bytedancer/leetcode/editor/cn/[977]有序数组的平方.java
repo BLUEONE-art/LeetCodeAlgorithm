@@ -52,26 +52,27 @@ class Solution {
     }
 
     public void quickSort(int[] nums, int low, int high) {
-        if (low - high >= 0) return;
+        if (low >= high) {
+            return;
+        }
         int pivot = partition(nums, low, high);
         quickSort(nums, low, pivot - 1);
         quickSort(nums, pivot + 1, high);
     }
 
-    // 快速分区
     public int partition(int[] nums, int low, int high) {
-        int leftMostNum = nums[low];
+        int leftmostNum = nums[low];
         int i = low, j = high + 1;
         while (true) {
-            // ++i < high <==> i < high + 1
-            while (++i < high && nums[i] < leftMostNum);
-            // --j > low <==> j > low + 1
-            while (--j > low && nums[j] > leftMostNum);
-            if (i >= j) break;
+            while (++i < high && nums[i] < leftmostNum);
+            while (--j > low && nums[i] > leftmostNum);
+            if (i >= j) {
+                break;
+            }
             swap(nums, i, j);
         }
         nums[low] = nums[j];
-        nums[j] = leftMostNum;
+        nums[j] = leftmostNum;
         return j;
     }
 
