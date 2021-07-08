@@ -7,8 +7,12 @@
 // 示例 1： 
 //
 // 
-//输入：matrix = [[1,2,3],[4,5,6],[7,8,9]]
-//输出：[[7,4,1],[8,5,2],[9,6,3]]
+//输入：matrix = [[1,2,3],
+//               [4,5,6],
+//               [7,8,9]]
+//输出：[[7,4,1],
+//      [8,5,2],
+//      [9,6,3]]
 // 
 //
 // 示例 2： 
@@ -55,7 +59,7 @@
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public void rotate(int[][] matrix) {
-        // 先逆时针旋转90°
+        // 先沿着对角线交换matric[i][j]和matrix[j][i]
         for (int i = 0; i < matrix.length; i++) {
             for (int j = 0; j < i; j++) {
                 int tmp = matrix[i][j];
@@ -63,12 +67,21 @@ class Solution {
                 matrix[j][i] = tmp;
             }
         }
-        // 此时相较于结果相差180°，相对于中垂线交换元素即可
+        // 此时相较于结果相差180°，相对于中垂线交换元素即可，顺时针旋转90°
         for (int i = 0; i < matrix.length; i++) {
             for (int j = 0; j < matrix.length / 2; j++) {
                 int tmp = matrix[i][j];
                 matrix[i][j] = matrix[i][matrix.length - 1 - j];
                 matrix[i][matrix.length - 1 - j] = tmp;
+            }
+        }
+
+        // 逆时针旋转90°
+        for (int i = 0; i < matrix.length / 2; i++) {
+            for (int j = 0; j < matrix.length; j++) {
+                int tmp = matrix[i][j];
+                matrix[i][j] = matrix[matrix.length - 1 - i][j];
+                matrix[matrix.length - 1 - i][j] = tmp;
             }
         }
     }

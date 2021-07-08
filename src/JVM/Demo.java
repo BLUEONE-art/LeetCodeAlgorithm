@@ -71,8 +71,96 @@ public class Demo {
 //        invalidOperationRange.add(path3);
 //        System.out.println(countNumLists(operationLen, operations, invalidOperationRange));
 
-        String res = fractionToDecimal(1, -3);
-        System.out.println(res);
+//        int[][] nums = new int[][]{{1, 2}, {3, 4}};
+//        int[][] nums = new int[][]{{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
+        int[][] nums = new int[][]{{1, 2, 3, 4}, {5, 6, 7, 8}, {9, 10, 11, 12}, {13, 14, 15, 16}};
+        int[] res = findDiagonalOrder(nums);
+        StringBuilder sb = new StringBuilder();
+        for (int re : res) {
+            sb.append(re).append(",");
+        }
+        System.out.println(sb.toString());
+    }
+
+    public static int[] findDiagonalOrder(int[][] mat) {
+        int n = mat.length, count = 0;
+        int[] res = new int[n * n];
+        LinkedList<Integer> resList = new LinkedList<>();
+        LinkedList<Integer> tmp = new LinkedList<>();
+        // 逆时针旋转九十度
+        antiClockwise90(mat);
+
+        for (int l = 0; l < n; l++) {
+            count++;
+            for (int i = 0; i < n - l; i++) {
+                int j = l + i;
+                if (i == j) {
+                    if (n % 2 == 0) {
+                        resList.addLast(mat[i][j]);
+                    } else {
+                        resList.addFirst(mat[i][j]);
+                    }
+                } else if (i == 0 && j == n - 1) { // 左下角和右上角
+                    resList.addLast(mat[i][j]);
+                    resList.addFirst(mat[j][i]);
+                } else { // 除去左下角、右上角和对角线的元素
+                    if (count % 2 != 0) {
+                        resList.addLast(mat[i][j]);
+                        tmp.addLast(mat[j][i]);
+                    } else {
+                        tmp.addLast(mat[i][j]);
+                        tmp.addFirst(mat[j][i]);
+                    }
+                }
+            }
+            while (!tmp.isEmpty()) {
+                if (count % 2 != 0) {
+                    resList.addFirst(tmp.removeLast());
+                } else {
+                    int size = tmp.size();
+                    int tempo = 0;
+                    resList.addFirst(tmp.removeFirst());
+                    resList.addLast(tmp.removeLast());
+                    tempo++;
+                    if (n % 2 == 0) {
+                        while (tempo < size / 2) {
+                            resList.add(tempo, tmp.removeFirst());
+                            resList.addLast(tmp.removeLast());
+                            tempo++;
+                        }
+                    } else {
+                        while (tempo < size / 2) {
+                            resList.addFirst(tmp.removeFirst());
+                            resList.add(resList.size() - 1 - tempo, tmp.removeLast());
+                            tempo++;
+                        }
+                    }
+                }
+            }
+        }
+        for (int i = 0; i < resList.size(); i++) {
+            res[i] = resList.get(i);
+        }
+        return res;
+    }
+
+    public static void antiClockwise90(int[][] mat) {
+        int n = mat.length;
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < i; j++) {
+                int tmp = mat[i][j];
+                mat[i][j] = mat[j][i];
+                mat[j][i] = tmp;
+            }
+        }
+
+        for (int i = 0; i < n / 2; i++) {
+            for (int j = 0; j < n; j++) {
+                int tmp = mat[i][j];
+                mat[i][j] = mat[n - 1 - i][j];
+                mat[n - 1 - i][j] = tmp;
+            }
+        }
     }
 
     public static String fractionToDecimal(int numerator, int denominator) {
