@@ -3,6 +3,7 @@ package JVM;
 
 import org.junit.Test;
 
+import java.text.DecimalFormat;
 import java.util.*;
 
 public class Demo {
@@ -80,6 +81,9 @@ public class Demo {
             sb.append(re).append(",");
         }
         System.out.println(sb.toString());
+
+        DecimalFormat df = new DecimalFormat("0.00");//设置保留位数
+        System.out.println(df.format((float) 1 / 3));
     }
 
     public static int[] findDiagonalOrder(int[][] mat) {
