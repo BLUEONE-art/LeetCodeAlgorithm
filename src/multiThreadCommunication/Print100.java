@@ -1,22 +1,18 @@
 package multiThreadCommunication;
 
-import JVM.Demo;
-
 public class Print100 {
     // 定义共享变量
     public static Integer num = 0;
     public static final Object aLock = new Object();
 
     // 线程1：打印奇数
-    static class Odd implements Runnable {
-        @Override
-        public void run() {
-            // 拿到锁
+    public void odd() {
+        while (num < 100) {
             synchronized (aLock) {
                 if (num % 2 == 1) {
-                    System.out.println(Thread.currentThread().getName() + ":" + num);
+                    System.out.println(Thread.currentThread().getName() + " - " + num);
                     try {
-                        Thread.sleep(1000);
+                        Thread.sleep(10);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -35,54 +31,6 @@ public class Print100 {
     }
 
     // 线程2：打印偶数
-    static class Even implements Runnable {
-
-        @Override
-        public void run() {
-            synchronized (aLock) {
-                if (num % 2 == 0) {
-                    System.out.println(Thread.currentThread().getName() + ":" + num);
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    num++;
-                    aLock.notify();
-                } else {
-                    try {
-                        aLock.wait();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        }
-    }
-
-    public void odd() {
-        while (num < 100) {
-            synchronized (aLock) {
-                if (num % 2 == 1) {
-                    System.out.println(Thread.currentThread().getName() + " - " + num);
-                    try {
-                        Thread.sleep(10);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    num++;
-                    aLock.notify();
-                } else {
-                    try {
-                        aLock.wait();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        }
-    }
-
     public void even() {
         while (num < 100) {
             synchronized (aLock) {
@@ -107,13 +55,6 @@ public class Print100 {
     }
 
     public static void main(String[] args) throws InterruptedException {
-
-//        Thread odd = new Thread(new Odd(), "我是奇数线程");
-//        odd.start();
-//        Thread even = new Thread(new Even(), "我是偶数线程");
-//        even.start();
-//        Thread.sleep(1000);
-
         Print100 print100 = new Print100();
         Thread thread1 = new Thread(print100::odd, "我是奇数线程");
         Thread thread2 = new Thread(print100::even, "我是偶数线程");

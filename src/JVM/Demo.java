@@ -86,67 +86,95 @@ public class Demo {
         System.out.println(df.format((float) 1 / 3));
     }
 
-    public static int[] findDiagonalOrder(int[][] mat) {
-        int n = mat.length, count = 0;
-        int[] res = new int[n * n];
-        LinkedList<Integer> resList = new LinkedList<>();
-        LinkedList<Integer> tmp = new LinkedList<>();
-        // 逆时针旋转九十度
-        antiClockwise90(mat);
+    public static int[] findDiagonalOrder(int[][] matrix) {
+        if (matrix == null || matrix.length == 0) return new int[0];
 
-        for (int l = 0; l < n; l++) {
-            count++;
-            for (int i = 0; i < n - l; i++) {
-                int j = l + i;
-                if (i == j) {
-                    if (n % 2 == 0) {
-                        resList.addLast(mat[i][j]);
-                    } else {
-                        resList.addFirst(mat[i][j]);
-                    }
-                } else if (i == 0 && j == n - 1) { // 左下角和右上角
-                    resList.addLast(mat[i][j]);
-                    resList.addFirst(mat[j][i]);
-                } else { // 除去左下角、右上角和对角线的元素
-                    if (count % 2 != 0) {
-                        resList.addLast(mat[i][j]);
-                        tmp.addLast(mat[j][i]);
-                    } else {
-                        tmp.addLast(mat[i][j]);
-                        tmp.addFirst(mat[j][i]);
-                    }
-                }
+        int m = matrix.length;
+        int n = matrix[0].length;
+        int[] nums = new int[m * n];
+
+        int k = 0;
+        boolean bXFlag = true;
+        for (int i = 0; i < m + n; i++){
+            int pm = bXFlag ? m : n;
+            int pn = bXFlag ? n : m;
+
+            int x = (i < pm) ? i : pm - 1;
+            int y = i - x;
+
+            while (x >= 0 && y < pn){
+                nums[k++] = bXFlag ? matrix[x][y] : matrix[y][x];
+                x--;
+                y++;
             }
-            while (!tmp.isEmpty()) {
-                if (count % 2 != 0) {
-                    resList.addFirst(tmp.removeLast());
-                } else {
-                    int size = tmp.size();
-                    int tempo = 0;
-                    resList.addFirst(tmp.removeFirst());
-                    resList.addLast(tmp.removeLast());
-                    tempo++;
-                    if (n % 2 == 0) {
-                        while (tempo < size / 2) {
-                            resList.add(tempo, tmp.removeFirst());
-                            resList.addLast(tmp.removeLast());
-                            tempo++;
-                        }
-                    } else {
-                        while (tempo < size / 2) {
-                            resList.addFirst(tmp.removeFirst());
-                            resList.add(resList.size() - 1 - tempo, tmp.removeLast());
-                            tempo++;
-                        }
-                    }
-                }
-            }
+
+            bXFlag = !bXFlag;
         }
-        for (int i = 0; i < resList.size(); i++) {
-            res[i] = resList.get(i);
-        }
-        return res;
+
+        return nums;
     }
+
+//    public static int[] findDiagonalOrder(int[][] mat) {
+//        int n = mat.length, count = 0;
+//        int[] res = new int[n * n];
+//        LinkedList<Integer> resList = new LinkedList<>();
+//        LinkedList<Integer> tmp = new LinkedList<>();
+//        // 逆时针旋转九十度
+//        antiClockwise90(mat);
+//
+//        for (int l = 0; l < n; l++) {
+//            count++;
+//            for (int i = 0; i < n - l; i++) {
+//                int j = l + i;
+//                if (i == j) {
+//                    if (n % 2 == 0) {
+//                        resList.addLast(mat[i][j]);
+//                    } else {
+//                        resList.addFirst(mat[i][j]);
+//                    }
+//                } else if (i == 0 && j == n - 1) { // 左下角和右上角
+//                    resList.addLast(mat[i][j]);
+//                    resList.addFirst(mat[j][i]);
+//                } else { // 除去左下角、右上角和对角线的元素
+//                    if (count % 2 != 0) {
+//                        resList.addLast(mat[i][j]);
+//                        tmp.addLast(mat[j][i]);
+//                    } else {
+//                        tmp.addLast(mat[i][j]);
+//                        tmp.addFirst(mat[j][i]);
+//                    }
+//                }
+//            }
+//            while (!tmp.isEmpty()) {
+//                if (count % 2 != 0) {
+//                    resList.addFirst(tmp.removeLast());
+//                } else {
+//                    int size = tmp.size();
+//                    int tempo = 0;
+//                    resList.addFirst(tmp.removeFirst());
+//                    resList.addLast(tmp.removeLast());
+//                    tempo++;
+//                    if (n % 2 == 0) {
+//                        while (tempo < size / 2) {
+//                            resList.add(tempo, tmp.removeFirst());
+//                            resList.addLast(tmp.removeLast());
+//                            tempo++;
+//                        }
+//                    } else {
+//                        while (tempo < size / 2) {
+//                            resList.addFirst(tmp.removeFirst());
+//                            resList.add(resList.size() - 1 - tempo, tmp.removeLast());
+//                            tempo++;
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//        for (int i = 0; i < resList.size(); i++) {
+//            res[i] = resList.get(i);
+//        }
+//        return res;
+//    }
 
     public static void antiClockwise90(int[][] mat) {
         int n = mat.length;
