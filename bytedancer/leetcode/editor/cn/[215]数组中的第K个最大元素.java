@@ -31,23 +31,23 @@
 
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
-    // 1
-//    public int findKthLargest(int[] nums, int k) {
-//        PriorityQueue<Integer> heap = new PriorityQueue<>();
-//        for (int num : nums) {
-//            heap.offer(num);
-//            if (heap.size() > k) {
-//                heap.poll();
-//            }
-//        }
-//        return heap.peek();
-//    }
-//
-//    // 2
-//    public int findKthLargest(int[] nums, int k) {
-//        quickSort(nums, 0, nums.length - 1);
-//        return nums[nums.length - k];
-//    }
+    //1
+    public int findKthLargest(int[] nums, int k) {
+        PriorityQueue<Integer> heap = new PriorityQueue<>();
+        for (int num : nums) {
+            heap.offer(num);
+            if (heap.size() > k) {
+                heap.poll();
+            }
+        }
+        return heap.peek();
+    }
+
+    // 2
+    public int findKthLargest(int[] nums, int k) {
+        quickSort(nums, 0, nums.length - 1);
+        return nums[nums.length - k];
+    }
 
     // 3
     public int findKthLargest(int[] nums, int k) {
