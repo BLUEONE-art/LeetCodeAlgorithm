@@ -56,7 +56,9 @@ public class Print100 {
 
     public static void main(String[] args) throws InterruptedException {
         Print100 print100 = new Print100();
-        Thread thread1 = new Thread(print100::odd, "我是奇数线程");
+        Thread thread1 = new Thread(() -> {
+            print100.odd();
+        }, "我是奇数线程");
         Thread thread2 = new Thread(print100::even, "我是偶数线程");
         thread1.start();
         thread2.start();
