@@ -76,11 +76,59 @@ public class Demo {
 //        int[][] nums = new int[][]{{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
 //        int[][] nums = new int[][]{{1, 2, 3, 4}, {5, 6, 7, 8}, {9, 10, 11, 12}, {13, 14, 15, 16}};
 
-        int[] arr = new int[]{1, 6, 8, 9, 34, 2, 44, 654};
-        heapSort(arr);
-        for (int i : arr) {
-            System.out.println(i);
+        // 堆排序测试
+//        int[] arr = new int[]{1, 6, 8, 9, 34, 2, 44, 654};
+//        heapSort(arr);
+//        for (int i : arr) {
+//            System.out.println(i);
+//        }
+
+        // 字符串重排列测试
+        String test = "abbabbaaab";
+        String res = reorganizeString(test);
+        System.out.println(res);
+    }
+
+    public static String reorganizeString(String s) {
+        // 找出出现次数最多的字母
+        char[] chars = s.toCharArray();
+        int len = s.length();
+        int[] charsCount = new int[26];
+        for (int i = 0; i < len; i++) {
+            charsCount[chars[i] - 'a']++;
         }
+        int max = 0;
+        int maxNumCharIdx = 0;
+        int threshold = (len + 1) >> 1;
+        for (int i = 0; i < charsCount.length; i++) {
+            if (charsCount[i] > max) {
+                max = charsCount[i];
+                maxNumCharIdx = i;
+                if (max > threshold) {
+                    return "";
+                }
+            }
+        }
+        // 构造结果
+        char[] res = new char[len];
+        int index = 0;
+        for (int i = 0; i < max; i++) {
+            res[index] = (char) (maxNumCharIdx + 'a');
+            index += 2;
+            charsCount[maxNumCharIdx]--;
+        }
+        // 再补充奇数位置的字母
+        for (int i = 0; i < charsCount.length; i++) {
+            while (charsCount[i] > 0) {
+                if (index >= res.length) {
+                    index = 1;
+                }
+                res[index] = (char) (i + 'a');
+                index += 2;
+                charsCount[i]--;
+            }
+        }
+        return new String(res);
     }
 
     //堆排序
