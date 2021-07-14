@@ -7,17 +7,18 @@ public class AtomicIntegerDemo {
 
     // 打印奇数
     public void odd() {
-        while (num.get() < 1000) {
+        while (num.get() < 100) {
             if (num.get() % 2 != 0) {
                 System.out.println("当前num的值为：" + num.get());
-                num.getAndIncrement();
+//                num.getAndIncrement();
+                num.compareAndSet(num.get(), num.get() + 1);
             }
         }
     }
 
     // 打印偶数
     public void even() {
-        while (num.get() < 1000) {
+        while (num.get() < 100) {
             if (num.get() % 2 == 0) {
                 System.out.println("当前num的值为：" + num.get());
                 num.getAndIncrement();
