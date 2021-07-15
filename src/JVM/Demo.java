@@ -87,6 +87,13 @@ public class Demo {
         String test = "abbabbaaab";
         String res = reorganizeString(test);
         System.out.println(res);
+
+        String httpUrl = "https://test-h5.hibixin.com/im/Fub3BY8RJEQDJ0f2nGfduTjajRx1";
+        String urlHash = "Fub3BY8RJEQDJ0f2nGfduTjajRx1";
+        System.out.println(httpUrl.substring(0, httpUrl.length() - urlHash.length()));
+
+        httpUrl.replaceAll(urlHash, "1111");
+        System.out.println(httpUrl.replace("", "1111"));
     }
 
     public static String reorganizeString(String s) {
