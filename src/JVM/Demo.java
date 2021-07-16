@@ -83,17 +83,38 @@ public class Demo {
 //            System.out.println(i);
 //        }
 
-        // 字符串重排列测试
-        String test = "abbabbaaab";
-        String res = reorganizeString(test);
+//        // 字符串重排列测试
+//        String test = "abbabbaaab";
+//        String res = reorganizeString(test);
+//        System.out.println(res);
+//
+//        String httpUrl = "https://test-h5.hibixin.com/im/Fub3BY8RJEQDJ0f2nGfduTjajRx1";
+//        String urlHash = "Fub3BY8RJEQDJ0f2nGfduTjajRx1";
+//        System.out.println(httpUrl.substring(0, httpUrl.length() - urlHash.length()));
+//
+//        httpUrl.replaceAll(urlHash, "1111");
+//        System.out.println(httpUrl.replace("", "1111"));
+
+        // 翻译字符串测试 -- 剑指46
+        int num = 25;
+        int res = translateNum(num);
         System.out.println(res);
+    }
 
-        String httpUrl = "https://test-h5.hibixin.com/im/Fub3BY8RJEQDJ0f2nGfduTjajRx1";
-        String urlHash = "Fub3BY8RJEQDJ0f2nGfduTjajRx1";
-        System.out.println(httpUrl.substring(0, httpUrl.length() - urlHash.length()));
-
-        httpUrl.replaceAll(urlHash, "1111");
-        System.out.println(httpUrl.replace("", "1111"));
+    public static int translateNum(int num) {
+        String str = String.valueOf(num);
+        int[] dp = new int[str.length() + 1];
+        dp[0] = 1;
+        dp[1] = 1;
+        for (int i = 2; i <= str.length(); i++) {
+            String tmp = str.substring(i - 2, i);
+            if (tmp.compareTo("10") >= 0 && tmp.compareTo("25") <= 0) {
+                dp[i] = dp[i - 1] + dp[i - 2];
+            } else {
+                dp[i] = dp[i - 1];
+            }
+        }
+        return dp[str.length()];
     }
 
     public static String reorganizeString(String s) {
