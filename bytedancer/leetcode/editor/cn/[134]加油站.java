@@ -50,22 +50,22 @@
 
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
-//    public int canCompleteCircuit(int[] gas, int[] cost) {
-//        int len = gas.length;
-//        for (int i = 0; i < len; i++) {
-//            int j = i;
-//            int remian = gas[i];
-//            while (remian - cost[j] >= 0) {
-//                // 最远能到哪里
-//                remian = remian - cost[j] + gas[(j + 1) % len];
-//                j = (j + 1) % len;
-//                if (j == i) {
-//                    return i;
-//                }
-//            }
-//        }
-//        return -1;
-//    }
+    public int canCompleteCircuit(int[] gas, int[] cost) {
+        int len = gas.length;
+        for (int i = 0; i < len; i++) {
+            int j = i;
+            int remian = gas[i];
+            while (remian - cost[j] >= 0) {
+                // 最远能到哪里
+                remian = remian - cost[j] + gas[(j + 1) % len];
+                j = (j + 1) % len;
+                if (j == i) {
+                    return i;
+                }
+            }
+        }
+        return -1;
+    }
 
     public int canCompleteCircuit(int[] gas, int[] cost) {
         int len = gas.length;
