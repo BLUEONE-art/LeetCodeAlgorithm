@@ -7,7 +7,7 @@ import java.text.DecimalFormat;
 import java.util.*;
 
 public class Demo {
-//    public static void main(String[] args) {
+    //    public static void main(String[] args) {
 //        // 返回虚拟机试图使用的最大内存(字节)
 //        long max = Runtime.getRuntime().maxMemory(); // byte --> 除以 1024 得KB --> 除以 1024 得 MB
 //        // 返回 JVM 初始化的总内存(字节)
@@ -19,6 +19,7 @@ public class Demo {
 //        System.out.println("total虚拟机初始化的总内存=" + total + "字节\t" +
 //                "转换为MB=" + (total/(double)1024/1024) + "MB");
 //    }
+    public static int count = 0;
 
     public static class ListNode {
         int val;
@@ -95,10 +96,45 @@ public class Demo {
 //        httpUrl.replaceAll(urlHash, "1111");
 //        System.out.println(httpUrl.replace("", "1111"));
 
-        // 翻译字符串测试 -- 剑指46
-        int num = 25;
-        int res = translateNum(num);
-        System.out.println(res);
+//        // 翻译字符串测试 -- 剑指46
+//        int num = 25;
+//        int res = translateNum(num);
+//        System.out.println(res);
+
+        // 逆序对测试 -- 剑指51
+        int[] nums = new int[]{7, 5, 6, 4};
+        int[] tmp = new int[nums.length];
+        mergeSort(nums, 0, nums.length - 1, tmp);
+        System.out.println(count);
+        for (int num : nums) {
+            System.out.println(num);
+        }
+    }
+
+    public static void mergeSort(int[] nums, int left, int right, int[] tmp) {
+        if (left >= right) {
+            return;
+        }
+        int mid = (left + right) / 2;
+        mergeSort(nums, 0, mid, tmp);
+        mergeSort(nums, mid + 1, right, tmp);
+        int subleft1 = left, subleft2 = mid + 1;
+        for (int i = left; i <= right; i++) {
+            tmp[i] = nums[i];
+        }
+        for (int i = left; i <= right; i++) {
+            if (subleft1 == mid + 1) {
+                nums[i] = tmp[subleft2];
+                subleft2++;
+            } else if (subleft2 == right + 1 || tmp[subleft1] <= tmp[subleft2]) {
+                nums[i] = tmp[subleft1];
+                subleft1++;
+            } else {
+                nums[i] = tmp[subleft2];
+                subleft2++;
+                count++;
+            }
+        }
     }
 
     public static int translateNum(int num) {
