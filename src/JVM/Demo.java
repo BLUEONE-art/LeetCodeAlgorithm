@@ -101,14 +101,39 @@ public class Demo {
 //        int res = translateNum(num);
 //        System.out.println(res);
 
-        // 逆序对测试 -- 剑指51
-        int[] nums = new int[]{7, 5, 6, 4};
-        int[] tmp = new int[nums.length];
-        mergeSort(nums, 0, nums.length - 1, tmp);
-        System.out.println(count);
-        for (int num : nums) {
-            System.out.println(num);
+//        // 逆序对测试 -- 剑指51
+//        int[] nums = new int[]{7, 5, 6, 4};
+//        int[] tmp = new int[nums.length];
+//        mergeSort(nums, 0, nums.length - 1, tmp);
+//        System.out.println(count);
+//        for (int num : nums) {
+//            System.out.println(num);
+//        }
+
+        // 最长无重复字串测试 -- 3
+        String test = "abcabcbb";
+        System.out.println(lengthOfLongestSubstring(test));
+    }
+
+    public static int lengthOfLongestSubstring(String s) {
+        char[] chars = s.toCharArray();
+        int left = 0;
+        int right = 0;
+        int len = chars.length;
+        HashMap<Character, Integer> window = new HashMap<>();
+        int max = 0;
+        while (right < len) {
+            char c = chars[right];
+            window.put(c, window.getOrDefault(c, 0) + 1);
+            right++;
+            while (window.get(c) > 1) {
+                char d = chars[left];
+                window.put(d, window.getOrDefault(d, 0) - 1);
+                left++;
+            }
+            max = Math.max(max, right - left);
         }
+        return max;
     }
 
     public static void mergeSort(int[] nums, int left, int right, int[] tmp) {
