@@ -1,5 +1,6 @@
 package multiThreadCommunication;
 
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Semaphore;
@@ -17,6 +18,7 @@ public class ReaderWriterDemo {
     public static Integer readAndWriter = 0;
 
     public static void main(String[] args) {
+        CountDownLatch count = new CountDownLatch(5);
         ReaderWriterDemo readerWriterDemo = new ReaderWriterDemo();
         Thread writer = new Thread(readerWriterDemo::writer, "写者");
         Thread reader = new Thread(readerWriterDemo::reader, "读者");
