@@ -11,9 +11,9 @@ class Solution {
             public int compare(int[] interval1, int[] interval2) {
                 if (interval1[1] < interval2[1]) {
                     // 维持原始顺序
-                    return 1;
-                } else if (interval1[1] > interval2[1]) {
                     return -1;
+                } else if (interval1[1] > interval2[1]) {
+                    return 1;
                 } else {
                     return 0;
                 }
