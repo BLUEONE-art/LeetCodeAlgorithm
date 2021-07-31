@@ -84,10 +84,51 @@ public class teat {
         return len - stack.size();
     }
 
+    public static double findMedianSortedArrays(int[] nums1, int[] nums2) {
+        if (nums1.length == 0 && nums2.length == 0) {
+            return 0.0;
+        }
+        int len1 = nums1.length;
+        int len2 = nums2.length;
+        int sum = len1 + len2;
+        int count = 0;
+        int i = 0;
+        int j = 0;
+        double res = 0.0;
+        int[] mergeNums = new int[sum];
+        while (count <= sum && i < len1 && j < len2) {
+            if (nums1[i] <= nums2[j]) {
+                mergeNums[count] = nums1[i];
+                i++;
+            } else {
+                mergeNums[count] = nums2[j];
+                j++;
+            }
+            count++;
+        }
+        if (i == len1) {
+            for (int k = j; k < len2; k++) {
+                mergeNums[count] = nums2[k];
+                count++;
+            }
+        } else {
+            for (int l = i; l < len1; l++) {
+                mergeNums[count] = nums1[l];
+                count++;
+            }
+        }
+        if (sum % 2 != 0) {
+            res = (double) mergeNums[sum / 2];
+        } else {
+            res = (double) (mergeNums[sum / 2 - 1] + mergeNums[sum / 2]) / 2;
+        }
+        return res;
+    }
+
     public static void main(String[] args) {
-        int len = 6;
-        int[] nums = new int[]{1, 0, 1, 1, 0, 0};
-        int res = maxLen(len, nums);
+        int[] nums1 = new int[]{1, 3, 5};
+        int[] nums2 = new int[]{2};
+        double res = findMedianSortedArrays(nums1, nums2);
         System.out.println(res);
     }
 }
