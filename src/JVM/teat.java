@@ -177,11 +177,24 @@ public class teat {
         return res;
     }
 
+    public static int[] getLeastNumbers(int[] arr, int k) {
+        PriorityQueue<Integer> q = new PriorityQueue<>();
+        List<Integer> res = new ArrayList<>();
+        int idx = 0;
+        for (int i : arr) {
+            q.offer(i);
+            if (q.size() > arr.length - k) {
+                res.add(q.poll());
+            }
+        }
+        return res.stream().mapToInt(Integer::valueOf).toArray();
+    }
+
     public static void main(String[] args) {
-        int[][] p = {{0, 2}, {1, 2}, {2, 3}, {2, 4}};
-        int[] ans = haveCircularDependency(5, p);
-        for (int an : ans) {
-            System.out.println(an);
+        int[] test = new int[]{3, 2, 1};
+        int[] res = getLeastNumbers(test, 2);
+        for (int re : res) {
+            System.out.println(re);
         }
     }
 }
