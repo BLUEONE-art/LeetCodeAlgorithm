@@ -51,14 +51,18 @@ class Solution {
     public int rob(int[] nums) {
         // 子问题：有k间屋子，f(k) = max(f(k - 1), f(k - 2) + money(k))
         // 小偷自己判断，是偷前k-1个屋子，最后一个不偷(防止警报)获得钱多还是偷前k-2个屋子+最后一个屋子获得的钱多
-        int dp_0 = 0;
-        int dp_1 = nums[0];
-        for (int i = 2; i <= nums.length; i++) {
-            int dp_i = Math.max(dp_1, dp_0 + nums[i - 1]);
-            dp_0 = dp_1;
-            dp_1 = dp_i;
+        int len = nums.length;
+        if (len == 1) {
+            return nums[0];
         }
-        return dp_1;
+        int k_2Family = 0;
+        int k_1Family = nums[0];
+        for (int k = 1; k < len; k++) {
+            int tmpRes = Math.max(k_1Family, k_2Family + nums[k]);
+            k_2Family = k_1Family;
+            k_1Family = tmpRes;
+        }
+        return k_1Family;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
