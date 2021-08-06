@@ -191,10 +191,19 @@ public class teat {
     }
 
     public static void main(String[] args) {
-        int[] test = new int[]{3, 2, 1};
-        int[] res = getLeastNumbers(test, 2);
-        for (int re : res) {
-            System.out.println(re);
+
+        String line = "a b  c    ";      // 1
+        String str = "a b c      d";     // 2
+        String [] tmp = line.split(" ");
+        System.out.println(tmp.length+"------");
+        for(int i=0;i<tmp.length;i++){
+            System.out.println(i+"="+tmp[i]);
+        }
+
+        String [] items = line.split(" ",-1);
+        System.out.println(items.length+"========");
+        for(int i=0;i<items.length;i++){
+            System.out.println(i+"="+items[i]);
         }
     }
 }
