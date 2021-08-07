@@ -42,7 +42,7 @@ class Solution {
             } else {
                 curSum += 1;
             }
-            if (curSum == 0 || curSumToCurIdx.containsKey(curSum)) {
+            if (curSumToCurIdx.containsKey(curSum)) {
                 maxLen = Math.max(maxLen, (i - curSumToCurIdx.get(curSum)));
             } else {
                 curSumToCurIdx.put(curSum, i);
