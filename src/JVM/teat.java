@@ -190,20 +190,74 @@ public class teat {
         return res.stream().mapToInt(Integer::valueOf).toArray();
     }
 
+    static class ListNode {
+        int val;
+        ListNode next;
+        public ListNode() {}
+        public ListNode(int val) {
+            this.val = val;
+        }
+        public ListNode(int val, ListNode next) {
+            this.val = val;
+            this.next = next;
+        }
+    }
+
+    public static ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+        ListNode newL1 = reverse(l1);
+        ListNode newL2 = reverse(l2);
+        ListNode dum = new ListNode(0);
+        ListNode cur = dum;
+        int c = 0;
+        while (newL1 != null && newL2 != null) {
+            int sum = newL1.val + newL2.val + c;
+            c = sum / 10;
+            int modSum = sum % 10;
+            cur.next = new ListNode(modSum);
+            cur = cur.next;
+            newL1 = newL1.next;
+            newL2 = newL2.next;
+        }
+        if (newL1 != null) {
+            int sum = c + newL1.val;
+            c = sum / 10;
+            int modSum = sum % 10;
+            cur.next = new ListNode(modSum);
+            cur = cur.next;
+            newL1 = newL1.next;
+        } else {
+            int sum = c + newL2.val;
+            c = sum / 10;
+            int modSum = sum % 10;
+            cur.next = new ListNode(modSum);
+            cur = cur.next;
+            newL2 = newL2.next;
+        }
+        return reverse(dum.next);
+    }
+
+    public static ListNode reverse(ListNode head) {
+        ListNode pre = null;
+        ListNode cur = head;
+        ListNode nxt = head;
+        while (cur != null) {
+            nxt = cur.next;
+            cur.next = pre;
+            pre = cur;
+            cur = nxt;
+        }
+        return pre;
+    }
+
     public static void main(String[] args) {
+        ListNode l1 = new ListNode(2);
+        l1.next = new ListNode(4);
+        l1.next.next = new ListNode(3);
 
-        String line = "a b  c    ";      // 1
-        String str = "a b c      d";     // 2
-        String [] tmp = line.split(" ");
-        System.out.println(tmp.length+"------");
-        for(int i=0;i<tmp.length;i++){
-            System.out.println(i+"="+tmp[i]);
-        }
+        ListNode l2 = new ListNode(5);
+        l2.next = new ListNode(6);
+        l2.next.next = new ListNode(4);
 
-        String [] items = line.split(" ",-1);
-        System.out.println(items.length+"========");
-        for(int i=0;i<items.length;i++){
-            System.out.println(i+"="+items[i]);
-        }
+        addTwoNumbers(l1, l2);
     }
 }
