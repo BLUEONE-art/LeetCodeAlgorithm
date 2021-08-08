@@ -38,14 +38,16 @@
 class Solution {
     public boolean canJump(int[] nums) {
         int len = nums.length;
-        int maxCanJump = 0;
+        int curCanJumpMax = 0;
+        int PerIdxCanJumpMax = 0;
         for (int i = 0; i < len - 1; i++) {
-            maxCanJump = Math.max(maxCanJump, i + nums[i]);
-            if (maxCanJump - i <= 0) {
+            PerIdxCanJumpMax = Math.max(PerIdxCanJumpMax, i + nums[i]);
+            if (PerIdxCanJumpMax <= i) {
+                // 如果最远位置都没有i远，肯定到不了len - 2
                 return false;
             }
         }
-        return maxCanJump >= len - 1;
+        return PerIdxCanJumpMax >= len - 1;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
