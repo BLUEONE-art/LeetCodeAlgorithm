@@ -1475,6 +1475,14 @@
             </LeetcodeEditor>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/bytedancer/leetcode/editor/cn/[45]跳跃游戏 II.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/bytedancer/leetcode/editor/cn/[45]跳跃游戏 II.java" />
+              <option name="questionId" value="45" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/bytedancer/leetcode/editor/cn/[468]验证IP地址.java">
           <value>
             <LeetcodeEditor>
@@ -1616,6 +1624,14 @@
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/bytedancer/leetcode/editor/cn/[556]下一个更大元素 III.java" />
               <option name="questionId" value="556" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/bytedancer/leetcode/editor/cn/[55]跳跃游戏.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/bytedancer/leetcode/editor/cn/[55]跳跃游戏.java" />
+              <option name="questionId" value="55" />
             </LeetcodeEditor>
           </value>
         </entry>
