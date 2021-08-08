@@ -1163,6 +1163,14 @@
             </LeetcodeEditor>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/bytedancer/leetcode/editor/cn/[235]二叉搜索树的最近公共祖先.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/bytedancer/leetcode/editor/cn/[235]二叉搜索树的最近公共祖先.java" />
+              <option name="questionId" value="235" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/bytedancer/leetcode/editor/cn/[236]二叉树的最近公共祖先.java">
           <value>
             <LeetcodeEditor>
@@ -2152,6 +2160,14 @@
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/bytedancer/leetcode/editor/cn/[剑指 Offer 65]不用加减乘除做加法.java" />
               <option name="questionId" value="100335" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/bytedancer/leetcode/editor/cn/[剑指 Offer 68 - II]二叉树的最近公共祖先.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/bytedancer/leetcode/editor/cn/[剑指 Offer 68 - II]二叉树的最近公共祖先.java" />
+              <option name="questionId" value="100347" />
             </LeetcodeEditor>
           </value>
         </entry>
