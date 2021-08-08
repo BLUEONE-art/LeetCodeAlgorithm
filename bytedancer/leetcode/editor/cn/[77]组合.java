@@ -51,11 +51,8 @@ class Solution {
             return;
         }
         for (int i = depth; i <= n; i++) {
-            // 做选择
             path.addLast(i);
-            // 回溯框架
             backtrack(n, k, i + 1, path, res);
-            // 撤销选择
             path.removeLast();
         }
     }
