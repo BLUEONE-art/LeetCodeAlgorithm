@@ -55,12 +55,12 @@ class Solution {
     }
 
     public TreeNode build(int[] preorder, int preStart, int preEnd, int[] inorder, int inStart, int inEnd) {
-        if (inStart > inEnd) {
+        if (preStart > preEnd || inStart > inEnd) {
             return null;
         }
         int rootVal = preorder[preStart];
         int rootIdx = -1;
-        for (int i = inStart; i < inorder.length; i++) {
+        for (int i = inStart; i <= inEnd; i++) {
             if (inorder[i] == rootVal) {
                 rootIdx = i;
                 break;

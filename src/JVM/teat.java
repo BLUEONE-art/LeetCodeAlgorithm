@@ -193,10 +193,14 @@ public class teat {
     static class ListNode {
         int val;
         ListNode next;
-        public ListNode() {}
+
+        public ListNode() {
+        }
+
         public ListNode(int val) {
             this.val = val;
         }
+
         public ListNode(int val, ListNode next) {
             this.val = val;
             this.next = next;
@@ -249,15 +253,51 @@ public class teat {
         return pre;
     }
 
+    static class TreeNode {
+        int val;
+        TreeNode left;
+        TreeNode right;
+
+        TreeNode() {
+        }
+
+        TreeNode(int val) {
+            this.val = val;
+        }
+
+        TreeNode(int val, TreeNode left, TreeNode right) {
+            this.val = val;
+            this.left = left;
+            this.right = right;
+        }
+    }
+
+    public static TreeNode constructFromPrePost(int[] preorder, int[] postorder) {
+        return build(preorder, 0, postorder.length - 1, postorder, 0, postorder.length - 1);
+    }
+
+    public static TreeNode build(int[] preorder, int preStart, int preEnd, int[] postorder, int postStart, int postEnd) {
+        if (postStart > postEnd) {
+            return null;
+        }
+        int rootVal = preorder[preStart];
+        TreeNode root = new TreeNode(rootVal);
+        int leftValIdx = -1;
+        for (int i = 0; i < postorder.length; i++) {
+            if (postorder[i] == preorder[preStart + 1]) {
+                leftValIdx = i;
+                break;
+            }
+        }
+        int leftSize = leftValIdx - postStart + 1;
+        root.left = build(preorder, preStart + 1, preStart + leftSize, postorder, postStart, leftValIdx);
+        root.right = build(preorder, preStart + leftSize + 1, preEnd, postorder, leftValIdx + 1, postEnd - 1);
+        return root;
+    }
+
     public static void main(String[] args) {
-        ListNode l1 = new ListNode(2);
-        l1.next = new ListNode(4);
-        l1.next.next = new ListNode(3);
-
-        ListNode l2 = new ListNode(5);
-        l2.next = new ListNode(6);
-        l2.next.next = new ListNode(4);
-
-        addTwoNumbers(l1, l2);
+        int[] nums1 = new int[]{1, 2, 4, 5, 3, 6, 7};
+        int[] nums2 = new int[]{4, 5, 2, 6, 7, 3, 1};
+        constructFromPrePost(nums1, nums2);
     }
 }
