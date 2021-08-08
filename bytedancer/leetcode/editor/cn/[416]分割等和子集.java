@@ -42,8 +42,8 @@ class Solution {
         }
         int w = sum / 2;
         // dp[i][w]：从数组nums[0, 1, ..., i]中取一些数，其总和为w的真假
-        boolean[][] dp = new boolean[len][sum + 1];
-        if (nums[0] < sum) {
+        boolean[][] dp = new boolean[len][w + 1];
+        if (nums[0] < w) {
             dp[0][nums[0]] = true;
         }
         for (int i = 1; i < len; i++) {
