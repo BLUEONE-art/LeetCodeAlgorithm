@@ -63,7 +63,7 @@ class Solution {
                 count += row + 1;
                 col++;
             } else {
-                // 大于等于mid
+                // 大于mid
                 row--;
             }
         }
