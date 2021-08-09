@@ -299,5 +299,9 @@ public class teat {
         int[] nums1 = new int[]{1, 2, 4, 5, 3, 6, 7};
         int[] nums2 = new int[]{4, 5, 2, 6, 7, 3, 1};
         constructFromPrePost(nums1, nums2);
+
+
+        Random random = new Random();
+        int randomNum = random.nextInt();
     }
 }
