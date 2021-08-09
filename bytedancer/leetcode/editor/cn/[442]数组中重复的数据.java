@@ -20,29 +20,46 @@
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public List<Integer> findDuplicates(int[] nums) {
-
+        List<Integer> res = new ArrayList<>();
+        int i = 0;
+        while (i < nums.length) {
+            int idealIdx = nums[i] - 1;
+            if (nums[i] == i + 1 || nums[i] == nums[idealIdx]) {
+                i++;
+                continue;
+            }
+            int tmp = nums[i];
+            nums[i] = nums[idealIdx];
+            nums[idealIdx] = tmp;
+        }
+        for (int j = 0; j < nums.length; j++) {
+            if (nums[j] != j + 1) {
+                res.add(nums[j]);
+            }
+        }
+        return res;
     }
 
-//    public List<Integer> findDuplicates(int[] nums) {
-//        List<Integer> res = new ArrayList<>();
-//        Arrays.sort(nums);
-//        for (int i = 1; i < nums.length; i++) {
-//            if (nums[i] == nums[i - 1]) {
-//                res.add(nums[i]);
-//            }
-//        }
-//        return res;
-//    }
+    public List<Integer> findDuplicates(int[] nums) {
+        List<Integer> res = new ArrayList<>();
+        Arrays.sort(nums);
+        for (int i = 1; i < nums.length; i++) {
+            if (nums[i] == nums[i - 1]) {
+                res.add(nums[i]);
+            }
+        }
+        return res;
+    }
 
-//    public List<Integer> findDuplicates(int[] nums) {
-//        HashSet<Integer> set = new HashSet<>();
-//        List<Integer> res = new ArrayList<>();
-//        for (int num : nums) {
-//            if (!set.add(num)) {
-//                res.add(num);
-//            }
-//        }
-//        return res;
-//    }
+    public List<Integer> findDuplicates(int[] nums) {
+        HashSet<Integer> set = new HashSet<>();
+        List<Integer> res = new ArrayList<>();
+        for (int num : nums) {
+            if (!set.add(num)) {
+                res.add(num);
+            }
+        }
+        return res;
+    }
 }
 //leetcode submit region end(Prohibit modification and deletion)
