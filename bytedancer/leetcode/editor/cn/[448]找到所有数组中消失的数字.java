@@ -38,14 +38,11 @@ class Solution {
         List<Integer> res = new ArrayList<>();
         int idx = 0;
         while (idx < nums.length) {
-            // 理想情况下：下标idx 对应的值 idx + 1
-            if (nums[idx] == idx + 1) {
-                idx++;
-                continue;
-            }
             // 当前元素应该出现的下标idealIdx
             int idealIdx = nums[idx] - 1;
-            if (nums[idx] == nums[idealIdx]) {
+            // 1、idx对应这idx+1，不换
+            // 2、本来就是交换nums[idx]和nums[idealIdx]，如果他们相等，不必多此一举再交换
+            if (nums[idx] == idx + 1 || nums[idx] == nums[idealIdx]) {
                 idx++;
                 continue;
             }
