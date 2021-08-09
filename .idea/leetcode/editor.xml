@@ -1467,11 +1467,27 @@
             </LeetcodeEditor>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/bytedancer/leetcode/editor/cn/[442]数组中重复的数据.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/bytedancer/leetcode/editor/cn/[442]数组中重复的数据.java" />
+              <option name="questionId" value="442" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/bytedancer/leetcode/editor/cn/[445]两数相加 II.java">
           <value>
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/bytedancer/leetcode/editor/cn/[445]两数相加 II.java" />
               <option name="questionId" value="445" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/bytedancer/leetcode/editor/cn/[448]找到所有数组中消失的数字.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/bytedancer/leetcode/editor/cn/[448]找到所有数组中消失的数字.java" />
+              <option name="questionId" value="448" />
             </LeetcodeEditor>
           </value>
         </entry>
@@ -2096,6 +2112,14 @@
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/bytedancer/leetcode/editor/cn/[剑指 Offer 15]二进制中1的个数.java" />
               <option name="questionId" value="100292" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/bytedancer/leetcode/editor/cn/[剑指 Offer 19]正则表达式匹配.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/bytedancer/leetcode/editor/cn/[剑指 Offer 19]正则表达式匹配.java" />
+              <option name="questionId" value="100297" />
             </LeetcodeEditor>
           </value>
         </entry>
