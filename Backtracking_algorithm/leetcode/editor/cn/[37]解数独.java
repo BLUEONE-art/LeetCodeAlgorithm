@@ -34,6 +34,7 @@ class Solution {
     public void solveSudoku(char[][] board) {
         backtrack(board, 0, 0);
     }
+
     // 回溯函数
     public boolean backtrack(char[][] board, int i, int j) {
         int m = 9, n = 9;
@@ -64,6 +65,7 @@ class Solution {
         }
         return false;
     }
+
     // 剪枝判断的函数，如果是 false，直接跳过
     public boolean isValid(char[][] board, int row, int col, char char_num) {
         for (int i = 0; i < 9; i++) {
@@ -72,7 +74,7 @@ class Solution {
             // 判断每一列是否有元素重复
             if (board[i][col] == char_num) return false;
             // 判断每个 3*3 的网格内的元素是否重复
-            if (board[(row/3)*3 + i/3][(col/3)*3 + i%3] == char_num) return false;
+            if (board[(row / 3) * 3 + i / 3][(col / 3) * 3 + i % 3] == char_num) return false;
         }
         return true;
     }
