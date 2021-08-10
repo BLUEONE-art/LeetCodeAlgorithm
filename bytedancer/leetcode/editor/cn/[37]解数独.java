@@ -75,7 +75,7 @@ class Solution {
             }
             // 一个个字符试
             board[i][j] = c;
-            // 返回值为boolean含义是当前数字选择为c，如果一直递归能找到一个可行解，理解返回退出
+            // 返回值为boolean含义是当前数字选择为c，如果一直递归能找到一个可行解，立即返回退出
             if (backtrack(board, i, j + 1)) {
                 return true;
             }
