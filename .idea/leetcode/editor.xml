@@ -779,6 +779,14 @@
             </LeetcodeEditor>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/bytedancer/leetcode/editor/cn/[137]只出现一次的数字 II.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/bytedancer/leetcode/editor/cn/[137]只出现一次的数字 II.java" />
+              <option name="questionId" value="137" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/bytedancer/leetcode/editor/cn/[138]复制带随机指针的链表.java">
           <value>
             <LeetcodeEditor>
@@ -1355,6 +1363,14 @@
             </LeetcodeEditor>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/bytedancer/leetcode/editor/cn/[337]打家劫舍 III.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/bytedancer/leetcode/editor/cn/[337]打家劫舍 III.java" />
+              <option name="questionId" value="337" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/bytedancer/leetcode/editor/cn/[33]搜索旋转排序数组.java">
           <value>
             <LeetcodeEditor>
@@ -1440,6 +1456,14 @@
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/bytedancer/leetcode/editor/cn/[3]无重复字符的最长子串.java" />
               <option name="questionId" value="3" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/bytedancer/leetcode/editor/cn/[400]第 N 位数字.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/bytedancer/leetcode/editor/cn/[400]第 N 位数字.java" />
+              <option name="questionId" value="400" />
             </LeetcodeEditor>
           </value>
         </entry>
@@ -1739,6 +1763,14 @@
             </LeetcodeEditor>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/bytedancer/leetcode/editor/cn/[567]字符串的排列.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/bytedancer/leetcode/editor/cn/[567]字符串的排列.java" />
+              <option name="questionId" value="567" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/bytedancer/leetcode/editor/cn/[56]合并区间.java">
           <value>
             <LeetcodeEditor>
@@ -1768,6 +1800,14 @@
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/bytedancer/leetcode/editor/cn/[5]最长回文子串.java" />
               <option name="questionId" value="5" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/bytedancer/leetcode/editor/cn/[60]排列序列.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/bytedancer/leetcode/editor/cn/[60]排列序列.java" />
+              <option name="questionId" value="60" />
             </LeetcodeEditor>
           </value>
         </entry>
@@ -1840,6 +1880,22 @@
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/bytedancer/leetcode/editor/cn/[69]x 的平方根.java" />
               <option name="questionId" value="69" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/bytedancer/leetcode/editor/cn/[6]Z 字形变换.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/bytedancer/leetcode/editor/cn/[6]Z 字形变换.java" />
+              <option name="questionId" value="6" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/bytedancer/leetcode/editor/cn/[701]二叉搜索树中的插入操作.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/bytedancer/leetcode/editor/cn/[701]二叉搜索树中的插入操作.java" />
+              <option name="questionId" value="784" />
             </LeetcodeEditor>
           </value>
         </entry>
@@ -2224,6 +2280,14 @@
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/bytedancer/leetcode/editor/cn/[剑指 Offer 42]连续子数组的最大和.java" />
               <option name="questionId" value="100304" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/bytedancer/leetcode/editor/cn/[剑指 Offer 43]1～n 整数中 1 出现的次数.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/bytedancer/leetcode/editor/cn/[剑指 Offer 43]1～n 整数中 1 出现的次数.java" />
+              <option name="questionId" value="100309" />
             </LeetcodeEditor>
           </value>
         </entry>
