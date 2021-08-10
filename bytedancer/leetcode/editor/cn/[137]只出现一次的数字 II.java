@@ -48,7 +48,7 @@ class Solution {
         int res = 0;
         // 如果所有数都出现三次，那countBit中所有数都是3的倍数
         for (int i = 0; i < 32; i++) {
-            if (countBit[i] % 3 != 0) {
+            if ((countBit[i] % 3 & 1) == 1) {
                 res += (1 << i);
             }
         }
