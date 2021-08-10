@@ -36,7 +36,23 @@
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public int singleNumber(int[] nums) {
-
+        int[] countBit = new int[32];
+        for (int num : nums) {
+            for (int i = 0; i < 32; i++) {
+                // 记录num中每一位出现的个数，取二进制中每一位的方法
+                if (((num >> i) & 1) == 1) {
+                    countBit[i]++;
+                }
+            }
+        }
+        int res = 0;
+        // 如果所有数都出现三次，那countBit中所有数都是3的倍数
+        for (int i = 0; i < 32; i++) {
+            if (countBit[i] % 3 != 0) {
+                res += (1 << i);
+            }
+        }
+        return res;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
