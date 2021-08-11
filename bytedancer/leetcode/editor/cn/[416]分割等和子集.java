@@ -32,6 +32,26 @@
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public boolean canPartition(int[] nums) {
+        int sum = 0;
+        for (int num : nums) {
+            sum += num;
+        }
+        if ((sum & 1) == 1) {
+            return false;
+        }
+        int tar = sum / 2;
+        // dp[i]：是否含有和为i的子数组
+        boolean[] dp = new boolean[tar + 1];
+        dp[0] = true;
+        for (int num : nums) {
+            for (int i = tar; i - num >= 0; i--) {
+                dp[i] = dp[i] || dp[i - num];
+            }
+        }
+        return dp[tar];
+    }
+
+    public boolean canPartition(int[] nums) {
         int len = nums.length;
         int sum = 0;
         for (int num : nums) {
