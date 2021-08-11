@@ -46,26 +46,19 @@
 
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
-
-
+    // 完全背 + 无顺序：tar顺 + arr顺
     public int change(int amount, int[] coins) {
-        // dp[i][j]：从coins[0 ~ i]中选钞票组合成j的组合总数
-        int[][] dp = new int[coins.length + 1][amount + 1];
-        for (int i = 0; i < coins.length + 1; i++) { // 凑成0元只有一枚硬币不取这1种方法
-            dp[i][0] = 1;
-        }
-        // dp[0][1~amount] = 0,一枚不取只能凑0元
-        for (int i = 1; i < coins.length + 1; i++) { // 硬币
-            for (int j = 1; j < amount + 1; j++) { // 金额
-                if (j - coins[i - 1] < 0) {
-                    dp[i][j] = dp[i - 1][j];
-                }
-                else {
-                    dp[i][j] = dp[i][j - coins[i - 1]] + dp[i - 1][j];
+        // 组成i的coin组合数
+        int[] dp = new int[amount + 1];
+        dp[0] = 1;
+        for (int coin : coins) {
+            for (int i = 0; i <= amount; i++) {
+                if (i - coin >= 0) {
+                    dp[i] = dp[i] + dp[i - coin];
                 }
             }
         }
-        return dp[coins.length][amount];
+        return dp[amount];
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
