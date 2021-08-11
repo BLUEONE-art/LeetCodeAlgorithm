@@ -112,16 +112,20 @@
 
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
+    // 不考虑顺序完背：arr顺 + tar顺
     public int coinChange(int[] coins, int amount) {
-        if (amount < 0) return -1;
-        if (amount == 0) return 0;
-        int res = Integer.MAX_VALUE;
+        // 和为i的硬币组合种数
+        int[] dp = new int[amount + 1];
+        Arrays.fill(dp, Integer.MAX_VALUE);
+        dp[0] = 0;
         for (int coin : coins) {
-            int subProblem = coinChange(coins, amount - coin);
-            if (subProblem == -1) continue;
-            res = Math.min(res, 1 + subProblem);
+            for (int i = 0; i <= amount; i++) {
+                if (i - coin >= 0) {
+                    dp[i] = Math.min(dp[i], dp[i - coin] + 1);
+                }
+            }
         }
-        return res == Integer.MAX_VALUE ? -1 : res;
+        return dp[amount];
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
