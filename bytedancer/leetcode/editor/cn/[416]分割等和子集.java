@@ -41,6 +41,7 @@ class Solution {
         }
         int tar = sum / 2;
         // dp[i]：是否含有和为i的子数组
+        // 01背 ==> arr正 + tar倒
         boolean[] dp = new boolean[tar + 1];
         dp[0] = true;
         for (int num : nums) {

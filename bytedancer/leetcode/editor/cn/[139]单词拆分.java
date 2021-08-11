@@ -36,6 +36,8 @@ class Solution {
     // 使用字符串集合拼凑目标字符串，且可以使用多次和讲究顺序
     public boolean wordBreak(String s, List<String> wordDict) {
         int len = s.length();
+        // 以i结尾的字符串能否被wordDict组合而成
+        // 完背 + 顺序 ==> tar顺序 + arr顺序
         boolean[] dp = new boolean[len + 1];
         dp[0] = true;
         for (int i = 1; i <= len; i++) {
