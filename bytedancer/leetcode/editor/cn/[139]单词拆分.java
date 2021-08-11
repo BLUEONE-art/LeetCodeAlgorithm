@@ -40,7 +40,7 @@ class Solution {
         // 完背 + 顺序 ==> tar顺序 + arr顺序
         boolean[] dp = new boolean[len + 1];
         dp[0] = true;
-        for (int i = 1; i <= len; i++) {
+        for (int i = 0; i <= len; i++) {
             for (String word : wordDict) {
                 int size = word.length();
                 // 目标字符串比子字符串还小，必不可能组成

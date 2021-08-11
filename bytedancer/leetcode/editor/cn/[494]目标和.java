@@ -65,8 +65,10 @@ class Solution {
         int[] dp = new int[newTar + 1];
         dp[0] = 1;
         for (int num : nums) {
-            for (int i = newTar; i - num >= 0; i--) {
-                dp[i] = dp[i] + dp[i - num];
+            for (int i = newTar; i >= 0; i--) {
+                if (i - num >= 0) {
+                    dp[i] = dp[i] + dp[i - num];
+                }
             }
         }
         return dp[newTar];

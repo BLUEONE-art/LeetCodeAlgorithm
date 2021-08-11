@@ -45,41 +45,14 @@ class Solution {
         boolean[] dp = new boolean[tar + 1];
         dp[0] = true;
         for (int num : nums) {
-            for (int i = tar; i - num >= 0; i--) {
-                dp[i] = dp[i] || dp[i - num];
+            for (int i = tar; i >= 0; i--) {
+                if (i - num >= 0) {
+                    dp[i] = dp[i] || dp[i - num];
+                }
             }
         }
         return dp[tar];
     }
 
-    public boolean canPartition(int[] nums) {
-        int len = nums.length;
-        int sum = 0;
-        for (int num : nums) {
-            sum += num;
-        }
-        if (sum % 2 != 0) {
-            return false;
-        }
-        int w = sum / 2;
-        // dp[i][w]：从数组nums[0, 1, ..., i]中取一些数，其总和为w的真假
-        boolean[][] dp = new boolean[len][w + 1];
-        if (nums[0] < w) {
-            dp[0][nums[0]] = true;
-        }
-        for (int i = 1; i < len; i++) {
-            for (int j = 0; j <= w; j++) {
-                if (j - nums[i] < 0) {
-                    dp[i][j] = dp[i - 1][j];
-                } else if (j - nums[i] == 0) {
-                    dp[i][j] = true;
-                    continue;
-                } else {
-                    dp[i][j] = dp[i - 1][j] || dp[i - 1][j - nums[i]];
-                }
-            }
-        }
-        return dp[len - 1][w];
-    }
 }
 //leetcode submit region end(Prohibit modification and deletion)
