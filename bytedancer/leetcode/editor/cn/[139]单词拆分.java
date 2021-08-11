@@ -33,26 +33,20 @@
 
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
+    // 使用字符串集合拼凑目标字符串，且可以使用多次和讲究顺序
     public boolean wordBreak(String s, List<String> wordDict) {
-        Set<String> wordSet = new HashSet<>();
-        for (String word : wordDict) {
-            wordSet.add(word);
-        }
         int len = s.length();
         boolean[] dp = new boolean[len + 1];
-//        Arrays.fill(dp, false);
-        dp[0] = true; // 不拆分,dp[i + 1] 只取决于s[0 ~ i]是否为单个单词
-
+        dp[0] = true;
         for (int i = 1; i <= len; i++) {
-            for (int j = i - 1; j >= 0; j--) {
-                String subS = s.substring(j, i);
-                if (wordSet.contains(subS) && dp[j]) {
-                    dp[i] = true;
-                    break;
+            for (String word : wordDict) {
+                int size = word.length();
+                // 目标字符串比子字符串还小，必不可能组成
+                if (i - size >= 0 && s.substring(i - size, i).equals(word)) {
+                    dp[i] = dp[i] || dp[i - size];
                 }
             }
         }
-
         return dp[len];
     }
 }
