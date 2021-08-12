@@ -36,17 +36,24 @@
 class Solution {
     public int trap(int[] height) {
         int res = 0;
-        Stack<Integer> s = new Stack<>();
-        for (int i = 0; i <= height.length - 1; i++) {
-            while (!s.isEmpty() && height[i] > height[s.peek()]) { // 后面比前面大
-                int bottom = s.peek();
-                s.pop(); // 谷底拿到了就可以被弹出
-                if (s.isEmpty()) break;
-                int left = s.peek(); // 弹走一个谷底，左杯壁就是栈顶数据
-                int h = Math.min(height[left], height[i]) - height[bottom]; // i就是右杯壁索引
-                res += (i - left - 1) * h;
+        Stack<Integer> stack = new Stack<>();
+        for (int i = 0; i < height.length; i++) {
+            // 后边的元素比前面的大，说明有水沟
+            while (!stack.isEmpty() && height[i] > height[stack.peek()]) {
+                // 沟底的索引被pop
+                int bottom = stack.pop();
+
+                if (stack.isEmpty()) {
+                    break;
+                }
+
+                // 栈顶剩下左边界的索引，木桶效应取最小高度
+                int h = Math.min(height[stack.peek()], height[i]) - height[bottom];
+                // 循环取和相加：底*高
+                res += (i - stack.peek() - 1) * h;
             }
-            s.push(i); // 放索引
+            // 放元素的索引
+            stack.push(i);
         }
         return res;
     }
