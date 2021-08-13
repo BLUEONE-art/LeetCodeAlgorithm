@@ -1379,6 +1379,14 @@
             </LeetcodeEditor>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/bytedancer/leetcode/editor/cn/[329]矩阵中的最长递增路径.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/bytedancer/leetcode/editor/cn/[329]矩阵中的最长递增路径.java" />
+              <option name="questionId" value="329" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/bytedancer/leetcode/editor/cn/[32]最长有效括号.java">
           <value>
             <LeetcodeEditor>
@@ -1520,6 +1528,14 @@
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/bytedancer/leetcode/editor/cn/[40]组合总和 II.java" />
               <option name="questionId" value="40" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/bytedancer/leetcode/editor/cn/[410]分割数组的最大值.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/bytedancer/leetcode/editor/cn/[410]分割数组的最大值.java" />
+              <option name="questionId" value="410" />
             </LeetcodeEditor>
           </value>
         </entry>
@@ -1928,6 +1944,14 @@
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/bytedancer/leetcode/editor/cn/[678]有效的括号字符串.java" />
               <option name="questionId" value="678" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/bytedancer/leetcode/editor/cn/[695]岛屿的最大面积.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/bytedancer/leetcode/editor/cn/[695]岛屿的最大面积.java" />
+              <option name="questionId" value="695" />
             </LeetcodeEditor>
           </value>
         </entry>
