@@ -295,13 +295,32 @@ public class teat {
         return root;
     }
 
+    public static int lengthOfLongestSubstringKDistinct(String s, int k) {
+        int len = s.length();
+        if (len == 0 || k == 0) {
+            return 0;
+        }
+        int left = 0;
+        int right = 0;
+        int max = 0;
+        Map<Character, Integer> map = new HashMap<>();
+        while (right < len) {
+            char c = s.charAt(right);
+            map.put(c, right);
+            right++;
+            while (map.size() > k) {
+                int min = Collections.min(map.values());
+                map.remove(s.charAt(min));
+                left = min + 1;
+            }
+            max = Math.max(max, right - left);
+        }
+        return max;
+    }
+
     public static void main(String[] args) {
-        int[] nums1 = new int[]{1, 2, 4, 5, 3, 6, 7};
-        int[] nums2 = new int[]{4, 5, 2, 6, 7, 3, 1};
-        constructFromPrePost(nums1, nums2);
-
-
-        Random random = new Random();
-        int randomNum = random.nextInt();
+        String s = "aacfgggg";
+        int res = lengthOfLongestSubstringKDistinct(s, 3);
+        System.out.println(res);
     }
 }
