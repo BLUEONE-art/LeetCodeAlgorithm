@@ -1467,6 +1467,14 @@
             </LeetcodeEditor>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/bytedancer/leetcode/editor/cn/[344]反转字符串.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/bytedancer/leetcode/editor/cn/[344]反转字符串.java" />
+              <option name="questionId" value="344" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/bytedancer/leetcode/editor/cn/[347]前 K 个高频元素.java">
           <value>
             <LeetcodeEditor>
@@ -2664,6 +2672,14 @@
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/bytedancer/leetcode/editor/cn/[剑指 Offer 68 - II]二叉树的最近公共祖先.java" />
               <option name="questionId" value="100347" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/bytedancer/leetcode/editor/cn/[面试题 01.06]字符串压缩.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/bytedancer/leetcode/editor/cn/[面试题 01.06]字符串压缩.java" />
+              <option name="questionId" value="100161" />
             </LeetcodeEditor>
           </value>
         </entry>
