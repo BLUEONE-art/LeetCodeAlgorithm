@@ -318,9 +318,34 @@ public class teat {
         return max;
     }
 
+    public static int findNumberOfLIS(int[] nums) {
+        int len = nums.length;
+        // dp[i]前i个元素的最长子序列长度
+        int[] dp = new int[len];
+        Arrays.fill(dp, 1);
+        for (int i = 1; i < len; i++) {
+            for (int j = 0; j < i; j++) {
+                if (nums[i] > nums[j]) {
+                    dp[i] = Math.max(dp[i], dp[j] + 1);
+                }
+            }
+        }
+        int count = 0;
+        int max = 1;
+        for (int i : dp) {
+            max = Math.max(max, i);
+        }
+        for (int i : dp) {
+            if (i == max) {
+                count++;
+            }
+        }
+        return count;
+    }
+
     public static void main(String[] args) {
-        String s = "aacfgggg";
-        int res = lengthOfLongestSubstringKDistinct(s, 3);
+        int[] test = new int[]{1, 3, 5, 4, 7};
+        int res = findNumberOfLIS(test);
         System.out.println(res);
     }
 }
