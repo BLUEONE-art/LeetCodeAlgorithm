@@ -63,6 +63,7 @@ class LRUCache {
     // 并且能够保证快速访问节点，因为 LinkedHashMap 底层是 HashMap + 双向链表
     // HashMap 映射保证可以快速访问节点，双向链表保证了快速增加删除节点
     LinkedHashMap<Integer, Integer> cache = new LinkedHashMap<>();
+
     public LRUCache(int capacity) {
 
         this.cap = capacity;
@@ -79,7 +80,7 @@ class LRUCache {
         makeRencently(key);
         return cache.get(key);
     }
-    
+
     public void put(int key, int value) {
 
         // ①如果存在 key，直接修改 key 对应的 value 值
