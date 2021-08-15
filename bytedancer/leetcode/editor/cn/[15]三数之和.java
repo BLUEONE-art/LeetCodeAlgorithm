@@ -43,7 +43,8 @@ class Solution {
     public List<List<Integer>> threeSum(int[] nums) {
         Arrays.sort(nums);
         List<List<Integer>> res = new ArrayList<>();
-        for (int k = 0; k < nums.length - 2; k++) {
+        int len = nums.length;
+        for (int k = 0; k < len - 2; k++) {
             // 固定k，数组经过排序，双指针i，j对应的元素肯定比nums[k]大，三者相加必不为0，直接跳出循环
             if (nums[k] > 0) {
                 break;
@@ -53,7 +54,7 @@ class Solution {
                 continue;
             }
             int i = k + 1;
-            int j = nums.length - 1;
+            int j = len - 1;
             while (i < j) {
                 int sum = nums[k] + nums[i] + nums[j];
                 if (sum == 0) {
