@@ -42,6 +42,7 @@ class Solution {
     public int leastBricks(List<List<Integer>> wall) {
         int n = wall.size();
         Map<Integer, Integer> map = new HashMap<>();
+        // 前缀和 + map记录缝隙出现次数
         for (int i = 0; i < n; i++) {
             int sum = 0;
             for (int cur : wall.get(i)) {
