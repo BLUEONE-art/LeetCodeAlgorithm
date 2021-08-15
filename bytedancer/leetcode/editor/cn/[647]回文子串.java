@@ -31,17 +31,25 @@
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public int countSubstrings(String s) {
-        int len = s.length(), count = 0;
-        boolean[][] dp = new boolean[len][len];
+        int res = 0;
+        int len = s.length();
         for (int i = 0; i < len; i++) {
-            for (int j = 0; j <= i; j++) {
-                if (s.charAt(i) == s.charAt(j) && (i - j < 2 || dp[j + 1][i - 1])) {
-                    dp[j][i] = true;
-                    count++;
-                }
-            }
+            // 以i为中心扩散
+            res += extend(s, i, i, len);
+            // 以i+1为中心扩散
+            res += extend(s, i, i + 1, len);
         }
-        return count;
+        return res;
+    }
+
+    public int extend(String s, int i, int j, int len) {
+        int res = 0;
+        while (i >= 0 && j < len && s.charAt(i) == s.charAt(j)) {
+            i--;
+            j++;
+            res++;
+        }
+        return res;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
