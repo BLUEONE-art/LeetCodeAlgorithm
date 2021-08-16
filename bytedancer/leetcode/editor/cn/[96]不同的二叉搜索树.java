@@ -37,6 +37,7 @@ class Solution {
         dp[1] = 1;
         for (int i = 2; i <= n; i++) {
             for (int j = 1; j <= i; j++) {
+                // G[n] = f[1] +...+f[n](f[i] = G[i - 1]*G[n - i])
                 dp[i] += dp[j - 1] * dp[i - j];
             }
         }
