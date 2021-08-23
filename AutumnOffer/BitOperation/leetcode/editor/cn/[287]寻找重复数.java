@@ -70,5 +70,24 @@ class Solution {
         }
         return 0;
     }
+
+    public int findDuplicate(int[] nums) {
+        int slow = 0;
+        int fast = 0;
+        while (true) {
+            // 如果要判没环，todo
+            slow = nums[slow];
+            fast = nums[nums[fast]];
+            if (slow == fast) {
+                break;
+            }
+        }
+        int newSlow = 0;
+        while (newSlow != fast) {
+            newSlow = nums[newSlow];
+            fast = nums[fast];
+        }
+        return newSlow;
+    }
 }
 //leetcode submit region end(Prohibit modification and deletion)
