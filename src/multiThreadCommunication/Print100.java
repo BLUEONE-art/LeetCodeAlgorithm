@@ -1,5 +1,7 @@
 package multiThreadCommunication;
 
+import java.util.BitSet;
+
 public class Print100 {
     // 定义共享变量
     public static Integer num = 0;
