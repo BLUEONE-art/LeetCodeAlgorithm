@@ -1,9 +1,7 @@
 package multiThreadCommunication;
 
 import java.util.*;
-import java.util.concurrent.Executor;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.*;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -16,6 +14,9 @@ public class ReentrantLockDemo {
     public static ReentrantLock lock = new ReentrantLock();
     public static Condition full = lock.newCondition();
     public static Condition empty = lock.newCondition();
+
+    CountDownLatch countDownLatch = new CountDownLatch(3);
+    CyclicBarrier cyclicBarrier = new CyclicBarrier(3);
 
     public static void main(String[] args) {
         ReentrantLockDemo reentrantLockDemo = new ReentrantLockDemo();
